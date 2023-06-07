@@ -1,11 +1,31 @@
 from traffic_types import *
 import numpy as np
-from numpy import ndarray, zeros, one, array
+from numpy import ndarray, zeros, ones, array
+
+from functools import wraps
 
 INFINITY = np.inf
 
 def infinities(shape) -> ndarray:
     return np.full(shape, INFINITY)
+
+def use_cache(func):
+    @wraps(func)
+    def inner(self, *args, **kwargs):
+        if args in self._cache:
+            return self._cache[args]
+        result = func(self, *args, **kwargs)
+        self._cache[args] = result
+        return result
+    return inner
+
+def invalidator(func):
+    @wraps(func)
+    def inner(self, *args, **kwargs):
+        self._cache = {}
+        return func(self, *args, **kwargs)
+    return inner
+
 
 class Link:
 
@@ -71,6 +91,9 @@ class Graph:
     time_matrix : ndarray
     lookup = dict[Node, int]
 
+    # cache for dijkstra, make sure to invalidate when value updated
+    _cache = {}
+
     
     def __init__(self, nodes : list[Node], links = set[Link]) -> None:
         self.nodes : list[Node] = nodes
@@ -84,7 +107,7 @@ class Graph:
         self.flow_matrix = zeros((len(self.nodes), len(self.nodes)))
         self.capacity_matrix = ones((len(self.nodes), len(self.nodes)))
         
-    
+    @invalidator
     def _update(self, links: list[Link], alpha= 0.15, beta = 4) -> None:
         for link in links:
             self.fft_matrix[self.lookup[link.start], self.lookup[link.end]] = link.fft
@@ -96,11 +119,12 @@ class Graph:
             self.links.add(link)
             
     def neighbours(self, node:Node) -> list[Link]:
-        pass
+        return [link for link in self.links if link.start == node]
 
             
-
+    @use_cache
     def shortest_path(self, origin : Node, destination : Node) -> Path:
+
         paths = self.dijkstra(self.lookup[origin])
         return paths[self.lookup[destination]]
     
@@ -113,6 +137,19 @@ class Graph:
         distances = infinities((len(self.nodes)))
         distances[origin] = 0
 
+        # find the node with minimum distance
+        while len(visited) < len(self.nodes):
+            min_node = None
+            for node in range(len(self.nodes)):
+                if node not in visited and (min_node is None or distances[node] < distances[min_node]):
+                    min_node = node
+        
+        # add the closest node to visited
+        visited.add(min_node)
+
+        for link in self.neighbours(self.nodes[min_node]):
+            neighbour = self.lookup(link.end)
+            
 
 
 class Demands:
