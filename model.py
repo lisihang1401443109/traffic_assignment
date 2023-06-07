@@ -96,7 +96,7 @@ class Graph:
             self.links.add(link)
             
     def neighbours(self, node:Node) -> list[Link]:
-        
+        pass
 
             
 
