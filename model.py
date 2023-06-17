@@ -149,7 +149,7 @@ class Graph:
 
         for link in self.neighbours(self.nodes[min_node]):
             neighbour = self.lookup(link.end)
-            
+            # TODO: finish dijkstra
 
 
 class Demands:
