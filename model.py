@@ -132,24 +132,30 @@ class Graph:
         '''
             being worked on
         '''
+        # initialize distance and previous array
+        distances = infinities(len(self.nodes))
+        previous = array([None] * len(self.nodes))
+        distances[self.lookup[origin]] = 0
 
-        visited = set()
-        distances = infinities((len(self.nodes)))
-        distances[origin] = 0
-
-        # find the node with minimum distance
-        while len(visited) < len(self.nodes):
-            min_node = None
-            for node in range(len(self.nodes)):
-                if node not in visited and (min_node is None or distances[node] < distances[min_node]):
-                    min_node = node
+        # worklist: while there's more nodes that has not been visited
+        to_visit = set([self.lookup[node] for node in self.nodes])
+        while to_visit:
+            # min_index: the closest next node
+            min_index = min(to_visit, key = lambda x: distances[x])
+            to_visit.remove(min_index)
+            neighbours = self.neighbours(self.nodes[min_index])
+            # update the neighbours
+            for b in neighbours:
+                n = b.end
+                temp_dist = self.time_matrix[min_index, self.lookup[n]] + distances[min_index]
+                if distances[self.lookup[n]] > temp_dist:
+                    distances[self.lookup[n]] = temp_dist
+                    previous[self.lookup[n]] = min_index
         
-        # add the closest node to visited
-        visited.add(min_node)
+        return previous, distances
 
-        for link in self.neighbours(self.nodes[min_node]):
-            neighbour = self.lookup(link.end)
-            # TODO: finish dijkstra
+
+
 
 
 class Demands:
