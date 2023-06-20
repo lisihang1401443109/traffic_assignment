@@ -247,7 +247,9 @@ class Problem:
     def get_total_time(self):
         # we define total time the simple some of all the individual's travel time
         # to do this, for sum(num_in_link * link_travel_time)
-        return sum(np.reshape(self.graph.time_matrix * self.graph.flow_matrix, (-1, )))
+        time_matrix_cpy = self.graph.time_matrix.copy()
+        time_matrix_cpy[time_matrix_cpy == INFINITY] = 0
+        return sum(np.reshape(time_matrix_cpy * self.graph.flow_matrix, (-1, )))
         
         
 
@@ -257,7 +259,7 @@ class Problem:
         new_time = -1
         print(old_time)
         print(new_time)
-        while old_time - new_time < threshold:
+        while new_time == -1 or old_time - new_time < threshold:
             opt_mat = self.optimal()
             self.graph._assign_flow(self.graph.flow_matrix * (1-alpha) + opt_mat * alpha)
             assert(sum(self.graph.flow_matrix) == demand_sum)
