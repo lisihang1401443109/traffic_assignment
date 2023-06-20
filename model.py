@@ -6,9 +6,12 @@ from functools import wraps
 
 INFINITY = np.inf
 
+# creates an numpy array with shape as input initialized to infinity
 def infinities(shape) -> ndarray:
     return np.full(shape, INFINITY)
 
+# being worked on
+# caches the result of function with same arguments
 def use_cache(func):
     @wraps(func)
     def inner(self, *args, **kwargs):
@@ -19,6 +22,7 @@ def use_cache(func):
         return result
     return inner
 
+# when called, flush the cache
 def invalidator(func):
     @wraps(func)
     def inner(self, *args, **kwargs):
@@ -28,6 +32,15 @@ def invalidator(func):
 
 
 class Link:
+
+    # self.start: start Node
+    # self.end: end Node
+    # self.fft: free flow time of the link
+    # self.flow: the flow
+    # self.capacity: the capacity of the link
+    # self.BPR(): the travel time of the link
+    # self.__hash__(): the link with same start and end is hashed to the same
+    # self.__eq__(): the links are deemed equal if with same start and end
 
     def __init__(self, start : Node, end : Node, fft : int = 0, flow : float = 0, capacity : float = 1.0) -> None:
         self.start = start
@@ -47,6 +60,14 @@ class Link:
     
 
 class Path:
+
+    # self.__init__()
+    #   can either initialize using list[Link] or list[Node]
+    #   either initializing mode sets the other attributes
+    #   note that the time and flow attributes are not initialized under node initialization
+    # self.links: list[Link]
+    # self.nodes: list[Node]
+
 
     flow : float
     time : float
@@ -128,7 +149,7 @@ class Graph:
         paths = self.dijkstra(self.lookup[origin])
         return paths[self.lookup[destination]]
     
-    def dijkstra(self, origin : Node) -> list[Path]:
+    def dijkstra(self, origin : Node):
         '''
             being worked on
         '''
@@ -183,3 +204,30 @@ class Problem:
     def __init__(self, graph: Graph,  demands : Demands) -> None:
         self.graph = graph
         self.demands = demands
+
+    def optimal(self, alpha=0.1) -> ndarray:
+        new_mat = zeros((self.graph.nodes.__len__(), self.graph.nodes.__len__()))
+        for i in range(self.demands.matrix.shape[0]):
+            for j in range(self.demands.matrix.shape[1]):
+                origin = self.graph.nodes[i]
+                destination = self.graph.nodes[j]
+                print(origin, destination, '\n================================\n')
+                amount = self.demands.matrix[i, j]
+                if origin == destination:
+                    continue
+                prev, dist = self.graph.dijkstra(origin)
+                cnode = self.graph.lookup[destination]
+                print(prev)
+                while not cnode == self.graph.lookup[origin]:
+                    if cnode is None:
+                        break
+                    print(prev[cnode], cnode)
+                    new_mat[prev[cnode], cnode] += alpha*amount
+                    cnode = prev[cnode]
+        
+        return new_mat
+
+
+
+
+        
