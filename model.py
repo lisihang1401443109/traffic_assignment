@@ -121,23 +121,36 @@ class Graph:
         self.links : set[Link]= set(links)
         self._initialize()
         self._update(links)
+        self.calculate_time_matrix();
         
     def _initialize(self) -> None:
         self.lookup = dict([(node, self.nodes.index(node)) for node in self.nodes])
         self.fft_matrix = infinities((len(self.nodes), len(self.nodes)))
         self.flow_matrix = zeros((len(self.nodes), len(self.nodes)))
         self.capacity_matrix = ones((len(self.nodes), len(self.nodes)))
+
+
+    @invalidator
+    def calculate_time_matrix(self, alpha= 0.15, beta = 4):
+        # in order to increase performance, we do not update the time matrix everytime change happens
+        # rather we update it explicitly when we need to use the time matrix
+        self.time_matrix = self.fft_matrix * (1 + alpha * np.power((self.flow_matrix / self.capacity_matrix), beta))
+
+
         
     @invalidator
-    def _update(self, links: list[Link], alpha= 0.15, beta = 4) -> None:
+    def _update(self, links: set[Link], alpha= 0.15, beta = 4) -> None:
         for link in links:
             self.fft_matrix[self.lookup[link.start], self.lookup[link.end]] = link.fft
             self.flow_matrix[self.lookup[link.start], self.lookup[link.end]] = link.flow
             self.capacity_matrix[self.lookup[link.start], self.lookup[link.end]] = link.capacity
-            self.time_matrix = self.fft_matrix * (1 + alpha * np.power((self.flow_matrix / self.capacity_matrix), beta))
             if link in self.links:
                 self.links.remove(link)
             self.links.add(link)
+
+    @invalidator
+    def _assign_flow(self, new_flow_matrix: ndarray) -> None:
+        self.flow_matrix = new_flow_matrix
             
     def neighbours(self, node:Node) -> list[Link]:
         return [link for link in self.links if link.start == node]
@@ -196,6 +209,9 @@ class Demands:
         y = self.lookup[destination]
         self.matrix[x, y] += num
 
+    def get_sum(self):
+        return sum(self.matrix)
+
 
 
 class Problem:
@@ -205,7 +221,7 @@ class Problem:
         self.graph = graph
         self.demands = demands
 
-    def optimal(self, alpha=0.1) -> ndarray:
+    def optimal(self) -> ndarray:
         new_mat = zeros((self.graph.nodes.__len__(), self.graph.nodes.__len__()))
         for i in range(self.demands.matrix.shape[0]):
             for j in range(self.demands.matrix.shape[1]):
@@ -222,14 +238,32 @@ class Problem:
                     if cnode is None:
                         break
                     print(prev[cnode], cnode)
-                    new_mat[prev[cnode], cnode] += alpha*amount
+                    new_mat[prev[cnode], cnode] += amount
                     cnode = prev[cnode]
         
         return new_mat
 
 
-    def run(self, algorithm='dijkstra'):
+    def get_total_time(self):
+        # we define total time the simple some of all the individual's travel time
+        # to do this, for sum(num_in_link * link_travel_time)
+        return sum(np.reshape(self.graph.time_matrix * self.graph.flow_matrix, (-1, )))
         
+        
+
+    def run(self, algorithm='dijkstra', alpha=0.1, threshold=0.5):
+        old_time = self.get_total_time()
+        demand_sum = self.demands.get_sum()
+        new_time = -1
+        print(old_time)
+        print(new_time)
+        while old_time - new_time < threshold:
+            opt_mat = self.optimal()
+            self.graph._assign_flow(self.graph.flow_matrix * (1-alpha) + opt_mat * alpha)
+            assert(sum(self.graph.flow_matrix) == demand_sum)
+            old_time = new_time if not new_time == -1 else old_time
+            new_time = self.get_total_time()
+            print(f'{new_time=}, \n{old_time=} \n================================================')
 
 
 
