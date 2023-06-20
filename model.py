@@ -228,6 +228,9 @@ class Problem:
         return new_mat
 
 
+    def run(self, algorithm='dijkstra'):
+        
+
 
 
         
