@@ -5,6 +5,7 @@ from numpy import ndarray, zeros, ones, array
 from functools import wraps
 
 INFINITY = np.inf
+NAN = np.nan
 
 # creates an numpy array with shape as input initialized to infinity
 def infinities(shape) -> ndarray:
@@ -31,6 +32,15 @@ def invalidator(func):
     return inner
 
 
+def get_flow_sum(mat: ndarray) -> float:
+    sum = 0.0
+    for i in range(mat.shape[0]):
+        for j in range(mat.shape[1]):
+            if mat[i,j] in [INFINITY, np.nan]:
+                continue
+            sum += mat[i,j]
+    return sum
+
 class Link:
 
     # self.start: start Node
@@ -42,7 +52,7 @@ class Link:
     # self.__hash__(): the link with same start and end is hashed to the same
     # self.__eq__(): the links are deemed equal if with same start and end
 
-    def __init__(self, start : Node, end : Node, fft : int = 0, flow : float = 0, capacity : float = 1.0) -> None:
+    def __init__(self, start : Node, end : Node, fft : int = 0, flow : float = 0, capacity : float = 3.0) -> None:
         self.start = start
         self.end = end
         self.fft = fft
@@ -135,6 +145,7 @@ class Graph:
         # in order to increase performance, we do not update the time matrix everytime change happens
         # rather we update it explicitly when we need to use the time matrix
         self.time_matrix = self.fft_matrix * (1 + alpha * np.power((self.flow_matrix / self.capacity_matrix), beta))
+        print('updated time matrix:\n', self.time_matrix)
 
 
         
@@ -210,7 +221,13 @@ class Demands:
         self.matrix[x, y] += num
 
     def get_sum(self):
-        return sum(self.matrix)
+        ret = 0.0;
+        for i in range(self.matrix.shape[0]):
+            for j in range(self.matrix.shape[1]):
+                if self.matrix[i, j] in [INFINITY, NAN]:
+                    continue
+                ret += self.matrix[i, j]
+        return ret
 
 
 
@@ -222,24 +239,30 @@ class Problem:
         self.demands = demands
 
     def optimal(self) -> ndarray:
+        # print('optimal============================================================')
+        # print(f'{self.graph.lookup=}')
         new_mat = zeros((self.graph.nodes.__len__(), self.graph.nodes.__len__()))
         for i in range(self.demands.matrix.shape[0]):
             for j in range(self.demands.matrix.shape[1]):
+                
                 origin = self.graph.nodes[i]
                 destination = self.graph.nodes[j]
-                print(origin, destination, '\n================================\n')
+                # print(origin, destination, '\n================================\n')
                 amount = self.demands.matrix[i, j]
+                # print(f'od:{i=}{j=}{amount=} ============================================')
                 if origin == destination:
                     continue
                 prev, dist = self.graph.dijkstra(origin)
                 cnode = self.graph.lookup[destination]
-                print(prev)
+                # print(prev)
                 while not cnode == self.graph.lookup[origin]:
                     if cnode is None:
                         break
-                    print(prev[cnode], cnode)
+                    # print(f'{prev[cnode]= }, {cnode=}')
                     new_mat[prev[cnode], cnode] += amount
                     cnode = prev[cnode]
+                # print(f'endod:{i=}{j=}{amount=} ============================================')
+        # print('optimal_end=========================================================')
         
         return new_mat
 
@@ -253,19 +276,33 @@ class Problem:
         
         
 
-    def run(self, algorithm='dijkstra', alpha=0.1, threshold=0.5):
+    def run(self, algorithm='dijkstra', alpha=0.15, threshold=0.05):
+        print('initializing============================================================')
+        self.graph.calculate_time_matrix();
+        optimal = self.optimal()
+        self.graph._assign_flow(optimal)
+        self.graph.calculate_time_matrix();
+        i=0
+        print(f'iteration{(i := i+1)=}================================================================')
         old_time = self.get_total_time()
-        demand_sum = self.demands.get_sum()
         new_time = -1
-        print(old_time)
-        print(new_time)
-        while new_time == -1 or old_time - new_time < threshold:
+        while new_time == -1 or np.absolute(old_time - new_time) >= threshold:
             opt_mat = self.optimal()
+            # print(opt_mat)
+            # print('================================================================')
+            # print(self.graph.flow_matrix)
             self.graph._assign_flow(self.graph.flow_matrix * (1-alpha) + opt_mat * alpha)
-            assert(sum(self.graph.flow_matrix) == demand_sum)
+            # print('================================================================')
+            # print(self.graph.flow_matrix)
+            # assert(get_flow_sum(self.graph.flow_matrix) == demand_sum)
             old_time = new_time if not new_time == -1 else old_time
             new_time = self.get_total_time()
+            self.graph.calculate_time_matrix();
             print(f'{new_time=}, \n{old_time=} \n================================================')
+
+
+
+    
 
 
 
