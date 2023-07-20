@@ -53,8 +53,9 @@ class Link:
     # self.__eq__(): the links are deemed equal if with same start and end
 
     def __init__(self, start : Node, end : Node, fft : int = 0, flow : float = 0, capacity : float = 3.0) -> None:
-        self.start = start
-        self.end = end
+        
+        self.start = start if start is Node else Node(start)
+        self.end = end if end is Node else Node(end)
         self.fft = fft
         self.flow = flow
         self.capacity = capacity
@@ -67,6 +68,9 @@ class Link:
     
     def __eq__(self, other):
         return self.start == other.start and self.end == other.end
+    
+    def contains_xfc(self):
+        return self.start.is_XFC() or self.end.is_XFC()
     
 
 class Path:
@@ -120,6 +124,7 @@ class Graph:
     flow_matrix : ndarray
     capacity_matrix : ndarray
     time_matrix : ndarray
+    xfc_list : ndarray
     lookup = dict[Node, int]
 
     # cache for dijkstra, make sure to invalidate when value updated
@@ -127,17 +132,24 @@ class Graph:
 
     
     def __init__(self, nodes : list[Node], links = set[Link]) -> None:
-        self.nodes : list[Node] = nodes
+        self.nodes : list[Node] = nodes if sum(list(map(lambda x: x is Node, nodes))) == len(nodes) else [Node(node) for node in nodes]
+        print (sum(list(map(lambda x: x is Node, nodes))))
+        print (len(nodes))
+        print ([Node(node) for node in nodes])
         self.links : set[Link]= set(links)
         self._initialize()
         self._update(links)
-        self.calculate_time_matrix();
+        # for node in nodes:
+        #     if node.is_XFC():
+        #         self.xfc_list[self.lookup[node]] = True
+        self.calculate_time_matrix()
         
     def _initialize(self) -> None:
         self.lookup = dict([(node, self.nodes.index(node)) for node in self.nodes])
         self.fft_matrix = infinities((len(self.nodes), len(self.nodes)))
         self.flow_matrix = zeros((len(self.nodes), len(self.nodes)))
         self.capacity_matrix = ones((len(self.nodes), len(self.nodes)))
+        self.xfc_list = zeros((len(self.nodes)))
 
 
     @invalidator
@@ -198,6 +210,13 @@ class Graph:
                     previous[self.lookup[n]] = min_index
         
         return previous, distances
+    
+    @use_cache
+    def dijkstra_w_xfc(self, xfc, dist):
+        # run N^2 dijkstra
+        pass
+
+
 
 
 
@@ -232,7 +251,6 @@ class Demands:
 
 
 class Problem:
-
 
     def __init__(self, graph: Graph,  demands : Demands) -> None:
         self.graph = graph
@@ -278,10 +296,10 @@ class Problem:
 
     def run(self, algorithm='dijkstra', alpha=0.15, threshold=0.05):
         print('initializing============================================================')
-        self.graph.calculate_time_matrix();
+        self.graph.calculate_time_matrix()
         optimal = self.optimal()
         self.graph._assign_flow(optimal)
-        self.graph.calculate_time_matrix();
+        self.graph.calculate_time_matrix()
         i=0
         print(f'iteration{(i := i+1)=}================================================================')
         old_time = self.get_total_time()
