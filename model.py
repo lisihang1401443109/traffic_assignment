@@ -133,7 +133,6 @@ class Graph:
     
     def __init__(self, nodes : list[Node], links = set[Link]) -> None:
         self.nodes : list[Node] = nodes if sum(list(map(lambda x: x is Node, nodes))) == len(nodes) else [Node(node) for node in nodes]
-        print (sum(list(map(lambda x: x is Node, nodes))))
         print (len(nodes))
         print ([Node(node) for node in nodes])
         self.links : set[Link]= set(links)
@@ -224,28 +223,30 @@ class Graph:
 
 class Demands:
 
-    matrix : ndarray
+    dictionary : dict
     lookup : dict[Node, int]
 
     def __init__(self, nodes: list[Node]) -> None:
-        self.matrix : ndarray = zeros((len(nodes), len(nodes)))
+        self.dictionary : dict = {}
         self.lookup = dict([(node, nodes.index(node)) for node in nodes])
 
-    def set_matrix(self, matrix : ndarray) -> None:
-        self.matrix = matrix;
+    def set_dictionary(self, dictionary: dict):
+        self.dictionary = dictionary
 
     def add_od_pair(self, origin:Node, destination:Node, num:int) -> None:
         x = self.lookup[origin]
         y = self.lookup[destination]
-        self.matrix[x, y] += num
+        if (x, y) in self.dictionary.keys():
+            self.dictionary[(x, y)] += num
+        else:
+            self.dictionary[(x, y)] = num
 
     def get_sum(self):
         ret = 0.0;
-        for i in range(self.matrix.shape[0]):
-            for j in range(self.matrix.shape[1]):
-                if self.matrix[i, j] in [INFINITY, NAN]:
-                    continue
-                ret += self.matrix[i, j]
+        for (x,y), num in self.dictionary.items():
+            if num in [INFINITY, NAN]:
+                continue
+            ret += num
         return ret
 
 
@@ -258,15 +259,14 @@ class Problem:
 
     def optimal(self) -> ndarray:
         # print('optimal============================================================')
-        # print(f'{self.graph.lookup=}')
+        print(f'{self.graph.lookup=}')
         new_mat = zeros((self.graph.nodes.__len__(), self.graph.nodes.__len__()))
-        for i in range(self.demands.matrix.shape[0]):
-            for j in range(self.demands.matrix.shape[1]):
+        for i,j in self.demands.dictionary:
                 
                 origin = self.graph.nodes[i]
                 destination = self.graph.nodes[j]
                 # print(origin, destination, '\n================================\n')
-                amount = self.demands.matrix[i, j]
+                amount = self.demands.dictionary[(i, j)]
                 # print(f'od:{i=}{j=}{amount=} ============================================')
                 if origin == destination:
                     continue
@@ -291,10 +291,19 @@ class Problem:
         time_matrix_cpy = self.graph.time_matrix.copy()
         time_matrix_cpy[time_matrix_cpy == INFINITY] = 0
         return sum(np.reshape(time_matrix_cpy * self.graph.flow_matrix, (-1, )))
+    
+    def output_result(self):
+        for i in range(self.graph.flow_matrix.shape[0]):
+            for j in range(self.graph.flow_matrix.shape[1]):
+                init_node = self.graph.nodes[i]
+                term_node = self.graph.nodes[j]
+                if self.graph.flow_matrix[i, j] not in [0, INFINITY, NAN]:
+                    flow = self.graph.flow_matrix[i, j]
+                    print(f'{init_node=}, {term_node=}, {flow=}')
         
         
 
-    def run(self, algorithm='dijkstra', alpha=0.15, threshold=0.05):
+    def run(self, algorithm='dijkstra', alpha=0.15, threshold=500, maxIter = 40):
         print('initializing============================================================')
         self.graph.calculate_time_matrix()
         optimal = self.optimal()
@@ -305,6 +314,9 @@ class Problem:
         old_time = self.get_total_time()
         new_time = -1
         while new_time == -1 or np.absolute(old_time - new_time) >= threshold:
+            print(f'iteration{(i := i+1)=}================================================================')
+            if i >= maxIter:
+                break
             opt_mat = self.optimal()
             # print(opt_mat)
             # print('================================================================')
@@ -317,6 +329,7 @@ class Problem:
             new_time = self.get_total_time()
             self.graph.calculate_time_matrix();
             print(f'{new_time=}, \n{old_time=} \n================================================')
+        self.output_result()
 
 
 
