@@ -184,9 +184,15 @@ class Graph:
         paths = self.dijkstra(self.lookup[origin])
         return paths[self.lookup[destination]]
     
+    @use_cache
     def dijkstra(self, origin : Node):
         '''
-            being worked on
+            the current version looks for one OD pair at a time
+            However to save time, we want this to perform sssr and cache the results to enhance the performance
+            in large networks.
+
+            To do that I'll try to use the _cache property in the Graph function
+            
         '''
         # initialize distance and previous array
         distances = infinities(len(self.nodes))
