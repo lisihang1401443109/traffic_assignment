@@ -1,10 +1,14 @@
 from loader import *
 from model import Problem
 
+ALPHA = 0.15
+THRESHOLD = 0.05
+MAXITER = 20
+
 class Experiment:
     p : Problem
 
-    def __init__(self, input_path: str, output_path: str, algorithm = 'dijkstra', iteration = 'constant', alpha=0.15, threshold=500, maxIter = 100) -> None:
+    def __init__(self, input_path: str, output_path: str, algorithm = 'dijkstra', iteration = 'constant', alpha=0.15, threshold=0.05, maxIter = 20) -> None:
         G, D = create_graph_and_demands_from_inputs(*list(load_from_folder(input_path)))
         self.input_path = input_path
         self.output_path = output_path
@@ -28,5 +32,5 @@ def run_all_networks(root_folder = os.getcwd()) -> None:
     for path in os.listdir(root_folder + '/inputs'):
         in_path = root_folder + '/inputs/' + path + '/'
         out_path = root_folder + '/outputs/' + path + '/'
-        experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', iteration = 'constant', alpha=0.15, threshold=500, maxIter = 40)
+        experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', iteration = 'constant', alpha=ALPHA, threshold=THRESHOLD, maxIter = MAXITER)
         experiment.run()

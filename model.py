@@ -18,6 +18,7 @@ def use_cache(func):
     @wraps(func)
     def inner(self, *args, **kwargs):
         if args in self._cache:
+            print('cache hit')
             return self._cache[args]
         result = func(self, *args, **kwargs)
         self._cache[args] = result
@@ -342,20 +343,17 @@ class Problem:
         while new_time == -1 or np.absolute(old_time - new_time) >= threshold * old_time:
             i += 1
             if i >= maxIter:
+                print('max iter reached')
                 break
             opt_mat = self.optimal()
-            # print(opt_mat)
-            # print('================================================================')
-            # print(self.graph.flow_matrix)
             self.graph._assign_flow(self.graph.flow_matrix * (1-alpha) + opt_mat * alpha)
-            # print('================================================================')
-            # print(self.graph.flow_matrix)
-            # assert(get_flow_sum(self.graph.flow_matrix) == demand_sum)
             old_time = new_time if not new_time == -1 else old_time
             new_time = self.get_total_time()
-            self.graph.calculate_time_matrix();
-            # print(f'{new_time=}, \n{old_time=} \n================================================')
-        # self.output_result()
+            self.graph.calculate_time_matrix()
+            print(f'iter: {i}, newtime: {new_time}, oldtime: {old_time}')
+        if i < maxIter:
+            print(f'converged after {i} iterations')
+
 
 
 
