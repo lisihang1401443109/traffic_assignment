@@ -18,7 +18,6 @@ def use_cache(func):
     @wraps(func)
     def inner(self, *args, **kwargs):
         if args in self._cache:
-            print('cache hit')
             return self._cache[args]
         result = func(self, *args, **kwargs)
         self._cache[args] = result
@@ -340,7 +339,7 @@ class Problem:
         i=0
         old_time = self.get_total_time()
         new_time = -1
-        while new_time == -1 or np.absolute(old_time - new_time) >= threshold * old_time:
+        while new_time == -1 or (old_time/new_time)-1:
             i += 1
             if i >= maxIter:
                 print('max iter reached')
