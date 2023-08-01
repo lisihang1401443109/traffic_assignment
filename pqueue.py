@@ -4,9 +4,9 @@ import math
  we are implementing the heap using an array:
     the tree: 
             3
-           / \
+           / \\
           5   7
-        /  \ /  \
+        /  \\ /  \\
        6  9  10 11
 
     is represented as:
@@ -33,7 +33,7 @@ class heap:
     def __len__(self) -> int:
         return len(self.data)
     
-    def __iter__(self) -> iter:
+    def __iter__(self):
         return self.data.__iter__()
     
     # insertion
@@ -47,6 +47,7 @@ class heap:
         temp = self.data[i]
         self.data[i] = self.data[j]
         self.data[j] = temp
+
 
 
     def heapify_up(self):
@@ -140,6 +141,7 @@ print('popping everything =================================================')
 while len(h):
     print(h.pop(), 'popped')
 
+# more scripts that shows how heap works
 
                 
 

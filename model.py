@@ -1,6 +1,7 @@
 from traffic_types import *
 import numpy as np
 from numpy import ndarray, zeros, ones, array
+import pandas as pd
 
 from functools import wraps
 
@@ -52,13 +53,13 @@ class Link:
     # self.__hash__(): the link with same start and end is hashed to the same
     # self.__eq__(): the links are deemed equal if with same start and end
 
-    def __init__(self, start : Node, end : Node, fft : int = 0, flow : float = 0, capacity : float = 3.0) -> None:
+    def __init__(self, start : Node, end : Node, fft : float = 0, flow : float = 0, capacity : float = 3.0) -> None:
         
-        self.start = start if start is Node else Node(start)
-        self.end = end if end is Node else Node(end)
-        self.fft = fft
-        self.flow = flow
-        self.capacity = capacity
+        self.start : Node = start if start is Node else Node(start)
+        self.end : Node = end if end is Node else Node(end)
+        self.fft : float = fft
+        self.flow : float = flow
+        self.capacity : float = capacity
     
     def BPR(self, alpha = 0.15, beta = 4) -> float:
         return self.fft * (1 + alpha * (self.flow/self.capacity)**beta)
@@ -113,6 +114,7 @@ class Path:
             # for path based algorithms
             res.append(Link(link.start, link.end, link.fft, self.flow, link.capacity))
     
+        return res
     def get_links(self) -> list[Link]:
         return self.links
 
@@ -125,17 +127,15 @@ class Graph:
     capacity_matrix : ndarray
     time_matrix : ndarray
     xfc_list : ndarray
-    lookup = dict[Node, int]
+    lookup : dict[Node, int]
 
     # cache for dijkstra, make sure to invalidate when value updated
     _cache = {}
 
     
-    def __init__(self, nodes : list[Node], links = set[Link]) -> None:
+    def __init__(self, nodes : list[Node], links : set[Link]) -> None:
         self.nodes : list[Node] = nodes if sum(list(map(lambda x: x is Node, nodes))) == len(nodes) else [Node(node) for node in nodes]
-        print (len(nodes))
-        print ([Node(node) for node in nodes])
-        self.links : set[Link]= set(links)
+        self.links : set[Link]= links
         self._initialize()
         self._update(links)
         # for node in nodes:
@@ -144,7 +144,7 @@ class Graph:
         self.calculate_time_matrix()
         
     def _initialize(self) -> None:
-        self.lookup = dict([(node, self.nodes.index(node)) for node in self.nodes])
+        self.lookup : dict[Node, int] = dict([(node, self.nodes.index(node)) for node in self.nodes])
         self.fft_matrix = infinities((len(self.nodes), len(self.nodes)))
         self.flow_matrix = zeros((len(self.nodes), len(self.nodes)))
         self.capacity_matrix = ones((len(self.nodes), len(self.nodes)))
@@ -156,7 +156,7 @@ class Graph:
         # in order to increase performance, we do not update the time matrix everytime change happens
         # rather we update it explicitly when we need to use the time matrix
         self.time_matrix = self.fft_matrix * (1 + alpha * np.power((self.flow_matrix / self.capacity_matrix), beta))
-        print('updated time matrix:\n', self.time_matrix)
+        # print('updated time matrix:\n', self.time_matrix)
 
 
         
@@ -181,8 +181,8 @@ class Graph:
     @use_cache
     def shortest_path(self, origin : Node, destination : Node) -> Path:
 
-        paths = self.dijkstra(self.lookup[origin])
-        return paths[self.lookup[destination]]
+        paths, _ = self.dijkstra(Node(self.lookup[origin]))
+        return paths[Node(self.lookup[destination])]
     
     @use_cache
     def dijkstra(self, origin : Node):
@@ -254,6 +254,9 @@ class Demands:
                 continue
             ret += num
         return ret
+    
+    def __len__(self) -> int:
+        return len(self.dictionary)
 
 
 
@@ -265,7 +268,7 @@ class Problem:
 
     def optimal(self) -> ndarray:
         # print('optimal============================================================')
-        print(f'{self.graph.lookup=}')
+        # print(f'{self.graph.lookup=}')
         new_mat = zeros((self.graph.nodes.__len__(), self.graph.nodes.__len__()))
         for i,j in self.demands.dictionary:
                 
@@ -298,29 +301,46 @@ class Problem:
         time_matrix_cpy[time_matrix_cpy == INFINITY] = 0
         return sum(np.reshape(time_matrix_cpy * self.graph.flow_matrix, (-1, )))
     
-    def output_result(self):
+    def output_result(self, output_file: str = ''):
+        output_dict = []
         for i in range(self.graph.flow_matrix.shape[0]):
             for j in range(self.graph.flow_matrix.shape[1]):
                 init_node = self.graph.nodes[i]
                 term_node = self.graph.nodes[j]
                 if self.graph.flow_matrix[i, j] not in [0, INFINITY, NAN]:
                     flow = self.graph.flow_matrix[i, j]
-                    print(f'{init_node=}, {term_node=}, {flow=}')
+                    if output_file == '':
+                        print(f'{init_node=}, {term_node=}, {flow=}')
+                        
+                    else:
+                        output_dict.append({
+                            'init_node': init_node,
+                            'term_node': term_node,
+                            'flow': flow
+                        })
+            
+        if output_file != '':
+            pd.DataFrame(output_dict).to_csv(output_file, index=False)
+            with open(output_file[:-4]+'.dat', 'w') as f:
+                f.write(f'total_time: {self.get_total_time()} units')
+        else:
+            print(self.get_total_time)
+
+                        
         
         
 
-    def run(self, algorithm='dijkstra', alpha=0.15, threshold=500, maxIter = 40):
-        print('initializing============================================================')
+    def run(self, algorithm='dijkstra', alpha=0.15, threshold=0.05, maxIter = 100):
+        # print('initializing============================================================')
         self.graph.calculate_time_matrix()
         optimal = self.optimal()
         self.graph._assign_flow(optimal)
         self.graph.calculate_time_matrix()
         i=0
-        print(f'iteration{(i := i+1)=}================================================================')
         old_time = self.get_total_time()
         new_time = -1
-        while new_time == -1 or np.absolute(old_time - new_time) >= threshold:
-            print(f'iteration{(i := i+1)=}================================================================')
+        while new_time == -1 or np.absolute(old_time - new_time) >= threshold * old_time:
+            i += 1
             if i >= maxIter:
                 break
             opt_mat = self.optimal()
@@ -334,8 +354,8 @@ class Problem:
             old_time = new_time if not new_time == -1 else old_time
             new_time = self.get_total_time()
             self.graph.calculate_time_matrix();
-            print(f'{new_time=}, \n{old_time=} \n================================================')
-        self.output_result()
+            # print(f'{new_time=}, \n{old_time=} \n================================================')
+        # self.output_result()
 
 
 
