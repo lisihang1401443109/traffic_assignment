@@ -25,6 +25,7 @@ class Experiment:
     
     def run(self):
         print(self)
+        # print(self.p)
         self.p.run(algorithm=self.algorithm, alpha=self.alpha, threshold= self.threashold, maxIter = self.maxIter)
         self.p.output_result(self.output_path + self.algorithm + '_' + self.iteration + '.csv')
 

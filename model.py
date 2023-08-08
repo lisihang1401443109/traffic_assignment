@@ -2,7 +2,7 @@ from copy import deepcopy
 import numpy as np
 from numpy import ndarray, zeros, ones, array
 import pandas as pd
-from heapq import heappop, heappush
+from heapq import heappop, heappush, heapify
 
 from functools import wraps
 
@@ -56,13 +56,34 @@ class Node:
         return self.XFC
     
     def __hash__(self):
-        return hash((self.id))
+        return hash(self.id)
     
     def __eq__(self, other):
         return self.id == other.id
     
+    def __str__(self) -> str:
+        return f'Node({self.id})'
+    
+    def __repr__(self) -> str:
+        return self.__str__()
+    
     def neighbours(self) -> set:
         return self.inbounds | self.outbounds
+    
+    def __lt__(self, other):
+        return self.id < other.id
+    
+    def __le__(self, other):
+        return self.id <= other.id
+    
+    def __gt__(self, other):
+        return self.id > other.id
+    
+    def __ge__(self, other):
+        return self.id >= other.id
+    
+    def __ne__(self, other):
+        return self.id != other.id
 
 
 class Link:
@@ -177,19 +198,21 @@ class Graph:
 
         prev = {}
 
-        pq : list[tuple[float, Node]] = [(0, origin)]
+        pq : list[tuple[float, Node]] = [(0.0, origin)]
 
         while pq:
             dist, node = heappop(pq)
 
             if dist > distances[node]:
                 continue
-
+            
             for link in node.outbounds:
                 if distances[link.end] > distances[node] + link.BPR():
                     distances[link.end] = distances[node] + link.BPR()
                     prev[link.end] = node
                     heappush(pq, (distances[link.end], link.end))
+        
+
 
         return distances, prev
 
@@ -198,8 +221,10 @@ class Graph:
         for link in self.linkset:
             link.flow *= (1-alpha)
 
-
-
+    def perform_change(self, staged_changes: dict[tuple[Node, Node], float]) -> None:
+        print('performing change')
+        for origin, destination in staged_changes:
+            self.links[(origin, destination)].flow += staged_changes[(origin, destination)]
 
 
 
@@ -236,17 +261,22 @@ class Problem:
         self.demands = demands
 
     def optimal(self, alpha = 0.05) -> None:
-        # make deepcopy of the graph
-        original_graph = Graph(deepcopy(self.graph.nodes), deepcopy(self.graph.linkset))
 
-        self.graph.discount_flow(alpha=alpha)
+        staged_changes = {}
+
         origins = self.demands.destinations.keys()
         for origin in origins:
-            dist, prev = original_graph.dijkstra(origin)
+            dist, prev = self.graph.dijkstra(origin)
             for dest in self.demands.destinations[origin]:
                 curr = dest
-                while curr != origin:
-                    self.graph.links[(prev[curr], curr)].add_flow(self.demands.dictionary[(origin, curr)] * alpha)
+                if curr != origin:
+                    # self.graph.links[(prev[curr], curr)].add_flow(self.demands.dictionary[(origin, curr)] * alpha)
+                    to_update = self.demands.dictionary[(origin, curr)] * alpha
+                    staged_changes[(prev[curr], curr)] = to_update
+        
+        self.graph.discount_flow(alpha=alpha)
+        self.graph.perform_change(staged_changes)
+
 
 
 
