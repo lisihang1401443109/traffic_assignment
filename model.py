@@ -107,7 +107,7 @@ class Link:
         end.inbounds.add(self)
     
     def BPR(self, alpha = 0.15, beta = 4) -> float:
-        return self.fft * (1 + alpha * (self.flow/self.capacity)**beta)
+        return self.fft * (1 + alpha * pow((self.flow/self.capacity), beta))
     
     def __hash__(self):
         return hash((self.start, self.end))
@@ -175,7 +175,6 @@ class Graph:
 
 
     xfc_list : ndarray
-    lookup : dict[Node, int]
 
     # cache for dijkstra, make sure to invalidate when value updated
     _cache = {}
@@ -222,9 +221,9 @@ class Graph:
             link.flow *= (1-alpha)
 
     def perform_change(self, staged_changes: dict[tuple[Node, Node], float]) -> None:
-        print('performing change')
-        for origin, destination in staged_changes:
-            self.links[(origin, destination)].flow += staged_changes[(origin, destination)]
+        print('performing changes:', staged_changes)
+        for (origin, destination), flow in staged_changes.items():
+            self.links[(origin, destination)].flow += flow
 
 
 
@@ -260,27 +259,25 @@ class Problem:
         self.graph = graph
         self.demands = demands
 
-    def optimal(self, alpha = 0.05) -> None:
+    def optimal(self, alpha = 0.15) -> None:
 
         staged_changes = {}
 
-        origins = self.demands.destinations.keys()
-        for origin in origins:
+        for origin, dests in self.demands.destinations.items():
             dist, prev = self.graph.dijkstra(origin)
-            for dest in self.demands.destinations[origin]:
+            for dest in dests:
+                if self.demands.dictionary[(origin, dest)] == 0:
+                    continue
                 curr = dest
-                if curr != origin:
-                    # self.graph.links[(prev[curr], curr)].add_flow(self.demands.dictionary[(origin, curr)] * alpha)
-                    to_update = self.demands.dictionary[(origin, curr)] * alpha
-                    staged_changes[(prev[curr], curr)] = to_update
+                while curr != origin:
+                    if (prev[curr], curr) in staged_changes:
+                        staged_changes[(prev[curr], curr)] += self.demands.dictionary[(origin, dest)] * alpha
+                    else:
+                        staged_changes[(prev[curr], curr)] = self.demands.dictionary[(origin, dest)] * alpha
+                    curr = prev[curr]
         
         self.graph.discount_flow(alpha=alpha)
         self.graph.perform_change(staged_changes)
-
-
-
-
-        
 
 
 
@@ -296,15 +293,16 @@ class Problem:
     
     def output_result(self, output_file: str = ''):
         lst = []
-        for link in self.graph.linkset:
+        for (start, end), link in self.graph.links.items():
             lst.append({
-                'start': link.start,
-                'end': link.end,
+                'start': start.id,
+                'end': end.id,
                 'flow': link.flow
             })
         df = pd.DataFrame(lst)
+        df.sort_values('start', inplace=True)
         if output_file:
-            df.to_csv(output_file)
+            df.to_csv(output_file, index=False)
         else:
             print(df)
         
@@ -314,16 +312,19 @@ class Problem:
         
         
 
-    def run(self, algorithm='dijkstra', alpha=0.15, threshold=0.05, maxIter = 100):
-        iteration_number = 0
+    def run(self, algorithm='dijkstra', alpha=0.1, threshold=0.001, maxIter = 100):
+        iteration_number = 1
         self.optimal(alpha = 1.0)
-        time_before = -100
+        time_before = 0
         time_after = self.get_total_time()
-        while (iteration_number := iteration_number + 1) < maxIter and time_after - time_before >= time_before * threshold:
+        gap = 1
+        while ((iteration_number := iteration_number + 1) < maxIter) and gap >= threshold:
             print(f'{iteration_number=}')
-            self.optimal(alpha = alpha)
+            self.optimal(alpha = (1/iteration_number))
             time_before = time_after
             time_after = self.get_total_time()
+            gap = abs(time_before/time_after - 1)
+            print(f'{time_after=}, {time_before=}, {gap=}')
         if iteration_number >= maxIter:
             print('max iter reached without convergence')
         else:

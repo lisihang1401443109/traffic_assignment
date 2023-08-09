@@ -1,9 +1,9 @@
 from loader import *
 from model import Problem
 
-ALPHA = 0.15
-THRESHOLD = 0.05
-MAXITER = 20
+ALPHA = 0.1
+THRESHOLD = 0.001
+MAXITER = 100
 
 class Experiment:
     p : Problem
