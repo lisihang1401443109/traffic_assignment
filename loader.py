@@ -25,7 +25,7 @@ def create_graph_and_demands_from_inputs(net_df, trips_df):
         start_node = node_dict[link.init_node]
         end_node = node_dict[link.term_node]
 
-        n_link = Link(start=start_node, end=end_node, fft = link.free_flow_time, flow = 0, capacity = link.capacity)
+        n_link = Link(start=start_node, end=end_node, fft = link.free_flow_time, flow = 0, capacity = link.capacity, alpha=link.b, beta=link.power)
         link_set.add(n_link)
     
 

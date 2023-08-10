@@ -97,7 +97,7 @@ class Link:
     # self.__hash__(): the link with same start and end is hashed to the same
     # self.__eq__(): the links are deemed equal if with same start and end
 
-    def __init__(self, start : Node, end : Node, fft : float = 0, flow : float = 0, capacity : float = 3.0) -> None:
+    def __init__(self, start : Node, end : Node, fft : float = 0, flow : float = 0, capacity : float = 3.0, alpha = 0.15, beta = 4) -> None:
         self.start : Node = start 
         self.end : Node = end
         self.fft : float = fft
@@ -105,15 +105,23 @@ class Link:
         self.capacity : float = capacity
         start.outbounds.add(self)
         end.inbounds.add(self)
+        self.alpha = alpha
+        self.beta = beta
     
-    def BPR(self, alpha = 0.15, beta = 4) -> float:
-        return self.fft * (1 + alpha * pow((self.flow/self.capacity), beta))
+    def BPR(self) -> float:
+        return self.fft * (1 + self.alpha * pow((self.flow/self.capacity), self.beta))
     
     def __hash__(self):
         return hash((self.start, self.end))
     
     def __eq__(self, other):
         return self.start == other.start and self.end == other.end
+    
+    def __str__(self) -> str:
+        return f'Link({self.start}, {self.end}, {self.fft=}, {self.flow=}, {self.capacity=})'
+    
+    def __repr__(self) -> str:
+        return self.__str__()
     
     def contains_xfc(self):
         return self.start.is_XFC() or self.end.is_XFC()
@@ -221,7 +229,7 @@ class Graph:
             link.flow *= (1-alpha)
 
     def perform_change(self, staged_changes: dict[tuple[Node, Node], float]) -> None:
-        print('performing changes:', staged_changes)
+        # print('performing changes:', staged_changes)
         for (origin, destination), flow in staged_changes.items():
             self.links[(origin, destination)].flow += flow
 
@@ -297,12 +305,15 @@ class Problem:
             lst.append({
                 'start': start.id,
                 'end': end.id,
-                'flow': link.flow
+                'flow': link.flow,
+                'travel_time': link.BPR()
             })
         df = pd.DataFrame(lst)
         df.sort_values('start', inplace=True)
         if output_file:
             df.to_csv(output_file, index=False)
+            with open(output_file[:-4]+'.dat', 'w') as f:
+                f.write(f'total_time: {self.get_total_time()} units')
         else:
             print(df)
         
@@ -318,7 +329,7 @@ class Problem:
         time_before = 0
         time_after = self.get_total_time()
         gap = 1
-        while ((iteration_number := iteration_number + 1) < maxIter) and gap >= threshold:
+        while ((iteration_number := iteration_number + 1) <= maxIter) and gap >= threshold:
             print(f'{iteration_number=}')
             self.optimal(alpha = (1/iteration_number))
             time_before = time_after
