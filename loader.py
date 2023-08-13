@@ -42,5 +42,11 @@ def create_graph_and_demands_from_inputs(net_df, trips_df):
     return G, D
 
 
+def clear_outputs(output_dir):
+    for folder in os.listdir(output_dir):
+        if os.path.isfile(output_dir + folder):
+            continue
+        for file in os.listdir(output_dir + folder):
+            os.remove(output_dir + folder + '/' + file)
 
 

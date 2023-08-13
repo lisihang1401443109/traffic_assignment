@@ -1,0 +1,212 @@
+{
+    "EMA": [
+        {
+            "total_time": 29996.11681369258,
+            "iteration": 5,
+            "alpha": 0.15,
+            "converged": true,
+            "precision": 0.1
+        },
+        {
+            "total_time": 28249.289635411555,
+            "iteration": 43,
+            "alpha": 0.15,
+            "converged": true,
+            "precision": 0.0001
+        },
+        {
+            "total_time": 28678.31196209787,
+            "iteration": 9,
+            "alpha": 0.15,
+            "converged": true,
+            "precision": 0.01
+        },
+        {
+            "total_time": 28678.31196209787,
+            "iteration": 9,
+            "alpha": 0.15,
+            "converged": true,
+            "precision": 0.001
+        }
+    ],
+    "Braess": [
+        {
+            "total_time": 546.000000075,
+            "iteration": 5,
+            "alpha": 0.15,
+            "converged": true,
+            "precision": 0.1
+        },
+        {
+            "total_time": 551.2224000798001,
+            "iteration": 101,
+            "alpha": 0.15,
+            "converged": false,
+            "precision": 0.0001
+        },
+        {
+            "total_time": 547.1715977115975,
+            "iteration": 14,
+            "alpha": 0.15,
+            "converged": true,
+            "precision": 0.01
+        },
+        {
+            "total_time": 551.2224000798001,
+            "iteration": 101,
+            "alpha": 0.15,
+            "converged": false,
+            "precision": 0.001
+        }
+    ],
+    "Barcelona": [
+        {
+            "total_time": 1415048.65406941,
+            "iteration": 4,
+            "alpha": 0.15,
+            "converged": true,
+            "precision": 0.1
+        },
+        {
+            "total_time": 1302219.7268828417,
+            "iteration": 13,
+            "alpha": 0.15,
+            "converged": true,
+            "precision": 0.0001
+        },
+        {
+            "total_time": 1313313.872680094,
+            "iteration": 6,
+            "alpha": 0.15,
+            "converged": true,
+            "precision": 0.01
+        },
+        {
+            "total_time": 1305904.0377473154,
+            "iteration": 8,
+            "alpha": 0.15,
+            "converged": true,
+            "precision": 0.001
+        }
+    ],
+    "Winnipeg": [
+        {
+            "total_time": 1495101.899464256,
+            "iteration": 3,
+            "alpha": 0.15,
+            "converged": true,
+            "precision": 0.1
+        },
+        {
+            "total_time": 927640.2467659793,
+            "iteration": 17,
+            "alpha": 0.15,
+            "converged": true,
+            "precision": 0.0001
+        },
+        {
+            "total_time": 940521.106410971,
+            "iteration": 7,
+            "alpha": 0.15,
+            "converged": true,
+            "precision": 0.01
+        },
+        {
+            "total_time": 930149.1295963333,
+            "iteration": 12,
+            "alpha": 0.15,
+            "converged": true,
+            "precision": 0.001
+        }
+    ],
+    "Anaheim": [
+        {
+            "total_time": 1324528.8856405413,
+            "iteration": 4,
+            "alpha": 0.15,
+            "converged": true,
+            "precision": 0.1
+        },
+        {
+            "total_time": 1323092.1071927892,
+            "iteration": 16,
+            "alpha": 0.15,
+            "converged": true,
+            "precision": 0.0001
+        },
+        {
+            "total_time": 1324528.8856405413,
+            "iteration": 4,
+            "alpha": 0.15,
+            "converged": true,
+            "precision": 0.01
+        },
+        {
+            "total_time": 1323568.6510970236,
+            "iteration": 7,
+            "alpha": 0.15,
+            "converged": true,
+            "precision": 0.001
+        }
+    ],
+    "ChicagoSketch": [
+        {
+            "total_time": 18967499.123651166,
+            "iteration": 5,
+            "alpha": 0.15,
+            "converged": true,
+            "precision": 0.1
+        },
+        {
+            "total_time": 18443050.73994505,
+            "iteration": 20,
+            "alpha": 0.15,
+            "converged": true,
+            "precision": 0.0001
+        },
+        {
+            "total_time": 18609702.18169977,
+            "iteration": 7,
+            "alpha": 0.15,
+            "converged": true,
+            "precision": 0.01
+        },
+        {
+            "total_time": 18506202.19459631,
+            "iteration": 11,
+            "alpha": 0.15,
+            "converged": true,
+            "precision": 0.001
+        }
+    ],
+    "SiouxFalls": [
+        {
+            "total_time": 21308209.54711252,
+            "iteration": 4,
+            "alpha": 0.15,
+            "converged": true,
+            "precision": 0.1
+        },
+        {
+            "total_time": 7759986.543851647,
+            "iteration": 54,
+            "alpha": 0.15,
+            "converged": true,
+            "precision": 0.0001
+        },
+        {
+            "total_time": 21308209.54711252,
+            "iteration": 4,
+            "alpha": 0.15,
+            "converged": true,
+            "precision": 0.01
+        },
+        {
+            "total_time": 21308209.54711252,
+            "iteration": 4,
+            "alpha": 0.15,
+            "converged": true,
+            "precision": 0.001
+        }
+    ]
+}

@@ -299,7 +299,7 @@ class Problem:
 
 
     
-    def output_result(self, output_file: str = ''):
+    def output_result(self, output_file: str = '', log = {}) -> None:
         lst = []
         for (start, end), link in self.graph.links.items():
             lst.append({
@@ -313,7 +313,12 @@ class Problem:
         if output_file:
             df.to_csv(output_file, index=False)
             with open(output_file[:-4]+'.dat', 'w') as f:
-                f.write(f'total_time: {self.get_total_time()} units')
+                f.write(f'total_time: {self.get_total_time()} units\n')
+                try:
+                    f.write(f"{'converged' if log['converge'] else 'not converged'} within {log['iteration']} iterations\n") 
+                    f.write(f"alpha={log['alpha']}\n")
+                except KeyError:
+                    pass
         else:
             print(df)
         
@@ -323,7 +328,7 @@ class Problem:
         
         
 
-    def run(self, algorithm='dijkstra', alpha=0.1, threshold=0.001, maxIter = 100):
+    def run(self, algorithm='dijkstra', alpha=0.1, threshold=0.001, maxIter = 100) -> dict[str, bool | int | float]:
         iteration_number = 1
         self.optimal(alpha = 1.0)
         time_before = 0
@@ -338,10 +343,10 @@ class Problem:
             print(f'{time_after=}, {time_before=}, {gap=}')
         if iteration_number >= maxIter:
             print('max iter reached without convergence')
+            return {'converge': False, 'iteration': iteration_number, 'alpha': alpha}
         else:
             print(f'converged in {iteration_number} iterations')
-
-        self.output_result()
+            return {'converge': True, 'iteration': iteration_number, 'alpha': alpha}
 
 
 

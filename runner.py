@@ -26,8 +26,8 @@ class Experiment:
     def run(self):
         print(self)
         # print(self.p)
-        self.p.run(algorithm=self.algorithm, alpha=self.alpha, threshold= self.threashold, maxIter = self.maxIter)
-        self.p.output_result(self.output_path + self.algorithm + '_' + self.iteration + '.csv')
+        log = self.p.run(algorithm=self.algorithm, alpha=self.alpha, threshold= self.threashold, maxIter = self.maxIter)
+        self.p.output_result(f'{self.output_path}{self.algorithm}_{self.iteration}_{self.threashold}.csv', log)
 
 def run_all_networks(root_folder = os.getcwd()) -> None:
     for path in os.listdir(root_folder + '/inputs'):
@@ -35,3 +35,20 @@ def run_all_networks(root_folder = os.getcwd()) -> None:
         out_path = root_folder + '/outputs/' + path + '/'
         experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', iteration = 'constant', alpha=ALPHA, threshold=THRESHOLD, maxIter = MAXITER)
         experiment.run()
+
+def run_vary_precisions(root_folder = os.getcwd(), precisions = [0.1, 0.01, 0.001, 0.0001]) -> None:
+    for path in os.listdir(root_folder + '/inputs'):
+        in_path = root_folder + '/inputs/' + path + '/'
+        out_path = root_folder + '/outputs/' + path + '/'
+        for precision in precisions:
+            experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', iteration = 'constant', alpha=ALPHA, threshold=precision, maxIter = MAXITER)
+            experiment.run()
+
+
+def run_vary_alpha(root_folder = os.getcwd(), alphas = [0.5, 0.4, 0.3, 0.2, 0.1]) -> None:
+    for path in os.listdir(root_folder + '/inputs'):
+        in_path = root_folder + '/inputs/' + path + '/'
+        out_path = root_folder + '/outputs/' + path + '/'
+        for alpha in alphas:
+            experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', iteration = 'constant', alpha=alpha, threshold=THRESHOLD, maxIter = MAXITER)
+            experiment.run()

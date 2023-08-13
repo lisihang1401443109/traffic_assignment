@@ -1,4 +1,6 @@
 import runner
+import loader
 
 if __name__ == '__main__':
-    runner.run_all_networks()
+    loader.clear_outputs('./outputs/')
+    runner.run_vary_alpha()
