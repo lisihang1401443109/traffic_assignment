@@ -27,7 +27,7 @@ class Experiment:
         print(self)
         # print(self.p)
         log = self.p.run(algorithm=self.algorithm, alpha=self.alpha, threshold= self.threashold, maxIter = self.maxIter)
-        self.p.output_result(f'{self.output_path}{self.algorithm}_{self.iteration}_{self.threashold}.csv', log)
+        self.p.output_result(f'{self.output_path}{self.algorithm}_{self.iteration}_{self.alpha}.csv', log)
 
 def run_all_networks(root_folder = os.getcwd()) -> None:
     for path in os.listdir(root_folder + '/inputs'):
