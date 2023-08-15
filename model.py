@@ -328,7 +328,7 @@ class Problem:
         
         
 
-    def run(self, algorithm='dijkstra', alpha=0.1, threshold=0.001, maxIter = 100) -> dict[str, bool | int | float]:
+    def run(self, algorithm='dijkstra', alpha=0.1, threshold=0.001, maxIter = 100, method='automatic') -> dict[str, bool | int | float]:
         iteration_number = 1
         self.optimal(alpha = 1.0)
         time_before = 0
@@ -336,7 +336,7 @@ class Problem:
         gap = 1
         while ((iteration_number := iteration_number + 1) <= maxIter) and gap >= threshold:
             print(f'{iteration_number=}')
-            self.optimal(alpha = (1/iteration_number))
+            self.optimal(alpha = (1/iteration_number) if method == 'automatic' else alpha)
             time_before = time_after
             time_after = self.get_total_time()
             gap = abs(time_before/time_after - 1)
