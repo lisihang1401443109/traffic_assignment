@@ -35,7 +35,7 @@ def invalidator(func):
 
 
 def get_flow_sum(mat: ndarray) -> float:
-    sum = 0.0
+    sum : float = 0.0
     for i in range(mat.shape[0]):
         for j in range(mat.shape[1]):
             if mat[i,j] in [INFINITY, np.nan]:
@@ -223,6 +223,16 @@ class Graph:
 
         return distances, prev
 
+
+    def dijkstra_w_xfc(self, origin : Node, xfc : set[Node]) -> tuple[dict[Node, float], dict[Node, Node]]:
+
+        # compute the distance with regards to each xfc
+        distances = {node: INFINITY for node in self.nodes}
+        distances[origin] = 0
+
+        dist_to_xfc = []
+
+        return self.dijkstra(origin)
 
     def discount_flow(self, alpha = 0.05) -> None:
         for link in self.linkset:
