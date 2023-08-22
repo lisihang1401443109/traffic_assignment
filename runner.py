@@ -53,3 +53,11 @@ def run_vary_alpha(root_folder = os.getcwd(), alphas = [0.5, 0.4, 0.3, 0.2, 0.1]
         for alpha in alphas:
             experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', method = 'constant', alpha=alpha, threshold=THRESHOLD, maxIter = MAXITER)
             experiment.run()
+
+
+def run_all_xfc(root_folder = os.getcwd()) -> None:
+    for path in os.listdir(root_folder + '/inputs'):
+        in_path = root_folder + '/inputs/' + path + '/'
+        out_path = root_folder + '/outputs/' + path + '/'
+        experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', method = 'automatic', alpha=ALPHA, threshold=THRESHOLD, maxIter = MAXITER, xfc=[3])
+        experiment.run()
