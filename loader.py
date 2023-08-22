@@ -2,7 +2,6 @@ import os
 import pandas as pd
 from model import *
 
-
 def load_from_folder(folder = './inputs/SiouxFalls/'):
     input_folder = folder
 
@@ -14,7 +13,7 @@ def load_from_folder(folder = './inputs/SiouxFalls/'):
 
     return net_df, trips_df
 
-def create_graph_and_demands_from_inputs(net_df, trips_df, xfc = []):
+def create_graph_and_demands_from_inputs(net_df, trips_df):
     node_dict = dict()
     link_set = set()
     for ind in net_df.index:
@@ -30,7 +29,7 @@ def create_graph_and_demands_from_inputs(net_df, trips_df, xfc = []):
         link_set.add(n_link)
     
 
-    G = Graph(nodes=list(node_dict.values()), links=link_set, xfc_list=xfc)
+    G = Graph(list(node_dict.values()), link_set)
     print(f'{len(G.nodes)} nodes, {len(G.links)} links, ')
     D = Demands()
 
