@@ -382,6 +382,8 @@ class Problem:
                     if dist < min_dist:
                         min_dist = dist
                         min_xfc = xfc
+
+                print(f'{min_xfc=}')
                 
                 # trace the min_xfc -> dest path backward and update
                 curr : Node = dest
