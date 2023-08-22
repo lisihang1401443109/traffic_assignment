@@ -8,25 +8,26 @@ MAXITER = 100
 class Experiment:
     p : Problem
 
-    def __init__(self, input_path: str, output_path: str, algorithm = 'dijkstra', method = 'automatic', alpha=0.15, threshold=0.05, maxIter = 20) -> None:
+    def __init__(self, input_path: str, output_path: str, algorithm = 'dijkstra', method = 'automatic', xfc = [], alpha=0.15, threshold=0.05, maxIter = 20) -> None:
         G, D = create_graph_and_demands_from_inputs(*list(load_from_folder(input_path)))
         self.input_path = input_path
         self.output_path = output_path
-        self.p = Problem(G, D)
+        self.p = Problem(G, D, xfc)
         self.algorithm = algorithm
         self.method = method
         self.alpha = alpha
         self.threashold = threshold
         self.maxIter = maxIter
+        self.xfc = xfc
 
     def __str__(self) -> str:
-        return f'Experiment({self.input_path=}, {self.output_path=}, {self.algorithm=}, {self.method=}, {self.alpha=}, {self.threashold=}, {self.maxIter=})'
+        return f'Experiment({self.input_path=}\n{self.output_path=}\n{self.algorithm=}\n{self.method=}\n{self.alpha=}\n{self.threashold=}\n{self.maxIter=}\n{self.xfc=}\n)'
 
     
     def run(self):
         print(self)
         # print(self.p)
-        log = self.p.run(algorithm=self.algorithm, alpha=self.alpha, threshold= self.threashold, maxIter = self.maxIter, method = self.method)
+        log = self.p.run(algorithm=self.algorithm, alpha=self.alpha, threshold= self.threashold, maxIter = self.maxIter, method = self.method, xfc=self.xfc)
         self.p.output_result(f'{self.output_path}{self.algorithm}_{self.method}_{self.alpha}.csv', log)
 
 def run_all_networks(root_folder = os.getcwd()) -> None:
