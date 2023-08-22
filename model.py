@@ -172,7 +172,7 @@ class Graph:
 
     def __init__(self, nodes : list[Node], links : set[Link], xfc_list : list[int] = []) -> None:
         self.nodes : list[Node] = nodes
-        self.node_dict : dict[int, Node] = {i: node for i, node in enumerate(nodes)}
+        self.node_dict : dict[int, Node] = {node.id: node for node in nodes}
         self.linkset : set[Link]= links
         self.links : dict[tuple[Node, Node], Link] = {(link.start, link.end): link for link in links}
         self.assign_xfc(xfc_list)
@@ -276,7 +276,7 @@ class Graph:
             link.flow *= (1-alpha)
 
     def perform_change(self, staged_changes: dict[tuple[Node, Node], float]) -> None:
-        print('performing changes:', staged_changes)
+        # print('performing changes:', staged_changes)
         for (origin, destination), flow in staged_changes.items():
             self.links[(origin, destination)].flow += flow
 
@@ -342,10 +342,11 @@ class Problem:
         staged_changes = {}
 
         # precalculate the distance from and to XFC for all nodes to all XFC
+        # print('calculating xfc distances')
         xfc_forward, xfc_backward = self.graph.dijkstra_for_xfc(self.xfc_set)
 
-
-
+        # print(f'{xfc_forward=}\n{xfc_backward=}')
+        # print('finished calculating xfc distances')
         for origin, dests in self.demands.destinations.items():
             for dest in dests:
 
@@ -361,14 +362,15 @@ class Problem:
                         curr = xfc_forward[origin]['prev'][curr] # type: ignore
                     continue
                     
+
                 if dest in self.xfc_set:
 
                     curr = origin
                     while curr != dest:
-                        if (xfc_backward[dest]['prev'][curr], curr) in staged_changes:
-                            staged_changes[(xfc_backward[dest]['prev'][curr], curr)] += self.demands.dictionary[(origin, dest)] * alpha
+                        if (curr, xfc_backward[dest]['prev'][curr]) in staged_changes:
+                            staged_changes[curr, (xfc_backward[dest]['prev'][curr])] += self.demands.dictionary[(origin, dest)] * alpha
                         else:
-                            staged_changes[(xfc_backward[dest]['prev'][curr], curr)] = self.demands.dictionary[(origin, dest)] * alpha
+                            staged_changes[curr, (xfc_backward[dest]['prev'][curr])] = self.demands.dictionary[(origin, dest)] * alpha
                         curr = xfc_backward[dest]['prev'][curr] # type: ignore
                     continue
                 
@@ -383,7 +385,7 @@ class Problem:
                         min_dist = dist
                         min_xfc = xfc
 
-                print(f'{min_xfc=}')
+                # print(f'{min_xfc=}')
                 
                 # trace the min_xfc -> dest path backward and update
                 curr : Node = dest
@@ -397,17 +399,20 @@ class Problem:
                 # trace the min_xfc -> origin forward and update
                 curr = origin
                 while curr != min_xfc:
-                    if (xfc_backward[min_xfc]['prev'][curr], curr) in staged_changes:
-                        staged_changes[(xfc_backward[min_xfc]['prev'][curr], curr)] += self.demands.dictionary[(origin, dest)] * alpha
+                    if (curr, xfc_backward[min_xfc]['prev'][curr]) in staged_changes:
+                        staged_changes[(curr, xfc_backward[min_xfc]['prev'][curr])] += self.demands.dictionary[(origin, dest)] * alpha
                     else:
-                        staged_changes[(xfc_backward[min_xfc]['prev'][curr], curr)] = self.demands.dictionary[(origin, dest)] * alpha
+                        staged_changes[(curr, xfc_backward[min_xfc]['prev'][curr])] = self.demands.dictionary[(origin, dest)] * alpha
                     curr = xfc_backward[min_xfc]['prev'][curr] # type: ignore
 
-                # print(staged_changes)
+        # print(staged_changes)  
+        # print('finished assigning path')
 
 
-                self.graph.discount_flow(alpha=alpha)
-                self.graph.perform_change(staged_changes)
+        self.graph.discount_flow(alpha=alpha)
+        self.graph.perform_change(staged_changes)
+
+        # print('finished performing changes')
 
 
 
