@@ -28,7 +28,7 @@ class Experiment:
         print(self)
         # print(self.p)
         log = self.p.run(algorithm=self.algorithm, alpha=self.alpha, threshold= self.threashold, maxIter = self.maxIter, method = self.method, xfc=self.xfc)
-        self.p.output_result(f'{self.output_path}{self.algorithm}_{self.method}_{self.alpha}.csv', log)
+        # self.p.output_result(f'{self.output_path}{self.algorithm}_{self.method}_{self.alpha}.csv', log)
 
 def run_all_networks(root_folder = os.getcwd()) -> None:
     for path in os.listdir(root_folder + '/inputs'):
@@ -36,6 +36,7 @@ def run_all_networks(root_folder = os.getcwd()) -> None:
         out_path = root_folder + '/outputs/' + path + '/'
         experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', method = 'automatic', alpha=ALPHA, threshold=THRESHOLD, maxIter = MAXITER)
         experiment.run()
+        experiment.p.output_result(f'{out_path}{experiment.algorithm}_{experiment.method}_{experiment.alpha}.csv')
 
 def run_vary_precisions(root_folder = os.getcwd(), precisions = [0.1, 0.01, 0.001, 0.0001]) -> None:
     for path in os.listdir(root_folder + '/inputs'):
@@ -55,9 +56,11 @@ def run_vary_alpha(root_folder = os.getcwd(), alphas = [0.5, 0.4, 0.3, 0.2, 0.1]
             experiment.run()
 
 
-def run_all_xfc(root_folder = os.getcwd()) -> None:
+def run_all_xfc(root_folder = os.getcwd(), alpha=0.01, xfc_ratio = 0.05) -> None:
     for path in os.listdir(root_folder + '/inputs'):
         in_path = root_folder + '/inputs/' + path + '/'
         out_path = root_folder + '/outputs/' + path + '/'
-        experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', method = 'automatic', alpha=ALPHA, threshold=THRESHOLD, maxIter = MAXITER, xfc=[3])
+        experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', method = 'automatic', alpha=alpha, threshold=THRESHOLD, maxIter = MAXITER, xfc=True)
+        experiment.p.randomize_xfc(xfc_ratio)
         experiment.run()
+        experiment.p.output_result(f'{out_path}xfc_{alpha}_{xfc_ratio}.csv')

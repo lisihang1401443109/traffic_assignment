@@ -4,6 +4,7 @@ from numpy import ndarray, zeros, ones, array
 import pandas as pd
 from heapq import heappop, heappush, heapify
 from typing import TypedDict
+import random
 
 INFINITY = np.inf
 NAN = np.nan
@@ -188,9 +189,28 @@ class Graph:
         Returns:
             None
         """
+        try:
+            len(xfc_list)
+        except:
+            return
+        
         for node in self.nodes:
             node.XFC = node.id in xfc_list
         self.xfc_list = [self.node_dict[xfc] for xfc in xfc_list]
+
+    
+    def randomize_xfc(self, n : int | float) -> list[Node]:
+        if n < 1:
+            # percentage
+            n_nodes = int(n * len(self.nodes))
+        else:
+            n_nodes = int(n)
+        # select n random nodes from the nodeset
+        random_nodes = random.sample(self.nodes, max(n_nodes, 1))
+        self.assign_xfc([node.id for node in random_nodes])
+        print(f'randomly selected {n_nodes} nodes as xfc')
+        return random_nodes
+        
 
 
     '''
@@ -310,11 +330,15 @@ class Demands:
 
 class Problem:
 
-    def __init__(self, graph: Graph,  demands : Demands, xfc_set : list[int] = []) -> None:
+    def __init__(self, graph: Graph,  demands : Demands, xfc_set : list[int] | bool = []) -> None:
         self.graph = graph
         self.demands = demands
-        self.graph.assign_xfc(xfc_set)
+        self.graph.assign_xfc(xfc_set) # type: ignore
         self.xfc_set = self.graph.xfc_list
+
+    
+    def randomize_xfc(self, n : int | float) -> None:
+        self.xfc_set = self.graph.randomize_xfc(n)
 
     def optimal(self, alpha = 0.15) -> None:
 
@@ -460,8 +484,10 @@ class Problem:
         def optimal_func(alpha):
             if xfc:
                 self.xfc_optimal(alpha=alpha)
+                print('running xfc optimal')
             else:
                 self.optimal(alpha=alpha)
+                print('running normal optimal')
 
         optimal_func(alpha = 1.0)
         time_before = 0
