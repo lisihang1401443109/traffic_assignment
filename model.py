@@ -199,18 +199,24 @@ class Graph:
         self.xfc_list = [self.node_dict[xfc] for xfc in xfc_list]
 
     
-    def randomize_xfc(self, n : int | float) -> list[Node]:
+    def determine_xfc(self, n : int | float, method='degree') -> list[Node]:
         if n < 1:
             # percentage
             n_nodes = int(n * len(self.nodes))
+            n_nodes = max(n_nodes, 1)
         else:
             n_nodes = int(n)
         # select n random nodes from the nodeset
-        random_nodes = random.sample(self.nodes, max(n_nodes, 1))
-        self.assign_xfc([node.id for node in random_nodes])
-        print(f'randomly selected {n_nodes} nodes as xfc')
-        return random_nodes
-        
+        if method == 'random':
+            selected_nodes = random.sample(self.nodes, max(n_nodes, 1))
+        elif method == 'degree':
+            selected_nodes = sorted(self.nodes, key=lambda node: len(node.neighbours()), reverse=True)[:n_nodes]
+        else:
+            raise Exception(f'Invalid method: {method}')
+        self.assign_xfc([node.id for node in selected_nodes])
+        print(f'selected {n_nodes} nodes as xfc using {method=}')
+        return selected_nodes
+    
 
 
     '''
@@ -337,8 +343,8 @@ class Problem:
         self.xfc_set = self.graph.xfc_list
 
     
-    def randomize_xfc(self, n : int | float) -> None:
-        self.xfc_set = self.graph.randomize_xfc(n)
+    def determine_xfc(self, n : int | float) -> None:
+        self.xfc_set = self.graph.determine_xfc(n)
 
     def optimal(self, alpha = 0.15) -> None:
 
@@ -369,9 +375,19 @@ class Problem:
         # print('calculating xfc distances')
         xfc_forward, xfc_backward = self.graph.dijkstra_for_xfc(self.xfc_set)
 
+
         # print(f'{xfc_forward=}\n{xfc_backward=}')
         # print('finished calculating xfc distances')
         for origin, dests in self.demands.destinations.items():
+
+            n_xfc = int((len(self.xfc_set)+1)/2)
+            n_xfc = max(n_xfc, 1)
+
+            temp_xfc_list = []
+            temp_xfc_list = sorted(self.xfc_set, key=lambda x: xfc_backward[x]['dist'][origin])
+            temp_xfc_list = temp_xfc_list[:n_xfc]
+            # print(len(temp_xfc_list))
+
             for dest in dests:
 
                 # edge case: origin or destination is the XFC node
@@ -402,7 +418,8 @@ class Problem:
                 # calculating shortest path for the origin-destination pair
                 min_dist = INFINITY
                 min_xfc = DUMMY_NODE
-                for xfc in self.xfc_set:
+                # for xfc in self.xfc_set:
+                for xfc in temp_xfc_list:
                     # warning because the type is defined as Node | float, which causes a problem when + operator is used
                     dist = xfc_backward[xfc]['dist'][origin] + xfc_forward[xfc]['dist'][dest] # type: ignore
                     if dist < min_dist:
@@ -474,38 +491,43 @@ class Problem:
         
 
 
-                        
-        
-        
+                
 
-    def run(self, algorithm='dijkstra', alpha=0.1, threshold=0.001, maxIter = 100, method='automatic', xfc = []) -> dict[str, bool | int | float]:
+    def run(self, algorithm='dijkstra', alpha=0.1, threshold=0.001, maxIter = 100, method='automatic', xfc = [], verbose = False) -> dict[str, bool | int | float]:
         iteration_number = 1
 
         def optimal_func(alpha):
             if xfc:
                 self.xfc_optimal(alpha=alpha)
-                print('running xfc optimal')
+                if verbose:
+                    print('running xfc optimal')
             else:
                 self.optimal(alpha=alpha)
-                print('running normal optimal')
+                if verbose:
+                    print('running normal optimal')
 
         optimal_func(alpha = 1.0)
         time_before = 0
         time_after = self.get_total_time()
         gap = 1
         while ((iteration_number := iteration_number + 1) <= maxIter) and abs(gap) >= threshold:
-            print(f'{iteration_number=}')
+            if verbose:
+                print(f'{iteration_number=}')
             optimal_func(alpha = (1/iteration_number) if method == 'automatic' else alpha)
             time_before = time_after
             time_after = self.get_total_time()
             gap = (time_before/time_after) - 1
-            print(f'{time_after=}, {time_before=}, {gap=}')
+            if verbose:
+                print(f'{time_after=}, {time_before=}, {gap=}')
         if iteration_number >= maxIter:
-            print('max iter reached without convergence')
+            if verbose:
+                print('max iter reached without convergence')
             return {'converge': False, 'iteration': iteration_number, 'alpha': alpha}
         else:
-            print(f'converged in {iteration_number} iterations')
+            if verbose:
+                print(f'converged in {iteration_number} iterations')
             return {'converge': True, 'iteration': iteration_number, 'alpha': alpha}
+
 
 
 
