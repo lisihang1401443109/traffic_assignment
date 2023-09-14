@@ -540,11 +540,11 @@ class Problem:
         if iteration_number >= maxIter:
             if verbose:
                 print('max iter reached without convergence')
-            return {'converge': False, 'iteration': iteration_number, 'alpha': alpha, 'time_per_iteration': sum(iteration_times)/len(iteration_times)}
+            return {'converge': False, 'iteration': iteration_number, 'alpha': alpha, 'time_per_iteration': sum(iteration_times)/len(iteration_times), 'total_cost': self.get_total_time() }
         else:
             if verbose:
                 print(f'converged in {iteration_number} iterations')
-            return {'converge': True, 'iteration': iteration_number, 'alpha': alpha, 'time_per_iteration': sum(iteration_times)/len(iteration_times)}
+            return {'converge': True, 'iteration': iteration_number, 'alpha': alpha, 'time_per_iteration': sum(iteration_times)/len(iteration_times), 'total_cost': self.get_total_time() }
 
 
 
