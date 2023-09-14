@@ -10,7 +10,7 @@ MAXITER = 100
 class Experiment:
     p : Problem
 
-    def __init__(self, input_path: str, output_path: str, algorithm = 'dijkstra', method = 'automatic', xfc = [], alpha=0.15, threshold=0.05, maxIter = 20, verbose = True) -> None:
+    def __init__(self, input_path: str, output_path: str, algorithm = 'dijkstra', method = 'automatic', xfc = [], alpha=0.15, threshold=0.05, maxIter = 20, verbose = True, proning = 0) -> None:
         G, D = create_graph_and_demands_from_inputs(*list(load_from_folder(input_path)))
         self.input_path = input_path
         self.output_path = output_path
@@ -22,6 +22,7 @@ class Experiment:
         self.maxIter = maxIter
         self.xfc = xfc
         self.verbose = verbose
+        self.proning = proning
 
     def __str__(self) -> str:
         return f'Experiment({self.input_path=}\n{self.output_path=}\n{self.algorithm=}\n{self.method=}\n{self.alpha=}\n{self.threashold=}\n{self.maxIter=}\n{self.xfc=}\n)'
@@ -30,8 +31,9 @@ class Experiment:
     def run(self):
         print(self)
         # print(self.p)
-        log = self.p.run(algorithm=self.algorithm, alpha=self.alpha, threshold= self.threashold, maxIter = self.maxIter, method = self.method, xfc=self.xfc, verbose = self.verbose)
+        log = self.p.run(algorithm=self.algorithm, alpha=self.alpha, threshold= self.threashold, maxIter = self.maxIter, method = self.method, xfc=self.xfc, verbose = self.verbose, proning = self.proning)
         # self.p.output_result(f'{self.output_path}{self.algorithm}_{self.method}_{self.alpha}.csv', log)
+        return log
 
     def exe_time(self) -> float:
         # calculate execution time of self.run()
@@ -76,22 +78,75 @@ def run_all_xfc(root_folder = os.getcwd(), alpha=0.01, xfc_ratio = 0.05) -> None
         experiment.run()
         experiment.p.output_result(f'{out_path}xfc_{alpha}_{xfc_ratio}.csv')
 
-def compare_xfc_exe_time(root_folder = os.getcwd(), xfc_ratios = [0.1, 0.2, 0.3, 0.4, 0.5]):
-    exe_times = {}
+def compare_xfc_exe_time(root_folder = os.getcwd(), xfc_ratios = [0.1, 0.2, 0.3, 0.4, 0.5], proning = 10, out_alias = 'xfc_exe_time.json'):
+    iteration_times = {}
     for path in os.listdir(root_folder + '/inputs'):
         in_path = root_folder + '/inputs/' + path + '/'
         out_path = root_folder + '/outputs/' + path + '/'
         for xfc_ratio in xfc_ratios:
-            experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', method = 'automatic', alpha=ALPHA, threshold=THRESHOLD, maxIter = MAXITER, xfc=True, verbose=False)
+            experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', method = 'automatic', alpha=ALPHA, threshold=THRESHOLD, maxIter = MAXITER, xfc=True, verbose=False, proning = proning)
             experiment.p.determine_xfc(xfc_ratio)
-            exe_time = experiment.exe_time()
-            exe_times[xfc_ratio] = exe_time
+            exe_time = experiment.run()['time_per_iteration']
+            iteration_times[xfc_ratio] = exe_time
         # add no_xfc baseline
         experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', method = 'automatic', alpha=ALPHA, threshold=THRESHOLD, maxIter = MAXITER, xfc=False, verbose=False)
-        exe_time = experiment.exe_time()
-        exe_times[0] = exe_time
+        exe_time = experiment.run()['time_per_iteration']
+        iteration_times[0] = exe_time
 
         # store the execution time to the log file
-        with open(out_path + 'xfc_exe_time.json', 'w') as f:
-            json.dump(exe_times, f)
+        with open(out_path + out_alias, 'w') as f:
+            json.dump(iteration_times, f)
 
+def compare_xfc_exe_time_vary_proning(root_folder = os.getcwd(), xfc_ratio = 0.1, pronings = [10, 20, 30, 40, 50], out_alias = 'xfc_exe_time.json'):
+    iteration_times = {}
+    for path in os.listdir(root_folder + '/inputs'):
+        in_path = root_folder + '/inputs/' + path + '/'
+        out_path = root_folder + '/outputs/' + path + '/'
+        for proning in pronings:
+            experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', method = 'automatic', alpha=ALPHA, threshold=THRESHOLD, maxIter = MAXITER, xfc=True, verbose=False, proning = proning)
+            experiment.p.determine_xfc(xfc_ratio)
+            exe_time = experiment.run()['time_per_iteration']
+            iteration_times[proning] = exe_time
+        # add no proning baseline
+        experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', method = 'automatic', alpha=ALPHA, threshold=THRESHOLD, maxIter = MAXITER, xfc=True, verbose=False, proning = 0)
+        experiment.p.determine_xfc(xfc_ratio)
+        exe_time = experiment.run()['time_per_iteration']
+        iteration_times[0] = exe_time
+
+        # store the execution time to the log file
+        with open(out_path + out_alias, 'w') as f:
+            json.dump(iteration_times, f)
+
+# def forgot_base_case(root_folder = os.getcwd()):
+    # for path in os.listdir(root_folder + '/inputs'):
+    #     in_path = root_folder + '/inputs/' + path + '/'
+    #     out_path = root_folder + '/outputs/' + path + '/'
+    #     curr_dict = json.load(open(out_path + 'xfc_exe_time_3.json', 'r'))
+    #     experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', method = 'automatic', alpha=ALPHA, threshold=THRESHOLD, maxIter = MAXITER, xfc=True, verbose=False, proning = 0)
+    #     experiment.p.determine_xfc(0.1)
+    #     exe_time = experiment.run()['time_per_iteration']
+    #     curr_dict['0'] = exe_time
+
+    #     with open(out_path + 'xfc_exe_time_3.json', 'w') as f:
+    #         json.dump(curr_dict, f)
+
+
+def compare_xfc_iterations_vary_proning(root_folder = os.getcwd(), xfc_ratio = 0.1, pronings = [10, 20, 30, 40, 50], out_alias = 'xfc_iterations.json'):
+    iterations = {}
+    for path in os.listdir(root_folder + '/inputs'):
+        in_path = root_folder + '/inputs/' + path + '/'
+        out_path = root_folder + '/outputs/' + path + '/'
+        for proning in pronings:
+            experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', method = 'automatic', alpha=ALPHA, threshold=THRESHOLD, maxIter = MAXITER, xfc=True, verbose=False, proning = proning)
+            experiment.p.determine_xfc(xfc_ratio)
+            iteartion = experiment.run()['iteration']
+            iterations[proning] = iteartion
+        # add no proning baseline
+        experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', method = 'automatic', alpha=ALPHA, threshold=THRESHOLD, maxIter = MAXITER, xfc=True, verbose=False, proning = 0)
+        experiment.p.determine_xfc(xfc_ratio)
+        iteration = experiment.run()['iteration']
+        iterations[0] = iteration
+
+        # store the execution time to the log file
+        with open(out_path + out_alias, 'w') as f:
+            json.dump(iterations, f)

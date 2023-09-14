@@ -6,6 +6,8 @@ from heapq import heappop, heappush, heapify
 from typing import TypedDict
 import random
 
+import time
+
 INFINITY = np.inf
 NAN = np.nan
 
@@ -346,8 +348,9 @@ class Problem:
     def determine_xfc(self, n : int | float) -> None:
         self.xfc_set = self.graph.determine_xfc(n)
 
-    def optimal(self, alpha = 0.15) -> None:
 
+    def optimal(self, alpha = 0.15) -> None:
+        
         staged_changes = {}
 
         for origin, dests in self.demands.destinations.items():
@@ -365,10 +368,10 @@ class Problem:
         
         self.graph.discount_flow(alpha=alpha)
         self.graph.perform_change(staged_changes)
+        
 
 
-
-    def xfc_optimal(self, alpha=0.15) -> None:
+    def xfc_optimal(self, alpha=0.15, proning = 0) -> None:
         staged_changes = {}
 
         # precalculate the distance from and to XFC for all nodes to all XFC
@@ -380,13 +383,24 @@ class Problem:
         # print('finished calculating xfc distances')
         for origin, dests in self.demands.destinations.items():
 
-            n_xfc = int((len(self.xfc_set)+1)/2)
-            n_xfc = max(n_xfc, 1)
+            # proning half of the xfcs based on the distance from origin to xfc
+            # n_xfc = int((len(self.xfc_set)+1)/2)
+            # n_xfc = max(n_xfc, 1)
 
-            temp_xfc_list = []
-            temp_xfc_list = sorted(self.xfc_set, key=lambda x: xfc_backward[x]['dist'][origin])
-            temp_xfc_list = temp_xfc_list[:n_xfc]
-            # print(len(temp_xfc_list))
+            # proning to 10 xfcs that are cloest to 
+            if proning:
+                if proning >= 1:
+                    n_xfc = min(proning, len(self.xfc_set))
+                else:
+                    n_xfc = max(1, int((len(self.xfc_set)+1) * proning))
+
+
+                temp_xfc_list = []
+                temp_xfc_list = sorted(self.xfc_set, key=lambda x: xfc_backward[x]['dist'][origin])
+                temp_xfc_list = temp_xfc_list[:n_xfc]
+            else:
+                temp_xfc_list = self.xfc_set
+
 
             for dest in dests:
 
@@ -453,6 +467,7 @@ class Problem:
         self.graph.discount_flow(alpha=alpha)
         self.graph.perform_change(staged_changes)
 
+
         # print('finished performing changes')
 
 
@@ -493,27 +508,30 @@ class Problem:
 
                 
 
-    def run(self, algorithm='dijkstra', alpha=0.1, threshold=0.001, maxIter = 100, method='automatic', xfc = [], verbose = False) -> dict[str, bool | int | float]:
+    def run(self, algorithm='dijkstra', alpha=0.1, threshold=0.001, maxIter = 100, method='automatic', xfc = [], verbose = False, proning = 0) -> dict[str, bool | int | float]:
+        iteration_times = []
         iteration_number = 1
 
-        def optimal_func(alpha):
+        def optimal_func(alpha, proning = proning) -> float:
+            time_start = time.time()
             if xfc:
-                self.xfc_optimal(alpha=alpha)
+                self.xfc_optimal(alpha=alpha, proning=proning)
                 if verbose:
                     print('running xfc optimal')
             else:
                 self.optimal(alpha=alpha)
                 if verbose:
                     print('running normal optimal')
+            return time.time() - time_start
 
-        optimal_func(alpha = 1.0)
+        iteration_times.append(optimal_func(alpha = 1.0))
         time_before = 0
         time_after = self.get_total_time()
         gap = 1
         while ((iteration_number := iteration_number + 1) <= maxIter) and abs(gap) >= threshold:
             if verbose:
                 print(f'{iteration_number=}')
-            optimal_func(alpha = (1/iteration_number) if method == 'automatic' else alpha)
+            iteration_times.append(optimal_func(alpha = (1/iteration_number) if method == 'automatic' else alpha))
             time_before = time_after
             time_after = self.get_total_time()
             gap = (time_before/time_after) - 1
@@ -522,11 +540,11 @@ class Problem:
         if iteration_number >= maxIter:
             if verbose:
                 print('max iter reached without convergence')
-            return {'converge': False, 'iteration': iteration_number, 'alpha': alpha}
+            return {'converge': False, 'iteration': iteration_number, 'alpha': alpha, 'time_per_iteration': sum(iteration_times)/len(iteration_times)}
         else:
             if verbose:
                 print(f'converged in {iteration_number} iterations')
-            return {'converge': True, 'iteration': iteration_number, 'alpha': alpha}
+            return {'converge': True, 'iteration': iteration_number, 'alpha': alpha, 'time_per_iteration': sum(iteration_times)/len(iteration_times)}
 
 
 
