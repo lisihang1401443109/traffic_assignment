@@ -169,6 +169,13 @@ def compare_xfc_result_vary_proning(root_folder = os.getcwd(), xfc_ratio = 0.1, 
             experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', method = 'automatic', alpha=ALPHA, threshold=THRESHOLD, maxIter = MAXITER, xfc=True, verbose=False, proning = proning)
             experiment.p.determine_xfc(xfc_ratio)
             results[proning] = experiment.run()['total_cost']
-        
+
         with open(out_path + out_alias, 'w') as f:
             json.dump(results, f)
+
+
+def generate_problem(root_folder = os.getcwd(), problem_name = 'Anaheim'):
+    path_to_input = root_folder + '/inputs/' + problem_name + '/'
+    # create an experiment without outpath
+    experiment = Experiment(input_path = path_to_input, output_path='' ,algorithm = 'dijkstra', method = 'automatic', alpha=ALPHA, threshold=THRESHOLD, maxIter = MAXITER, xfc=False, verbose=False)
+    return experiment.p

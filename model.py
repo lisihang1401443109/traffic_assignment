@@ -5,6 +5,8 @@ import pandas as pd
 from heapq import heappop, heappush, heapify
 from typing import TypedDict
 import random
+import gurobipy as grb
+from gurobipy import GRB
 
 import time
 
@@ -175,6 +177,7 @@ class Graph:
 
     def __init__(self, nodes : list[Node], links : set[Link], xfc_list : list[int] = []) -> None:
         self.nodes : list[Node] = nodes
+        self.num_nodes = len(nodes)
         self.node_dict : dict[int, Node] = {node.id: node for node in nodes}
         self.linkset : set[Link]= links
         self.links : dict[tuple[Node, Node], Link] = {(link.start, link.end): link for link in links}
@@ -307,7 +310,6 @@ class Graph:
         # print('performing changes:', staged_changes)
         for (origin, destination), flow in staged_changes.items():
             self.links[(origin, destination)].flow += flow
-
 
 
 
@@ -547,6 +549,67 @@ class Problem:
             return {'converge': True, 'iteration': iteration_number, 'alpha': alpha, 'time_per_iteration': sum(iteration_times)/len(iteration_times), 'total_cost': self.get_total_time() }
 
 
+
+    def get_gp_model(self):
+        m = grb.Model()
+        # flow_matrix = np.zeros((self.graph.num_nodes, self.graph.num_nodes))
+        # alphas_matrix = np.zeros((self.graph.num_nodes, self.graph.num_nodes))
+        # betas_matrix = np.zeros((self.graph.num_nodes, self.graph.num_nodes))
+        # capacities_matrix = np.zeros((self.graph.num_nodes, self.graph.num_nodes))
+        # fft_matrix = np.zeros((self.graph.num_nodes, self.graph.num_nodes))
+
+        # BPR: fft * (1 + alpha * pow((flow/capacity), beta))
+        links = self.graph.linkset
+        flow_dict = {}
+        time_dict = {}
+        temp_dict = {}
+        for link in links:
+            flow_dict[link] = m.addVar(lb=0, ub=GRB.INFINITY, vtype=GRB.CONTINUOUS, name=f'flow_{link.start.id}_{link.end.id}') # type: ignore
+            time_dict[link] = m.addVar(lb=0, ub=GRB.INFINITY, vtype=GRB.CONTINUOUS, name=f'time_{link.start.id}_{link.end.id}') # type: ignore
+            temp_dict[link] = m.addVar(lb=0, ub=GRB.INFINITY, vtype=GRB.CONTINUOUS, name=f'temp_{link.start.id}_{link.end.id}') # type: ignore
+            # temp = flow / capacity
+            m.addConstr(temp_dict[link] == flow_dict[link] / link.capacity, name=f'flow_{link.start.id}_{link.end.id}')
+            # BPR_constraints
+            m.addConstr(link.fft * (1 + link.alpha * pow(temp_dict[link], link.beta)) == time_dict[link], name=f'BPR_{link.start.id}_{link.end.id}')
+        
+        
+
+        # constraint for each OD pair
+        origins = {}
+        for origin, dests in self.demands.destinations.items():
+            origin_dict = {}
+            for link in links:
+                origin_dict[link] = m.addVar(lb=0, ub=GRB.INFINITY, vtype=GRB.CONTINUOUS, name=f'origin_{origin}_link_{link.start.id}_{link.end.id}') # type: ignore
+            
+            # origin constraint: 
+            m.addConstr(grb.quicksum(origin_dict[link] for link in links if link.start.id == origin) - grb.quicksum(origin_dict[link] for link in links if link.end.id == origin) == sum(self.demands.destinations[origin]), name=f'origin_{origin}')
+
+            for dest in dests:
+                # destination constraint
+                m.addConstr(grb.quicksum(origin_dict[link] for link in links if link.start.id == dest) - grb.quicksum(origin_dict[link] for link in links if link.end.id == dest) == sum(self.demands.destinations[dest]), name=f'origin_{origin}_destination_{dest}')
+
+            origins[origin] = origin_dict
+
+        # flows from each origin should add up to totol flow for a link
+        for link in links:
+            m.addConstr(grb.quicksum(
+                origins[origin][link] for origin in self.demands.destinations
+            ) == flow_dict[link], name=f'sum_flow_{link.start.id}_{link.end.id}')
+
+        # objective: sum of time
+        m.setObjective(
+            grb.quicksum(
+                time_dict[link] for link in links
+            ), GRB.MINIMIZE
+        )
+
+        m.update()
+        m.optimize()
+        
+
+            
+        
+                
 
 
 
