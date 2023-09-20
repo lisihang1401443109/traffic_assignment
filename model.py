@@ -33,7 +33,7 @@ def invalidator(func):
         return func(self, *args, **kwargs)
     return inner
 
-
+# random commet
 def get_flow_sum(mat: ndarray) -> float:
     sum : float = 0.0
     for i in range(mat.shape[0]):
