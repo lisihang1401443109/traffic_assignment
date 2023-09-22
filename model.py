@@ -225,7 +225,7 @@ class Graph:
             selected_nodes = [self.node_dict[node[0]] for node in _selected_nodes]
         elif method == 'eigenvector':
             g = self.get_networkx_graph()
-            _selected_nodes = sorted(nx.centrality.eigenvector_centrality(g).items(), key=lambda x: x[1], reverse=True)[:n_nodes]
+            _selected_nodes = sorted(nx.centrality.eigenvector_centrality(g, max_iter=200, tol=1e-4).items(), key=lambda x: x[1], reverse=True)[:n_nodes]
             selected_nodes = [self.node_dict[node[0]] for node in _selected_nodes]
         elif method == 'closeness':
             g = self.get_networkx_graph()
