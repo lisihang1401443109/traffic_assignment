@@ -574,10 +574,18 @@ class Problem:
         m = grb.Model()
         # BPR: fft * (1 + alpha * pow((flow/capacity), beta))
         links = self.graph.linkset
-        cost_dict = {}
         
-        for link in links:
-            cost_dict[link] = m.addVar(lb=0, ub=GRB.INFINITY, vtype=GRB.CONTINUOUS, name=f'cost_{link.start.id}_{link.end.id}') # type: ignore
+        cost_matrix = np.ndarray((len(self.graph.nodes), len(self.graph.nodes)))
+        # use dijkstra to compute node-to-node distances
+        for node 
+        
+        
+        
+        xfc_dict = {}
+        for node in self.graph.nodes:
+            xfc_dict[node] = m.addVar(lb=0, ub=1, vtype=GRB.BINARY, name=f'xfc_{node.id}') # type: ignore
+            
+        
             
 
     # def get_gp_model(self):
