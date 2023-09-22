@@ -194,3 +194,15 @@ def compare_xfc_result_vary_centralities(root_folder = os.getcwd(), xfc_ratio = 
         with open(out_path + out_alias, 'w') as f:
             json.dump(results, f)
     
+    
+def get_xfcs_from_centralities(root_folder = os.getcwd(), xfc_ratio = 0.1, proning = 0, out_alias = 'xfc_centralities_location.json', centralities = ['degree', 'betweenness', 'eigenvector', 'closeness']):
+    import networkx as nx
+    
+    results = {}
+    for path in os.listdir(root_folder + '/inputs'):
+        in_path = root_folder + '/inputs/' + path + '/'
+        out_path = root_folder + '/outputs/' + path + '/'
+        for centrality in centralities:
+            experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', method = 'automatic', alpha=ALPHA, threshold=THRESHOLD, maxIter = MAXITER, xfc=True, verbose=False, proning = proning)
+            experiment.p.determine_xfc(xfc_ratio, method=centrality)
+            
