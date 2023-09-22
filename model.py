@@ -17,7 +17,6 @@ NAN = np.nan
 def infinities(shape) -> ndarray:
     return np.full(shape, INFINITY)
 
-
 def get_flow_sum(mat: ndarray) -> float:
     sum : float = 0.0
     for i in range(mat.shape[0]):
@@ -301,6 +300,16 @@ class Graph:
             backward_result[xfc] = make_dict(*self.dijkstra_backward(xfc))
             
         return forward_result, backward_result
+
+    def dijkstra_w_xfc(self, origin : Node, xfc : set[Node]) -> tuple[dict[Node, float], dict[Node, Node]]:
+
+        # compute the distance with regards to each xfc
+        distances = {node: INFINITY for node in self.nodes}
+        distances[origin] = 0
+
+        dist_to_xfc = []
+
+        return self.dijkstra(origin)
 
     def discount_flow(self, alpha = 0.05) -> None:
         for link in self.linkset:
