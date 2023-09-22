@@ -231,6 +231,10 @@ class Graph:
             g = self.get_networkx_graph()
             _selected_nodes = sorted(nx.centrality.closeness_centrality(g).items(), key=lambda x: x[1], reverse=True)[:n_nodes]
             selected_nodes = [self.node_dict[node[0]] for node in _selected_nodes]
+        elif method == 'weighted_betweenness':
+            g = self.get_networkx_graph()
+            _selected_nodes = sorted(nx.centrality.betweenness_centrality(g, weight='length').items(), key=lambda x: x[1], reverse=True)[:n_nodes]
+            selected_nodes = [self.node_dict[node[0]] for node in _selected_nodes]
         else:
             raise Exception(f'Invalid method: {method}')
         self.assign_xfc([node.id for node in selected_nodes])
@@ -330,7 +334,8 @@ class Graph:
         # convert graph to a networkx graph
         G = nx.DiGraph()
         for link in self.linkset:
-            G.add_edge(link.start.id, link.end.id, capacity=link.capacity, flow=link.flow)
+            G.add_edge(link.start.id, link.end.id, capacity=link.capacity, flow=link.flow, length = link.fft)
+        print(G.number_of_nodes(), G.number_of_edges())
         return G
         
 

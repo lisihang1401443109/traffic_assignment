@@ -181,7 +181,7 @@ def generate_problem(root_folder = os.getcwd(), problem_name = 'Anaheim'):
     return experiment.p
 
 
-def compare_xfc_result_vary_centralities(root_folder = os.getcwd(), xfc_ratio = 0.1, proning = 0, out_alias = 'xfc_centralities.json', centralities = ['degree', 'betweenness', 'eigenvector', 'closeness']):
+def compare_xfc_result_vary_centralities(root_folder = os.getcwd(), xfc_ratio = 0.1, proning = 0, out_alias = 'xfc_centralities.json', centralities = ['degree', 'betweenness', 'eigenvector', 'closeness', 'weighted_betweenness']):
     results = {}
     for path in os.listdir(root_folder + '/inputs'):
         in_path = root_folder + '/inputs/' + path + '/'
@@ -195,14 +195,23 @@ def compare_xfc_result_vary_centralities(root_folder = os.getcwd(), xfc_ratio = 
             json.dump(results, f)
     
     
-def get_xfcs_from_centralities(root_folder = os.getcwd(), xfc_ratio = 0.1, proning = 0, out_alias = 'xfc_centralities_location.json', centralities = ['degree', 'betweenness', 'eigenvector', 'closeness']):
+def get_xfcs_from_centralities(root_folder = os.getcwd(), xfc_ratio = 0.1, proning = 0, out_alias = 'xfc_centralities_location.json', centralities = ['degree', 'betweenness', 'eigenvector', 'closeness', 'weighted_betweenness']):
     import networkx as nx
+    from matplotlib import pyplot as plt
     
-    results = {}
     for path in os.listdir(root_folder + '/inputs'):
         in_path = root_folder + '/inputs/' + path + '/'
         out_path = root_folder + '/outputs/' + path + '/'
+        print(path)
         for centrality in centralities:
             experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', method = 'automatic', alpha=ALPHA, threshold=THRESHOLD, maxIter = MAXITER, xfc=True, verbose=False, proning = proning)
             experiment.p.determine_xfc(xfc_ratio, method=centrality)
+            nx_graph = experiment.p.graph.get_networkx_graph()
+            colors = ['blue' if node.is_XFC() else 'red' for node in experiment.p.graph.nodes]
+            sizes = [50 if node.is_XFC() else 10 for node in experiment.p.graph.nodes]
+            nx.draw_networkx(nx_graph, node_color=colors, node_size=sizes, arrows=False, width=0.1, pos=nx.spring_layout(nx_graph, weight='length', seed=20), with_labels=False)
+            plt.savefig(out_path + centrality + '.png')
+            plt.cla()
+            
+            
             
