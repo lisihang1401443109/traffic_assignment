@@ -179,3 +179,18 @@ def generate_problem(root_folder = os.getcwd(), problem_name = 'Anaheim'):
     # create an experiment without outpath
     experiment = Experiment(input_path = path_to_input, output_path='' ,algorithm = 'dijkstra', method = 'automatic', alpha=ALPHA, threshold=THRESHOLD, maxIter = MAXITER, xfc=False, verbose=False)
     return experiment.p
+
+
+def compare_xfc_result_vary_centralities(root_folder = os.getcwd(), xfc_ratio = 0.1, proning = 0, out_alias = 'xfc_centralities.json', centralities = ['degree', 'betweenness', 'eigenvector', 'closeness']):
+    results = {}
+    for path in os.listdir(root_folder + '/inputs'):
+        in_path = root_folder + '/inputs/' + path + '/'
+        out_path = root_folder + '/outputs/' + path + '/'
+        for centrality in centralities:
+            experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', method = 'automatic', alpha=ALPHA, threshold=THRESHOLD, maxIter = MAXITER, xfc=True, verbose=False, proning = proning)
+            experiment.p.determine_xfc(xfc_ratio, method=centrality)
+            results[centrality] = experiment.run()['total_cost']
+            
+        with open(out_path + out_alias, 'w') as f:
+            json.dump(results, f)
+    

@@ -7,6 +7,7 @@ from typing import TypedDict
 import random
 import gurobipy as grb
 from gurobipy import GRB
+import networkx as nx
 
 import time
 
@@ -215,7 +216,21 @@ class Graph:
         if method == 'random':
             selected_nodes = random.sample(self.nodes, max(n_nodes, 1))
         elif method == 'degree':
-            selected_nodes = sorted(self.nodes, key=lambda node: len(node.neighbours()), reverse=True)[:n_nodes]
+            g = self.get_networkx_graph()
+            _selected_nodes = sorted(nx.degree_centrality(g).items(), key=lambda x: x[1], reverse=True)[:n_nodes]
+            selected_nodes = [self.node_dict[node[0]] for node in _selected_nodes]
+        elif method == 'betweenness':
+            g = self.get_networkx_graph()
+            _selected_nodes = sorted(nx.centrality.betweenness_centrality(g).items(), key=lambda x: x[1], reverse=True)[:n_nodes]
+            selected_nodes = [self.node_dict[node[0]] for node in _selected_nodes]
+        elif method == 'eigenvector':
+            g = self.get_networkx_graph()
+            _selected_nodes = sorted(nx.centrality.eigenvector_centrality(g).items(), key=lambda x: x[1], reverse=True)[:n_nodes]
+            selected_nodes = [self.node_dict[node[0]] for node in _selected_nodes]
+        elif method == 'closeness':
+            g = self.get_networkx_graph()
+            _selected_nodes = sorted(nx.centrality.closeness_centrality(g).items(), key=lambda x: x[1], reverse=True)[:n_nodes]
+            selected_nodes = [self.node_dict[node[0]] for node in _selected_nodes]
         else:
             raise Exception(f'Invalid method: {method}')
         self.assign_xfc([node.id for node in selected_nodes])
@@ -311,7 +326,13 @@ class Graph:
         for (origin, destination), flow in staged_changes.items():
             self.links[(origin, destination)].flow += flow
 
-
+    def get_networkx_graph(self):
+        # convert graph to a networkx graph
+        G = nx.DiGraph()
+        for link in self.linkset:
+            G.add_edge(link.start.id, link.end.id, capacity=link.capacity, flow=link.flow)
+        return G
+        
 
 
 class Demands:
@@ -347,8 +368,8 @@ class Problem:
         self.xfc_set = self.graph.xfc_list
 
     
-    def determine_xfc(self, n : int | float) -> None:
-        self.xfc_set = self.graph.determine_xfc(n)
+    def determine_xfc(self, n : int | float, method='degree') -> None:
+        self.xfc_set = self.graph.determine_xfc(n, method)
 
 
     def optimal(self, alpha = 0.15) -> None:
@@ -549,62 +570,71 @@ class Problem:
             return {'converge': True, 'iteration': iteration_number, 'alpha': alpha, 'time_per_iteration': sum(iteration_times)/len(iteration_times), 'total_cost': self.get_total_time() }
 
 
-
     def get_gp_model(self):
         m = grb.Model()
-        # flow_matrix = np.zeros((self.graph.num_nodes, self.graph.num_nodes))
-        # alphas_matrix = np.zeros((self.graph.num_nodes, self.graph.num_nodes))
-        # betas_matrix = np.zeros((self.graph.num_nodes, self.graph.num_nodes))
-        # capacities_matrix = np.zeros((self.graph.num_nodes, self.graph.num_nodes))
-        # fft_matrix = np.zeros((self.graph.num_nodes, self.graph.num_nodes))
-
         # BPR: fft * (1 + alpha * pow((flow/capacity), beta))
         links = self.graph.linkset
-        flow_dict = {}
-        time_dict = {}
-        temp_dict = {}
+        cost_dict = {}
+        
         for link in links:
-            flow_dict[link] = m.addVar(lb=0, ub=GRB.INFINITY, vtype=GRB.CONTINUOUS, name=f'flow_{link.start.id}_{link.end.id}') # type: ignore
-            time_dict[link] = m.addVar(lb=0, ub=GRB.INFINITY, vtype=GRB.CONTINUOUS, name=f'time_{link.start.id}_{link.end.id}') # type: ignore
-            temp_dict[link] = m.addVar(lb=0, ub=GRB.INFINITY, vtype=GRB.CONTINUOUS, name=f'temp_{link.start.id}_{link.end.id}') # type: ignore
-            # temp = flow / capacity
-            m.addConstr(temp_dict[link] == flow_dict[link] / link.capacity, name=f'flow_{link.start.id}_{link.end.id}')
-            # BPR_constraints
-            m.addConstr(link.fft * (1 + link.alpha * pow(temp_dict[link], link.beta)) == time_dict[link], name=f'BPR_{link.start.id}_{link.end.id}')
-        
-        
-
-        # constraint for each OD pair
-        origins = {}
-        for origin, dests in self.demands.destinations.items():
-            origin_dict = {}
-            for link in links:
-                origin_dict[link] = m.addVar(lb=0, ub=GRB.INFINITY, vtype=GRB.CONTINUOUS, name=f'origin_{origin}_link_{link.start.id}_{link.end.id}') # type: ignore
+            cost_dict[link] = m.addVar(lb=0, ub=GRB.INFINITY, vtype=GRB.CONTINUOUS, name=f'cost_{link.start.id}_{link.end.id}') # type: ignore
             
-            # origin constraint: 
-            m.addConstr(grb.quicksum(origin_dict[link] for link in links if link.start.id == origin) - grb.quicksum(origin_dict[link] for link in links if link.end.id == origin) == sum(self.demands.destinations[origin]), name=f'origin_{origin}')
 
-            for dest in dests:
-                # destination constraint
-                m.addConstr(grb.quicksum(origin_dict[link] for link in links if link.start.id == dest) - grb.quicksum(origin_dict[link] for link in links if link.end.id == dest) == sum(self.demands.destinations[dest]), name=f'origin_{origin}_destination_{dest}')
+    # def get_gp_model(self):
+    #     m = grb.Model()
+    #     # flow_matrix = np.zeros((self.graph.num_nodes, self.graph.num_nodes))
+    #     # alphas_matrix = np.zeros((self.graph.num_nodes, self.graph.num_nodes))
+    #     # betas_matrix = np.zeros((self.graph.num_nodes, self.graph.num_nodes))
+    #     # capacities_matrix = np.zeros((self.graph.num_nodes, self.graph.num_nodes))
+    #     # fft_matrix = np.zeros((self.graph.num_nodes, self.graph.num_nodes))
 
-            origins[origin] = origin_dict
+    #     # BPR: fft * (1 + alpha * pow((flow/capacity), beta))
+    #     links = self.graph.linkset
+    #     flow_dict = {}
+    #     time_dict = {}
+    #     temp_dict = {}
+    #     for link in links:
+    #         flow_dict[link] = m.addVar(lb=0, ub=GRB.INFINITY, vtype=GRB.CONTINUOUS, name=f'flow_{link.start.id}_{link.end.id}') # type: ignore
+    #         time_dict[link] = m.addVar(lb=0, ub=GRB.INFINITY, vtype=GRB.CONTINUOUS, name=f'time_{link.start.id}_{link.end.id}') # type: ignore
+    #         temp_dict[link] = m.addVar(lb=0, ub=GRB.INFINITY, vtype=GRB.CONTINUOUS, name=f'temp_{link.start.id}_{link.end.id}') # type: ignore
+    #         # temp = flow / capacity
+    #         m.addConstr(temp_dict[link] == flow_dict[link] / link.capacity, name=f'flow_{link.start.id}_{link.end.id}')
+    #         # BPR_constraints
+    #         m.addConstr(link.fft * (1 + link.alpha * pow(temp_dict[link], link.beta)) == time_dict[link], name=f'BPR_{link.start.id}_{link.end.id}')
+        
+        
 
-        # flows from each origin should add up to totol flow for a link
-        for link in links:
-            m.addConstr(grb.quicksum(
-                origins[origin][link] for origin in self.demands.destinations
-            ) == flow_dict[link], name=f'sum_flow_{link.start.id}_{link.end.id}')
+    #     # constraint for each OD pair
+    #     origins = {}
+    #     for origin, dests in self.demands.destinations.items():
+    #         origin_dict = {}
+    #         for link in links:
+    #             origin_dict[link] = m.addVar(lb=0, ub=GRB.INFINITY, vtype=GRB.CONTINUOUS, name=f'origin_{origin}_link_{link.start.id}_{link.end.id}') # type: ignore
+            
+    #         # origin constraint: 
+    #         m.addConstr(grb.quicksum(origin_dict[link] for link in links if link.start.id == origin) - grb.quicksum(origin_dict[link] for link in links if link.end.id == origin) == sum(self.demands.destinations[origin]), name=f'origin_{origin}')
 
-        # objective: sum of time
-        m.setObjective(
-            grb.quicksum(
-                time_dict[link] for link in links
-            ), GRB.MINIMIZE
-        )
+    #         for dest in dests:
+    #             # destination constraint
+    #             m.addConstr(grb.quicksum(origin_dict[link] for link in links if link.start.id == dest) - grb.quicksum(origin_dict[link] for link in links if link.end.id == dest) == sum(self.demands.destinations[dest]), name=f'origin_{origin}_destination_{dest}')
 
-        m.update()
-        m.optimize()
+    #         origins[origin] = origin_dict
+
+    #     # flows from each origin should add up to totol flow for a link
+    #     for link in links:
+    #         m.addConstr(grb.quicksum(
+    #             origins[origin][link] for origin in self.demands.destinations
+    #         ) == flow_dict[link], name=f'sum_flow_{link.start.id}_{link.end.id}')
+
+    #     # objective: sum of time
+    #     m.setObjective(
+    #         grb.quicksum(
+    #             time_dict[link] for link in links
+    #         ), GRB.MINIMIZE
+    #     )
+
+    #     m.update()
+    #     m.optimize()
         
 
             
