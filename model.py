@@ -594,10 +594,10 @@ class Problem:
         print(dist_dict)
         
         # xfc variables: binary variable indicating whether a node is xfc
-        is_xfc = m.addVars([node.id for node in self.graph.nodes], vtype=GRB.BINARY, name='xfc')
+        is_xfc = m.addVars([node.id for node in self.graph.nodes], vtype=GRB.BINARY, name='is_xfc')
         
         # sum_constraint: the number of xfcs should not exceed num_xfc
-        m.addConstr(grb.quicksum(is_xfc) <= num_xfc, name='num_xfc_constraint')
+        m.addConstr(is_xfc.sum() == num_xfc, name='num_xfc_constraint')
         
         # variables indicating minimal distance from node to xfc
         min_dist = m.addVars([node.id for node in self.graph.nodes], vtype=GRB.CONTINUOUS, name='min_dist')
@@ -607,19 +607,21 @@ class Problem:
         for i in self.graph.nodes:
             for j in self.graph.nodes:
                 # print(i, j)
-                m.addConstr((is_xfc[j.id] == 1) >> (xfc_dists[i.id, j.id] == dist_dict[i.id, j.id]), name='xfc_dist_constraint')
-                m.addConstr((is_xfc[j.id] == 0) >> (xfc_dists[i.id, j.id] == INFINITY), name='non_xfc_dist_constraint')
+                if i == j:
+                    m.addConstr(xfc_dists[i.id, j.id] == 0, name = f'self_dist_constraint_{i.id}_{j.id}')
+                    continue
+                m.addConstr((is_xfc[j.id] == 1) >> (xfc_dists[i.id, j.id] == dist_dict[i.id, j.id]), name=f'xfc_dist_constraint_{i.id}_{j.id}')
+                m.addConstr((is_xfc[j.id] == 0) >> (xfc_dists[i.id, j.id] == GRB.INFINITY), name=f'non_xfc_dist_constraint_{i.id}_{j.id}')
         
         # min_dist[a] = min_(dist[a, xfc_dists])
         
         for i in self.graph.nodes:
-            m.addConstr(min_dist[i.id] == grb.min_(xfc_dists.select(i.id, '*')), name='min_dist_constraint')
+            m.addConstr(min_dist[i.id] == grb.min_(xfc_dists.select(i.id, '*')), name=f'min_dist_constraint_{i}')
             
         # objective: minimize the sum of all min_dist
-        m.setObjective(grb.quicksum(min_dist), GRB.MINIMIZE)
+        m.setObjective(min_dist.sum(), GRB.MINIMIZE)
         
-        m.update()
-        m.optimize()
+        return m
         
         
             
