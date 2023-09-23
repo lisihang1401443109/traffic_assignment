@@ -44,7 +44,10 @@ class Node:
         return hash(self.id)
     
     def __eq__(self, other):
-        return self.id == other.id
+        if other is Node:
+            return self.id == other.id
+        else:
+            return self.id == other
     
     def __str__(self) -> str:
         return f'Node({self.id})'
@@ -580,12 +583,15 @@ class Problem:
         # BPR: fft * (1 + alpha * pow((flow/capacity), beta))
         links = self.graph.linkset
         
-        dist_matrix = np.ndarray((len(self.graph.nodes), len(self.graph.nodes)))
+        dist_dict = {}
         # use dijkstra to compute node-to-node distances
         reversed_index = {node.id: i for i, node in enumerate(self.graph.nodes)}
         for node in self.graph.nodes:
             dist, prev = self.graph.dijkstra(node)
-            dist_matrix[reversed_index[node.id], :] = [dist[n] for n in self.graph.nodes]
+            for n, d in dist.items():
+                dist_dict[node, n] = d
+                
+        print(dist_dict)
         
         # xfc variables: binary variable indicating whether a node is xfc
         is_xfc = m.addVars([node.id for node in self.graph.nodes], vtype=GRB.BINARY, name='xfc')
@@ -598,14 +604,16 @@ class Problem:
         
         # variables indicating distance from any node to any xfc
         xfc_dists = m.addVars([node.id for node in self.graph.nodes], [node.id for node in self.graph.nodes], vtype=GRB.CONTINUOUS, name='xfc_dists')
-        for i in range(len(self.graph.nodes)):
-            for j in range(len(self.graph.nodes)):
-                m.addConstr((is_xfc[j] == 1) >> (xfc_dists[i, j] == dist_matrix[i, j]), name='xfc_dist_constraint')
-                m.addConstr((is_xfc[j] == 0) >> (xfc_dists[i, j] == INFINITY), name='non_xfc_dist_constraint')
+        for i in self.graph.nodes:
+            for j in self.graph.nodes:
+                # print(i, j)
+                m.addConstr((is_xfc[j.id] == 1) >> (xfc_dists[i.id, j.id] == dist_dict[i.id, j.id]), name='xfc_dist_constraint')
+                m.addConstr((is_xfc[j.id] == 0) >> (xfc_dists[i.id, j.id] == INFINITY), name='non_xfc_dist_constraint')
         
         # min_dist[a] = min_(dist[a, xfc_dists])
-        for i in range(len(self.graph.nodes)):
-            m.addConstr(min_dist[i] == grb.min_(xfc_dists[i, '*']), name='min_dist_constraint')
+        
+        for i in self.graph.nodes:
+            m.addConstr(min_dist[i.id] == grb.min_(xfc_dists.select(i.id, '*')), name='min_dist_constraint')
             
         # objective: minimize the sum of all min_dist
         m.setObjective(grb.quicksum(min_dist), GRB.MINIMIZE)
