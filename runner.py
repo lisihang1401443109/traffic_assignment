@@ -209,7 +209,7 @@ def get_xfcs_from_centralities(root_folder = os.getcwd(), xfc_ratio = 0.1, proni
             nx_graph = experiment.p.graph.get_networkx_graph()
             colors = ['blue' if node.is_XFC() else 'red' for node in experiment.p.graph.nodes]
             sizes = [50 if node.is_XFC() else 10 for node in experiment.p.graph.nodes]
-            nx.draw_networkx(nx_graph, node_color=colors, node_size=sizes, arrows=False, width=0.1, pos=nx.spring_layout(nx_graph, weight='length', seed=20), with_labels=False)
+            nx.draw_networkx(nx_graph, node_color=colors, node_size=sizes, arrows=True, width=0.1, pos=nx.spring_layout(nx_graph, weight='length', seed=20), with_labels=False)
             plt.savefig(out_path + centrality + '.png')
             plt.cla()
             
