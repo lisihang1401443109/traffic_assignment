@@ -612,6 +612,7 @@ class Problem:
         
         # variables indicating minimal distance from node to xfc
         min_dist = m.addVars([node.id for node in self.graph.nodes], vtype=GRB.CONTINUOUS, name='min_dist')
+        xfc_min_dist = m.addVars([node.id for node in self.graph.nodes], vtype=GRB.CONTINUOUS, name='xfc_min_dist')
         
         # variables indicating distance from any node to any xfc
         xfc_dists = m.addVars([node.id for node in self.graph.nodes], [node.id for node in self.graph.nodes], vtype=GRB.CONTINUOUS, name='xfc_dists')
@@ -632,8 +633,12 @@ class Problem:
         for i in self.graph.nodes:
             m.addConstr(min_dist[i.id] == grb.min_(xfc_dists.select(i.id, '*')), name=f'min_dist_constraint_{i}')
             
+        for i in self.graph.nodes:
+            m.addConstr((is_xfc[i.id] == 1) >> (xfc_min_dist[i.id] == 0), name=f'xfc_min_dist_constraint_{i}')
+            m.addConstr((is_xfc[i.id] == 0) >> (xfc_min_dist[i.id] == min_dist[i.id]), name=f'non_xfc_min_dist_constraint_{i}')
+            
         # objective: minimize the sum of all min_dist
-        m.setObjective(min_dist.sum(), GRB.MINIMIZE)
+        m.setObjective(xfc_min_dist.sum(), GRB.MINIMIZE)
         
         return m
         
