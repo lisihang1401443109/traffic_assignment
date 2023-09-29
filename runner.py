@@ -181,7 +181,7 @@ def generate_problem(root_folder = os.getcwd(), problem_name = 'Anaheim'):
     return experiment.p
 
 
-def compare_xfc_result_vary_centralities(root_folder = os.getcwd(), xfc_ratio = 0.1, proning = 0, out_alias = 'xfc_centralities.json', centralities = ['degree', 'betweenness', 'eigenvector', 'closeness', 'weighted_betweenness']):
+def compare_xfc_result_vary_centralities(root_folder = os.getcwd(), xfc_ratio = 0.1, proning = 0, out_alias = 'xfc_centralities.json', centralities = ['degree', 'betweenness', 'eigenvector', 'closeness', 'weighted_betweenness', 'adjusted_degree']):
     results = {}
     for path in os.listdir(root_folder + '/inputs'):
         in_path = root_folder + '/inputs/' + path + '/'
@@ -195,7 +195,7 @@ def compare_xfc_result_vary_centralities(root_folder = os.getcwd(), xfc_ratio = 
             json.dump(results, f)
     
     
-def get_xfcs_from_centralities(root_folder = os.getcwd(), xfc_ratio = 0.1, proning = 0, out_alias = 'xfc_centralities_location.json', centralities = ['degree', 'betweenness', 'eigenvector', 'closeness', 'weighted_betweenness']):
+def get_xfcs_from_centralities(root_folder = os.getcwd(), xfc_ratio = 0.1, proning = 0, out_alias = 'xfc_centralities_location.json', centralities = ['degree', 'betweenness', 'eigenvector', 'closeness', 'weighted_betweenness', 'adjusted_degree']):
     import networkx as nx
     from matplotlib import pyplot as plt
     
@@ -207,11 +207,30 @@ def get_xfcs_from_centralities(root_folder = os.getcwd(), xfc_ratio = 0.1, proni
             experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', method = 'automatic', alpha=ALPHA, threshold=THRESHOLD, maxIter = MAXITER, xfc=True, verbose=False, proning = proning)
             experiment.p.determine_xfc(xfc_ratio, method=centrality)
             nx_graph = experiment.p.graph.get_networkx_graph()
-            colors = ['blue' if node.is_XFC() else 'red' for node in experiment.p.graph.nodes]
-            sizes = [50 if node.is_XFC() else 10 for node in experiment.p.graph.nodes]
+            colors = ['blue' if experiment.p.graph.node_dict[node].is_XFC() else 'red' for node in nx_graph.nodes]
+            sizes = [50 if experiment.p.graph.node_dict[node].is_XFC() else 10 for node in nx_graph.nodes]
             nx.draw_networkx(nx_graph, node_color=colors, node_size=sizes, arrows=True, width=0.1, pos=nx.spring_layout(nx_graph, weight='length', seed=20), with_labels=False)
             plt.savefig(out_path + centrality + '.png')
             plt.cla()
             
             
-            
+
+def get_degrees_stats(root_folder = os.getcwd()):
+    import networkx as nx
+    from matplotlib import pyplot as plt
+    
+    for path in os.listdir(root_folder + '/inputs'):
+        in_path = root_folder + '/inputs/' + path + '/'
+        out_path = root_folder + '/outputs/' + path + '/'
+    
+        experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', method = 'automatic', alpha=ALPHA, threshold=THRESHOLD, maxIter = MAXITER, xfc=True, verbose=False)
+        nx_graph = experiment.p.graph.get_networkx_graph()
+        degrees = nx_graph.degree
+        max_deg = max(degrees, key=lambda x: x[1]) #type: ignore
+        deg_lst = [0] * (max_deg[1]+1)
+        for node, deg in degrees: # type: ignore
+            deg_lst[deg] += 1
+
+        plt.bar(range(len(deg_lst)), deg_lst)
+        plt.savefig(out_path + 'degrees_stat.png')
+        plt.cla()

@@ -17,23 +17,23 @@ Subject To
  non_xfc_dist_constraint_1_4: is_xfc[4] = 0 -> xfc_dists[1,4] = 1e+100
  xfc_dist_constraint_1_2: is_xfc[2] = 1 -> xfc_dists[1,2] = 10.00000002
  non_xfc_dist_constraint_1_2: is_xfc[2] = 0 -> xfc_dists[1,2] = 1e+100
- xfc_dist_constraint_3_1: is_xfc[1] = 1 -> xfc_dists[3,1] = inf
+ xfc_dist_constraint_3_1: is_xfc[1] = 1 -> xfc_dists[3,1] = 1e+100
  non_xfc_dist_constraint_3_1: is_xfc[1] = 0 -> xfc_dists[3,1] = 1e+100
  xfc_dist_constraint_3_4: is_xfc[4] = 1 -> xfc_dists[3,4] = 10
  non_xfc_dist_constraint_3_4: is_xfc[4] = 0 -> xfc_dists[3,4] = 1e+100
  xfc_dist_constraint_3_2: is_xfc[2] = 1 -> xfc_dists[3,2] = 10.00000001
  non_xfc_dist_constraint_3_2: is_xfc[2] = 0 -> xfc_dists[3,2] = 1e+100
- xfc_dist_constraint_4_1: is_xfc[1] = 1 -> xfc_dists[4,1] = inf
+ xfc_dist_constraint_4_1: is_xfc[1] = 1 -> xfc_dists[4,1] = 1e+100
  non_xfc_dist_constraint_4_1: is_xfc[1] = 0 -> xfc_dists[4,1] = 1e+100
- xfc_dist_constraint_4_3: is_xfc[3] = 1 -> xfc_dists[4,3] = inf
+ xfc_dist_constraint_4_3: is_xfc[3] = 1 -> xfc_dists[4,3] = 1e+100
  non_xfc_dist_constraint_4_3: is_xfc[3] = 0 -> xfc_dists[4,3] = 1e+100
  xfc_dist_constraint_4_2: is_xfc[2] = 1 -> xfc_dists[4,2] = 1e-08
  non_xfc_dist_constraint_4_2: is_xfc[2] = 0 -> xfc_dists[4,2] = 1e+100
- xfc_dist_constraint_2_1: is_xfc[1] = 1 -> xfc_dists[2,1] = inf
+ xfc_dist_constraint_2_1: is_xfc[1] = 1 -> xfc_dists[2,1] = 1e+100
  non_xfc_dist_constraint_2_1: is_xfc[1] = 0 -> xfc_dists[2,1] = 1e+100
- xfc_dist_constraint_2_3: is_xfc[3] = 1 -> xfc_dists[2,3] = inf
+ xfc_dist_constraint_2_3: is_xfc[3] = 1 -> xfc_dists[2,3] = 1e+100
  non_xfc_dist_constraint_2_3: is_xfc[3] = 0 -> xfc_dists[2,3] = 1e+100
- xfc_dist_constraint_2_4: is_xfc[4] = 1 -> xfc_dists[2,4] = inf
+ xfc_dist_constraint_2_4: is_xfc[4] = 1 -> xfc_dists[2,4] = 1e+100
  non_xfc_dist_constraint_2_4: is_xfc[4] = 0 -> xfc_dists[2,4] = 1e+100
 Bounds
 Binaries

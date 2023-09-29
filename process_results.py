@@ -72,7 +72,8 @@ def graph_exe_results_vary_proning(file_name = 'xfc_results.json'):
     
     
 def graph_exe_resumts_vary_centralities(file_name = 'xfc_centralities.json'):
-    os.chdir('/home/sihang/workspace/traffic_proj/outputs')
+    # os.chdir('/home/sihang/workspace/traffic_proj/outputs')
+    os.chdir('/home/vobbukyo/workspace/traffic_assignment-1/outputs')
     data_all = {}
     for network in os.listdir():
         if os.path.isdir(network):

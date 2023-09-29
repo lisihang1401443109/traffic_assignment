@@ -238,6 +238,15 @@ class Graph:
             g = self.get_networkx_graph()
             _selected_nodes = sorted(nx.centrality.betweenness_centrality(g, weight='length').items(), key=lambda x: x[1], reverse=True)[:n_nodes]
             selected_nodes = [self.node_dict[node[0]] for node in _selected_nodes]
+        elif method == 'adjusted_degree':
+            g = self.get_networkx_graph()
+            _selected_nodes = []
+            for i in range(n_nodes):
+                # add the node that has the most degree
+                _selected_nodes.append(sorted(nx.degree_centrality(g).items(), key=lambda x: x[1], reverse=True)[i][0])
+                # remove the node 
+                g.remove_node(_selected_nodes[-1])
+            selected_nodes = [self.node_dict[node] for node in _selected_nodes]
         else:
             raise Exception(f'Invalid method: {method}')
         self.assign_xfc([node.id for node in selected_nodes])
@@ -585,10 +594,12 @@ class Problem:
         
         dist_dict = {}
         # use dijkstra to compute node-to-node distances
-        reversed_index = {node.id: i for i, node in enumerate(self.graph.nodes)}
         for node in self.graph.nodes:
             dist, prev = self.graph.dijkstra(node)
             for n, d in dist.items():
+                if d == INFINITY:
+                    dist_dict[node, n] = GRB.INFINITY
+                    continue
                 dist_dict[node, n] = d
                 
         print(dist_dict)
