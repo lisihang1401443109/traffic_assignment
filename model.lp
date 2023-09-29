@@ -6,7 +6,7 @@ Minimize
    + 0 xfc_dists[4,3] + 0 xfc_dists[4,2] + 0 xfc_dists[2,1]
    + 0 xfc_dists[2,3] + 0 xfc_dists[2,4]
 Subject To
- num_xfc_constraint: is_xfc[1] + is_xfc[3] + is_xfc[4] + is_xfc[2] = 5
+ num_xfc_constraint: is_xfc[1] + is_xfc[3] + is_xfc[4] + is_xfc[2] = 4
  self_dist_constraint_1_1: xfc_dists[1,1] = 0
  self_dist_constraint_3_3: xfc_dists[3,3] = 0
  self_dist_constraint_4_4: xfc_dists[4,4] = 0
