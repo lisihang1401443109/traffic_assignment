@@ -1,0 +1,10 @@
+\ Model _copy
+\ LP format - for model browsing. Use MPS format to capture full model detail.
+Minimize
+ 
+Subject To
+ inf_dist_constraint_3_1: xfc_dists[3,1] = 1e+100
+Bounds
+ xfc_dists[3,1] free
+End
+ 

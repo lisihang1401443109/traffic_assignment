@@ -621,6 +621,9 @@ class Problem:
                 if i == j:
                     m.addConstr(xfc_dists[i.id, j.id] == 0, name = f'self_dist_constraint_{i.id}_{j.id}')
                     continue
+                if dist_dict[i.id, j.id] == GRB.INFINITY:
+                    m.addConstr(xfc_dists[i.id, j.id] == GRB.INFINITY, name=f'inf_dist_constraint_{i.id}_{j.id}')
+                    continue
                 m.addConstr((is_xfc[j.id] == 1) >> (xfc_dists[i.id, j.id] == dist_dict[i.id, j.id]), name=f'xfc_dist_constraint_{i.id}_{j.id}')
                 m.addConstr((is_xfc[j.id] == 0) >> (xfc_dists[i.id, j.id] == GRB.INFINITY), name=f'non_xfc_dist_constraint_{i.id}_{j.id}')
         
