@@ -247,6 +247,14 @@ class Graph:
                 # remove the node 
                 g.remove_node(_selected_nodes[-1])
             selected_nodes = [self.node_dict[node] for node in _selected_nodes]
+        elif method == 'adjusted_betweenness':
+            g = self.get_networkx_graph()
+            _selected_nodes = []
+            for i in range(n_nodes):
+                print(i, '/' , n_nodes)
+                _selected_nodes.append(sorted(nx.centrality.betweenness_centrality(g).items(), key=lambda x: x[1], reverse=True)[i][0])
+                g.remove_node(_selected_nodes[-1])
+            selected_nodes = [self.node_dict[node] for node in _selected_nodes]
         else:
             raise Exception(f'Invalid method: {method}')
         self.assign_xfc([node.id for node in selected_nodes])
@@ -517,6 +525,10 @@ class Problem:
         return sum([
             link.flow * link.BPR() for link in self.graph.linkset
         ])
+        
+    def longest_xfc_distance(self):
+        xfc_forward, xfc_backward = self.graph.dijkstra_for_xfc(self.xfc_set)
+        return max(min([xfc_backward[xfc]['dist'][origin] for xfc in self.xfc_set]) for origin in self.xfc_set)
 
 
 
@@ -580,11 +592,11 @@ class Problem:
         if iteration_number >= maxIter:
             if verbose:
                 print('max iter reached without convergence')
-            return {'converge': False, 'iteration': iteration_number, 'alpha': alpha, 'time_per_iteration': sum(iteration_times)/len(iteration_times), 'total_cost': self.get_total_time() }
+            return {'converge': False, 'iteration': iteration_number, 'alpha': alpha, 'time_per_iteration': sum(iteration_times)/len(iteration_times), 'total_cost': self.get_total_time(), 'xfc_longest_distance': self.longest_xfc_distance() }
         else:
             if verbose:
                 print(f'converged in {iteration_number} iterations')
-            return {'converge': True, 'iteration': iteration_number, 'alpha': alpha, 'time_per_iteration': sum(iteration_times)/len(iteration_times), 'total_cost': self.get_total_time() }
+            return {'converge': True, 'iteration': iteration_number, 'alpha': alpha, 'time_per_iteration': sum(iteration_times)/len(iteration_times), 'total_cost': self.get_total_time(), 'xfc_longest_distance': self.longest_xfc_distance() }
 
 
     def get_gp_model(self, num_xfc):
