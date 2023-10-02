@@ -181,7 +181,7 @@ def generate_problem(root_folder = os.getcwd(), problem_name = 'Anaheim'):
     return experiment.p
 
 
-def compare_xfc_result_vary_centralities(root_folder = os.getcwd(), xfc_ratio = 0.1, proning = 0, out_alias = 'xfc_centralities.json', centralities = ['degree', 'betweenness', 'eigenvector', 'closeness', 'weighted_betweenness', 'adjusted_degree']):
+def compare_xfc_result_vary_centralities(root_folder = os.getcwd(), xfc_ratio = 0.1, proning = 0, out_alias = 'xfc_centralities.json', centralities = ['degree', 'betweenness', 'eigenvector', 'closeness', 'weighted_betweenness', 'adjusted_degree', 'adjusted_betweenness'], evaluation = 'total_cost'):
     results = {}
     for path in os.listdir(root_folder + '/inputs'):
         in_path = root_folder + '/inputs/' + path + '/'
@@ -189,10 +189,17 @@ def compare_xfc_result_vary_centralities(root_folder = os.getcwd(), xfc_ratio = 
         for centrality in centralities:
             experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', method = 'automatic', alpha=ALPHA, threshold=THRESHOLD, maxIter = MAXITER, xfc=True, verbose=False, proning = proning)
             experiment.p.determine_xfc(xfc_ratio, method=centrality)
-            results[centrality] = experiment.run()['total_cost']
+            results[centrality] = experiment.run()['xfc_longest_distance']
+            
+        try:
+            original_dict = json.load(open(out_path + out_alias, 'r'))
+            for key, value in results.items():
+                original_dict[key] = value
+        except:
+            original_dict = results
             
         with open(out_path + out_alias, 'w') as f:
-            json.dump(results, f)
+            json.dump(original_dict, f)
     
     
 def get_xfcs_from_centralities(root_folder = os.getcwd(), xfc_ratio = 0.1, proning = 0, out_alias = 'xfc_centralities_location.json', centralities = ['degree', 'betweenness', 'eigenvector', 'closeness', 'weighted_betweenness', 'adjusted_degree']):
