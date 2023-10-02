@@ -528,7 +528,7 @@ class Problem:
         
     def longest_xfc_distance(self):
         xfc_forward, xfc_backward = self.graph.dijkstra_for_xfc(self.xfc_set)
-        return max(xfc_backward[xfc]['dist'][origin] for origin in self.xfc_set for xfc in xfc_backward)
+        return max(min([xfc_backward[xfc]['dist'][origin] for xfc in self.xfc_set]) for origin in self.xfc_set)
 
 
 
