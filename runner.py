@@ -189,7 +189,7 @@ def compare_xfc_result_vary_centralities(root_folder = os.getcwd(), xfc_ratio = 
         for centrality in centralities:
             experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', method = 'automatic', alpha=ALPHA, threshold=THRESHOLD, maxIter = MAXITER, xfc=True, verbose=False, proning = proning)
             experiment.p.determine_xfc(xfc_ratio, method=centrality)
-            results[centrality] = experiment.run()['xfc_longest_distance']
+            results[centrality] = experiment.run()[evaluation]
             
         try:
             original_dict = json.load(open(out_path + out_alias, 'r'))
@@ -202,7 +202,7 @@ def compare_xfc_result_vary_centralities(root_folder = os.getcwd(), xfc_ratio = 
             json.dump(original_dict, f)
     
     
-def get_xfcs_from_centralities(root_folder = os.getcwd(), xfc_ratio = 0.1, proning = 0, out_alias = 'xfc_centralities_location.json', centralities = ['degree', 'betweenness', 'eigenvector', 'closeness', 'weighted_betweenness', 'adjusted_degree']):
+def get_xfcs_from_centralities(root_folder = os.getcwd(), xfc_ratio = 0.1, proning = 0, out_alias = 'xfc_centralities_location.json', centralities = ['degree', 'betweenness', 'eigenvector', 'closeness', 'weighted_betweenness', 'adjusted_degree', 'demand_in_out', 'demand_in_out_adj']):
     import networkx as nx
     from matplotlib import pyplot as plt
     

@@ -208,13 +208,7 @@ class Graph:
         self.xfc_list = [self.node_dict[xfc] for xfc in xfc_list]
 
     
-    def determine_xfc(self, n : int | float, method='degree') -> list[Node]:
-        if n < 1:
-            # percentage
-            n_nodes = int(n * len(self.nodes))
-            n_nodes = max(n_nodes, 1)
-        else:
-            n_nodes = int(n)
+    def determine_xfc(self, n_nodes : int, method='degree') -> list[Node]:
         # select n random nodes from the nodeset
         if method == 'random':
             selected_nodes = random.sample(self.nodes, max(n_nodes, 1))
@@ -243,7 +237,7 @@ class Graph:
             _selected_nodes = []
             for i in range(n_nodes):
                 # add the node that has the most degree
-                _selected_nodes.append(sorted(nx.degree_centrality(g).items(), key=lambda x: x[1], reverse=True)[i][0])
+                _selected_nodes.append(sorted(nx.degree_centrality(g).items(), key=lambda x: x[1], reverse=True)[0][0])
                 # remove the node 
                 g.remove_node(_selected_nodes[-1])
             selected_nodes = [self.node_dict[node] for node in _selected_nodes]
@@ -252,7 +246,7 @@ class Graph:
             _selected_nodes = []
             for i in range(n_nodes):
                 print(i, '/' , n_nodes)
-                _selected_nodes.append(sorted(nx.centrality.betweenness_centrality(g).items(), key=lambda x: x[1], reverse=True)[i][0])
+                _selected_nodes.append(sorted(nx.centrality.betweenness_centrality(g).items(), key=lambda x: x[1], reverse=True)[0][0])
                 g.remove_node(_selected_nodes[-1])
             selected_nodes = [self.node_dict[node] for node in _selected_nodes]
         else:
@@ -394,8 +388,35 @@ class Problem:
 
     
     def determine_xfc(self, n : int | float, method='degree') -> None:
-        self.xfc_set = self.graph.determine_xfc(n, method)
-
+        if n < 1:
+            # percentage
+            n_nodes = int(n * len(self.graph.nodes))
+            n_nodes = max(n_nodes, 1)
+        else:
+            n_nodes = int(n)
+        if method in ['degree', 'betweenness', 'eigenvector', 'closeness', 'weighted_betweenness', 'adjusted_degree', 'adjusted_betweenness']:
+            self.xfc_set = self.graph.determine_xfc(n_nodes, method)
+        elif method == 'demand_in_out':
+            node_demand_dict : dict[Node, float] = {node: 0.0 for node in self.graph.nodes}
+            for (orig, dest), n_demand in self.demands.dictionary.items():
+                node_demand_dict[orig] += n_demand
+                node_demand_dict[dest] += n_demand
+            sorted_nodes = sorted(self.graph.nodes, key=lambda x: node_demand_dict[x], reverse=True)
+            self.xfc_set = sorted_nodes[:n_nodes]
+        elif method == 'demand_in_out_adj':
+            node_demand_dict : dict[Node, float] = {node: 0.0 for node in self.graph.nodes}
+            for (orig, dest), n_demand in self.demands.dictionary.items():
+                node_demand_dict[orig] += n_demand
+                node_demand_dict[dest] += n_demand
+            node_demand_dict_adj : dict[Node, float] = {node: 0.0 for node in self.graph.nodes}
+            for node, demand in node_demand_dict.items():
+                node_demand_dict_adj[node] += demand
+                for adj_link in node.neighbours():
+                    adj_node = adj_link.end if adj_link.start == node else adj_link.start
+                    node_demand_dict_adj[adj_node] += demand
+            # self.xfc_set = [node for node in sorted(self.graph.nodes, key=lambda x: node_demand_dict_adj[x], reverse=True)][:n] #type: ignore
+            sorted_nodes = sorted(self.graph.nodes, key=lambda x: node_demand_dict_adj[x], reverse=True)
+            self.xfc_set = sorted_nodes[:n_nodes]
 
     def optimal(self, alpha = 0.15) -> None:
         
@@ -526,9 +547,18 @@ class Problem:
             link.flow * link.BPR() for link in self.graph.linkset
         ])
         
+    
     def longest_xfc_distance(self):
         xfc_forward, xfc_backward = self.graph.dijkstra_for_xfc(self.xfc_set)
-        return max(min([xfc_backward[xfc]['dist'][origin] for xfc in self.xfc_set]) for origin in self.xfc_set)
+        
+        def get_closest_xfc(origin: Node) -> float:
+    
+            dist_list = [xfc_backward[xfc]['dist'][origin] for xfc in self.xfc_set]
+            return min(dist_list)
+        
+        return max([
+            get_closest_xfc(origin=origin) for origin in self.graph.nodes
+        ])
 
 
 

@@ -1,1 +1,1 @@
-{"degree": 0, "betweenness": 0, "eigenvector": 0, "closeness": 0, "weighted_betweenness": 0, "adjusted_degree": 0, "adjusted_betweenness": 0}
+{"degree": 1405038.1208686586, "betweenness": 1432112.9625546227, "eigenvector": 1843304.1546473799, "closeness": 1640195.559649751, "weighted_betweenness": 1480454.1901625167, "adjusted_degree": 1396902.392463941, "adjusted_betweenness": 1350835.2450314404, "demand_in_out": 1323568.6510970236, "demand_in_out_adj": 1324935.6174359738}
