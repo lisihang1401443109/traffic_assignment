@@ -5,8 +5,8 @@ import pandas as pd
 from heapq import heappop, heappush, heapify
 from typing import TypedDict
 import random
-import gurobipy as grb
-from gurobipy import GRB
+# import gurobipy as grb   #type: ignore
+# from gurobipy import GRB #type: ignore
 import networkx as nx
 
 import time
@@ -422,6 +422,29 @@ class Problem:
             sorted_nodes = sorted(self.graph.nodes, key=lambda x: node_demand_dict_adj[x], reverse=True)
             self.xfc_set = sorted_nodes[:n_nodes]
             self.graph.assign_xfc([node.id for node in self.xfc_set])
+        elif method == 'greedy':
+            sorted_nodes = self.xfc_init_greedy(n_nodes)
+            self.xfc_set = sorted_nodes
+            self.graph.assign_xfc([node.id for node in self.xfc_set])
+        else:
+            print(f'undefined xfc initializing strategy \'{method}\'')
+            
+    def xfc_init_greedy(self, n_nodes):
+        node_cost = {node: 0.0 for node in self.graph.nodes}
+        for node in self.graph.nodes:
+            self.xfc_set = [node]
+            node.XFC = True
+            cost = self.run(xfc = 1)['total_cost']
+            node_cost[node] = cost
+            node.XFC = False
+            
+        sorted_nodes = sorted(self.graph.nodes, key=lambda x: node_cost[x], reverse=True)
+        return sorted_nodes[:n_nodes]
+        
+        
+    
+        
+
 
     def optimal(self, alpha = 0.15) -> None:
         
@@ -604,43 +627,43 @@ class Problem:
         min_backward = xfc_backward[min_xfc]
         
         
-        for origin, dests in self.demands.destinations.items():
-            for dest in dests:
-                
-                if origin in self.xfc_set:
+        
+        for origin, dest in self.demands.dictionary:        
+                if origin == min_xfc:
                     
                     curr = dest
                     while curr != origin:
-                        if (xfc_forward[origin]['prev'][curr], curr) in staged_changes:
-                            staged_changes[(xfc_forward[origin]['prev'][curr], curr)] += self.demands.dictionary[(origin, dest)] * alpha
+                        if (min_forward['prev'][curr], curr) in staged_changes:
+                            staged_changes[(min_forward['prev'][curr], curr)] += self.demands.dictionary[(origin, dest)] * alpha
                         else:
-                            staged_changes[(xfc_forward[origin]['prev'][curr], curr)] = self.demands.dictionary[(origin, dest)] * alpha
+                            staged_changes[(min_forward['prev'][curr], curr)] = self.demands.dictionary[(origin, dest)] * alpha
                         curr = xfc_forward[origin]['prev'][curr] # type: ignore
                     continue
                 
-                if dest in self.xfc_set:
+                if dest == min_xfc:
 
                     curr = origin
                     while curr != dest:
                         if (curr, xfc_backward[dest]['prev'][curr]) in staged_changes:
-                            staged_changes[curr, (xfc_backward[dest]['prev'][curr])] += self.demands.dictionary[(origin, dest)] * alpha
+                            staged_changes[curr, (min_backward['prev'][curr])] += self.demands.dictionary[(origin, dest)] * alpha
                         else:
-                            staged_changes[curr, (xfc_backward[dest]['prev'][curr])] = self.demands.dictionary[(origin, dest)] * alpha
+                            staged_changes[curr, (min_backward['prev'][curr])] = self.demands.dictionary[(origin, dest)] * alpha
                         curr = xfc_backward[dest]['prev'][curr] # type: ignore
                     continue
                 
                 
                 if self.demands.dictionary[(origin, dest)] == 0:
                     continue
+                
                 curr = dest
-                while curr != origin:
+                while curr != min_xfc:
                     if (min_forward['prev'][curr], curr) in staged_changes:
                         staged_changes[(min_forward['prev'][curr], curr)] += self.demands.dictionary[(origin, dest)] * alpha
                     else:
                         staged_changes[(min_forward['prev'][curr], curr)] = self.demands.dictionary[(origin, dest)] * alpha
                     curr = min_forward['prev'][curr]
                 curr = origin
-                while curr != dest:
+                while curr != min_xfc:
                     if (curr, min_backward['prev'][curr]) in staged_changes:
                         staged_changes[(curr, min_backward['prev'][curr])] += self.demands.dictionary[(origin, dest)] * alpha
                     else:
@@ -694,60 +717,60 @@ class Problem:
             return {'converge': True, 'iteration': iteration_number, 'alpha': alpha, 'time_per_iteration': sum(iteration_times)/len(iteration_times), 'total_cost': self.get_total_time(), 'xfc_longest_distance': self.longest_xfc_distance() }
 
 
-    def get_gp_model(self, num_xfc):
-        m = grb.Model()
-        # BPR: fft * (1 + alpha * pow((flow/capacity), beta))
-        links = self.graph.linkset
+    # def get_gp_model(self, num_xfc):
+    #     m = grb.Model()
+    #     # BPR: fft * (1 + alpha * pow((flow/capacity), beta))
+    #     links = self.graph.linkset
         
-        dist_dict = {}
-        # use dijkstra to compute node-to-node distances
-        for node in self.graph.nodes:
-            dist, prev = self.graph.dijkstra(node)
-            for n, d in dist.items():
-                if d == INFINITY:
-                    dist_dict[node, n] = GRB.INFINITY
-                    continue
-                dist_dict[node, n] = d
+    #     dist_dict = {}
+    #     # use dijkstra to compute node-to-node distances
+    #     for node in self.graph.nodes:
+    #         dist, prev = self.graph.dijkstra(node)
+    #         for n, d in dist.items():
+    #             if d == INFINITY:
+    #                 dist_dict[node, n] = GRB.INFINITY
+    #                 continue
+    #             dist_dict[node, n] = d
                 
-        print(dist_dict)
+    #     print(dist_dict)
         
-        # xfc variables: binary variable indicating whether a node is xfc
-        is_xfc = m.addVars([node.id for node in self.graph.nodes], vtype=GRB.BINARY, name='is_xfc')
+    #     # xfc variables: binary variable indicating whether a node is xfc
+    #     is_xfc = m.addVars([node.id for node in self.graph.nodes], vtype=GRB.BINARY, name='is_xfc')
         
-        # sum_constraint: the number of xfcs should not exceed num_xfc
-        m.addConstr(is_xfc.sum() == num_xfc, name='num_xfc_constraint')
+    #     # sum_constraint: the number of xfcs should not exceed num_xfc
+    #     m.addConstr(is_xfc.sum() == num_xfc, name='num_xfc_constraint')
         
-        # variables indicating minimal distance from node to xfc
-        min_dist = m.addVars([node.id for node in self.graph.nodes], vtype=GRB.CONTINUOUS, name='min_dist')
-        xfc_min_dist = m.addVars([node.id for node in self.graph.nodes], vtype=GRB.CONTINUOUS, name='xfc_min_dist')
+    #     # variables indicating minimal distance from node to xfc
+    #     min_dist = m.addVars([node.id for node in self.graph.nodes], vtype=GRB.CONTINUOUS, name='min_dist')
+    #     xfc_min_dist = m.addVars([node.id for node in self.graph.nodes], vtype=GRB.CONTINUOUS, name='xfc_min_dist')
         
-        # variables indicating distance from any node to any xfc
-        xfc_dists = m.addVars([node.id for node in self.graph.nodes], [node.id for node in self.graph.nodes], vtype=GRB.CONTINUOUS, name='xfc_dists')
-        for i in self.graph.nodes:
-            for j in self.graph.nodes:
-                # print(i, j)
-                if i == j:
-                    m.addConstr(xfc_dists[i.id, j.id] == 0, name = f'self_dist_constraint_{i.id}_{j.id}')
-                    continue
-                if dist_dict[i.id, j.id] == GRB.INFINITY:
-                    m.addConstr(xfc_dists[i.id, j.id] == GRB.INFINITY, name=f'inf_dist_constraint_{i.id}_{j.id}')
-                    continue
-                m.addConstr((is_xfc[j.id] == 1) >> (xfc_dists[i.id, j.id] == dist_dict[i.id, j.id]), name=f'xfc_dist_constraint_{i.id}_{j.id}')
-                m.addConstr((is_xfc[j.id] == 0) >> (xfc_dists[i.id, j.id] == GRB.INFINITY), name=f'non_xfc_dist_constraint_{i.id}_{j.id}')
+    #     # variables indicating distance from any node to any xfc
+    #     xfc_dists = m.addVars([node.id for node in self.graph.nodes], [node.id for node in self.graph.nodes], vtype=GRB.CONTINUOUS, name='xfc_dists')
+    #     for i in self.graph.nodes:
+    #         for j in self.graph.nodes:
+    #             # print(i, j)
+    #             if i == j:
+    #                 m.addConstr(xfc_dists[i.id, j.id] == 0, name = f'self_dist_constraint_{i.id}_{j.id}')
+    #                 continue
+    #             if dist_dict[i.id, j.id] == GRB.INFINITY:
+    #                 m.addConstr(xfc_dists[i.id, j.id] == GRB.INFINITY, name=f'inf_dist_constraint_{i.id}_{j.id}')
+    #                 continue
+    #             m.addConstr((is_xfc[j.id] == 1) >> (xfc_dists[i.id, j.id] == dist_dict[i.id, j.id]), name=f'xfc_dist_constraint_{i.id}_{j.id}')
+    #             m.addConstr((is_xfc[j.id] == 0) >> (xfc_dists[i.id, j.id] == GRB.INFINITY), name=f'non_xfc_dist_constraint_{i.id}_{j.id}')
         
-        # min_dist[a] = min_(dist[a, xfc_dists])
+    #     # min_dist[a] = min_(dist[a, xfc_dists])
         
-        for i in self.graph.nodes:
-            m.addConstr(min_dist[i.id] == grb.min_(xfc_dists.select(i.id, '*')), name=f'min_dist_constraint_{i}')
+    #     for i in self.graph.nodes:
+    #         m.addConstr(min_dist[i.id] == grb.min_(xfc_dists.select(i.id, '*')), name=f'min_dist_constraint_{i}')
             
-        for i in self.graph.nodes:
-            m.addConstr((is_xfc[i.id] == 1) >> (xfc_min_dist[i.id] == 0), name=f'xfc_min_dist_constraint_{i}')
-            m.addConstr((is_xfc[i.id] == 0) >> (xfc_min_dist[i.id] == min_dist[i.id]), name=f'non_xfc_min_dist_constraint_{i}')
+    #     for i in self.graph.nodes:
+    #         m.addConstr((is_xfc[i.id] == 1) >> (xfc_min_dist[i.id] == 0), name=f'xfc_min_dist_constraint_{i}')
+    #         m.addConstr((is_xfc[i.id] == 0) >> (xfc_min_dist[i.id] == min_dist[i.id]), name=f'non_xfc_min_dist_constraint_{i}')
             
-        # objective: minimize the sum of all min_dist
-        m.setObjective(xfc_min_dist.sum(), GRB.MINIMIZE)
+    #     # objective: minimize the sum of all min_dist
+    #     m.setObjective(xfc_min_dist.sum(), GRB.MINIMIZE)
         
-        return m
+    #     return m
         
         
             
