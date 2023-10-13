@@ -2,3 +2,5 @@
   gap = (time_before/time_after) - 1
 /WAVE/users/unix/sli13/workspace/traffic_assignment/model.py:717: RuntimeWarning: invalid value encountered in scalar divide
   gap = (time_before/time_after) - 1
+/WAVE/users/unix/sli13/workspace/traffic_assignment/model.py:717: RuntimeWarning: invalid value encountered in scalar divide
+  gap = (time_before/time_after) - 1
