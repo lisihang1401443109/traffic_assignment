@@ -434,7 +434,7 @@ class Problem:
         for node in self.graph.nodes:
             self.xfc_set = [node]
             node.XFC = True
-            cost = self.run(xfc = 1)['total_cost']
+            cost = self.run(xfc = -1)['total_cost']
             node_cost[node] = cost
             node.XFC = False
             
@@ -617,7 +617,7 @@ class Problem:
 
 
                 
-    def greedy_optimal(self, alpha=0.1) -> None:
+    def greedy_optimal(self, alpha=0.1) -> bool:
         min_xfc = self.xfc_set[0]
         
         staged_changes = {}
@@ -657,6 +657,8 @@ class Problem:
                 
                 curr = dest
                 while curr != min_xfc:
+                    if curr not in min_forward['prev']:
+                        return False
                     if (min_forward['prev'][curr], curr) in staged_changes:
                         staged_changes[(min_forward['prev'][curr], curr)] += self.demands.dictionary[(origin, dest)] * alpha
                     else:
@@ -664,6 +666,8 @@ class Problem:
                     curr = min_forward['prev'][curr]
                 curr = origin
                 while curr != min_xfc:
+                    if curr not in min_backward['prev']:
+                        return False
                     if (curr, min_backward['prev'][curr]) in staged_changes:
                         staged_changes[(curr, min_backward['prev'][curr])] += self.demands.dictionary[(origin, dest)] * alpha
                     else:
@@ -671,6 +675,7 @@ class Problem:
                     curr = min_backward['prev'][curr]
         
         self.graph.discount_flow(alpha=alpha)
+        return True
         
         
 
@@ -680,7 +685,7 @@ class Problem:
 
         def optimal_func(alpha, proning = proning) -> float:
             time_start = time.time()
-            if xfc > 1:
+            if xfc > 0:
                 self.xfc_optimal(alpha=alpha, proning=proning)
                 if verbose:
                     print('running xfc optimal')
@@ -688,13 +693,16 @@ class Problem:
                 self.optimal(alpha=alpha)
                 if verbose:
                     print('running normal optimal')
-            elif xfc == 1:
-                self.greedy_optimal(alpha=alpha)
+            elif xfc == -1:
+                if not self.greedy_optimal(alpha=alpha):
+                    return -1.0
                 if verbose:
                     print('running greedy optimal')
             return time.time() - time_start
 
         iteration_times.append(optimal_func(alpha = 1.0))
+        if iteration_times[-1] < 0:
+            return {'converge': False, 'iteration': 0, 'alpha': 1.0, 'time_per_iteration': 0, 'total_cost':INFINITY, 'xfc_longest_distance': INFINITY }
         time_before = 0
         time_after = self.get_total_time()
         gap = 1
@@ -702,6 +710,8 @@ class Problem:
             if verbose:
                 print(f'{iteration_number=}')
             iteration_times.append(optimal_func(alpha = (1/iteration_number) if method == 'automatic' else alpha))
+            if iteration_times[-1] < 0:
+                return {'converge': False, 'iteration': iteration_number, 'alpha': alpha, 'time_per_iteration': sum(iteration_times)/len(iteration_times), 'total_cost': INFINITY, 'xfc_longest_distance': INFINITY }
             time_before = time_after
             time_after = self.get_total_time()
             gap = (time_before/time_after) - 1
