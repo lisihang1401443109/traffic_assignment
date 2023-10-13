@@ -99,6 +99,6 @@ def graph_exe_resumts_vary_centralities(file_name = 'xfc_centralities_1.json'):
 if __name__ == '__main__':
     # graph_exe_results_vary_proning()
     # graph_exe_time_results_vary_proning(file_name='xfc_exe_time_5.json')
-    graph_exe_resumts_vary_centralities(file_name='xfc_centralities_2.json')
+    graph_exe_resumts_vary_centralities(file_name='xfc_centralities_1.json')
 
 

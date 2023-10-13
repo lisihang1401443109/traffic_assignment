@@ -401,8 +401,12 @@ class Problem:
             for (orig, dest), n_demand in self.demands.dictionary.items():
                 node_demand_dict[orig] += n_demand
                 node_demand_dict[dest] += n_demand
+                
+                # demand1: node_1 -> node_2, 5
+                
             sorted_nodes = sorted(self.graph.nodes, key=lambda x: node_demand_dict[x], reverse=True)
             self.xfc_set = sorted_nodes[:n_nodes]
+            self.graph.assign_xfc([node.id for node in self.xfc_set])
         elif method == 'demand_in_out_adj':
             node_demand_dict : dict[Node, float] = {node: 0.0 for node in self.graph.nodes}
             for (orig, dest), n_demand in self.demands.dictionary.items():
@@ -417,6 +421,7 @@ class Problem:
             # self.xfc_set = [node for node in sorted(self.graph.nodes, key=lambda x: node_demand_dict_adj[x], reverse=True)][:n] #type: ignore
             sorted_nodes = sorted(self.graph.nodes, key=lambda x: node_demand_dict_adj[x], reverse=True)
             self.xfc_set = sorted_nodes[:n_nodes]
+            self.graph.assign_xfc([node.id for node in self.xfc_set])
 
     def optimal(self, alpha = 0.15) -> None:
         
@@ -589,6 +594,62 @@ class Problem:
 
 
                 
+    def greedy_optimal(self, alpha=0.1) -> None:
+        min_xfc = self.xfc_set[0]
+        
+        staged_changes = {}
+        
+        xfc_forward, xfc_backward = self.graph.dijkstra_for_xfc(self.xfc_set)
+        min_forward = xfc_forward[min_xfc]
+        min_backward = xfc_backward[min_xfc]
+        
+        
+        for origin, dests in self.demands.destinations.items():
+            for dest in dests:
+                
+                if origin in self.xfc_set:
+                    
+                    curr = dest
+                    while curr != origin:
+                        if (xfc_forward[origin]['prev'][curr], curr) in staged_changes:
+                            staged_changes[(xfc_forward[origin]['prev'][curr], curr)] += self.demands.dictionary[(origin, dest)] * alpha
+                        else:
+                            staged_changes[(xfc_forward[origin]['prev'][curr], curr)] = self.demands.dictionary[(origin, dest)] * alpha
+                        curr = xfc_forward[origin]['prev'][curr] # type: ignore
+                    continue
+                
+                if dest in self.xfc_set:
+
+                    curr = origin
+                    while curr != dest:
+                        if (curr, xfc_backward[dest]['prev'][curr]) in staged_changes:
+                            staged_changes[curr, (xfc_backward[dest]['prev'][curr])] += self.demands.dictionary[(origin, dest)] * alpha
+                        else:
+                            staged_changes[curr, (xfc_backward[dest]['prev'][curr])] = self.demands.dictionary[(origin, dest)] * alpha
+                        curr = xfc_backward[dest]['prev'][curr] # type: ignore
+                    continue
+                
+                
+                if self.demands.dictionary[(origin, dest)] == 0:
+                    continue
+                curr = dest
+                while curr != origin:
+                    if (min_forward['prev'][curr], curr) in staged_changes:
+                        staged_changes[(min_forward['prev'][curr], curr)] += self.demands.dictionary[(origin, dest)] * alpha
+                    else:
+                        staged_changes[(min_forward['prev'][curr], curr)] = self.demands.dictionary[(origin, dest)] * alpha
+                    curr = min_forward['prev'][curr]
+                curr = origin
+                while curr != dest:
+                    if (curr, min_backward['prev'][curr]) in staged_changes:
+                        staged_changes[(curr, min_backward['prev'][curr])] += self.demands.dictionary[(origin, dest)] * alpha
+                    else:
+                        staged_changes[(curr, min_backward['prev'][curr])] = self.demands.dictionary[(origin, dest)] * alpha
+                    curr = min_backward['prev'][curr]
+        
+        self.graph.discount_flow(alpha=alpha)
+        
+        
 
     def run(self, algorithm='dijkstra', alpha=0.1, threshold=0.001, maxIter = 100, method='automatic', xfc = [], verbose = False, proning = 0) -> dict[str, bool | int | float]:
         iteration_times = []
@@ -596,14 +657,18 @@ class Problem:
 
         def optimal_func(alpha, proning = proning) -> float:
             time_start = time.time()
-            if xfc:
+            if xfc > 1:
                 self.xfc_optimal(alpha=alpha, proning=proning)
                 if verbose:
                     print('running xfc optimal')
-            else:
+            elif xfc == 0:
                 self.optimal(alpha=alpha)
                 if verbose:
                     print('running normal optimal')
+            elif xfc == 1:
+                self.greedy_optimal(alpha=alpha)
+                if verbose:
+                    print('running greedy optimal')
             return time.time() - time_start
 
         iteration_times.append(optimal_func(alpha = 1.0))
