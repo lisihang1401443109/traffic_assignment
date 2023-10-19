@@ -5,8 +5,8 @@ import pandas as pd
 from heapq import heappop, heappush, heapify
 from typing import TypedDict
 import random
-# import gurobipy as grb   #type: ignore
-# from gurobipy import GRB #type: ignore
+import gurobipy as grb   #type: ignore
+from gurobipy import GRB #type: ignore
 import networkx as nx
 
 import time
@@ -810,6 +810,59 @@ class Problem:
     #     m.setObjective(xfc_min_dist.sum(), GRB.MINIMIZE)
         
     #     return m
+    
+    
+    def get_gp_model(self, num_xfc):
+        m = grb.Model()
+        
+        dist_dict = {}
+        MAX_DIST = 1
+        # use dijkstra to compute node-to-node distances
+        for node in self.graph.nodes:
+            dist, prev = self.graph.dijkstra(node)
+            for n, d in dist.items():
+                if d == INFINITY:
+                    dist_dict[node, n] = GRB.INFINITY
+                    continue
+                dist_dict[node, n] = d
+                MAX_DIST = max(MAX_DIST, d)
+        
+        print(dist_dict)
+        print(MAX_DIST)
+        
+        # xfc variables: binary variable indicating whether a node is xfc
+        is_xfc = m.addVars([node.id for node in self.graph.nodes], vtype=GRB.BINARY, name='is_xfc')
+        
+        # sum_constraint: the number of xfcs should not exceed num_xfc
+        m.addConstr(is_xfc.sum() == num_xfc, name='num_xfc_constraint')
+        
+        dist_var_dict = {}
+        xfc_var_dict = {}
+        # dist_variables: recording the distance from node to any node
+        for i in self.graph.nodes:
+            for j in self.graph.nodes:
+                if dist_dict[i, j] == GRB.INFINITY:
+                    continue
+                
+                dist_var_dict[(i, j)] = m.addVar(name=f'dist_{i}_{j}', vtype=GRB.CONTINUOUS, lb=0)
+                xfc_var_dict[(i, j)] = m.addVar(name=f'xfc_{i}_{j}', vtype=GRB.CONTINUOUS, lb=0)
+                
+                m.addConstr(dist_var_dict[(i, j)] == dist_dict[i, j], name=f'dist_constraint_{i}_{j}')
+                m.addConstr(xfc_var_dict[(i, j)] == is_xfc[j] * MAX_DIST + dist_var_dict[(i, j)], name=f'xfc_constraint_{i}_{j}')
+        
+        
+        min_var_dict = {}
+        # min_xfc_dist_variables: recording the distance from node to nearest xfc
+        for node in self.graph.nodes:
+            min_var_dict[node] = m.addVar(name=f'min_{node}', vtype=GRB.CONTINUOUS, lb=0)
+            m.addConstr(min_var_dict[node] == grb.min_([
+                xfc_var_dict[(node, i)] for i in self.graph.nodes if (node, i) in xfc_var_dict]), name=f'min_constraint_{node}')
+        
+        # objective: minimize the sum of all min_dist
+        m.setObjective(grb.quicksum([min_var_dict[node] for node in self.graph.nodes]), GRB.MINIMIZE)
+        
+        return m
+        
         
         
             

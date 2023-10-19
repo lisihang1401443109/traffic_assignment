@@ -1,14 +1,13 @@
 \ Model _copy
 \ LP format - for model browsing. Use MPS format to capture full model detail.
 Minimize
-  0 xfc_dists[4,2] + 0 xfc_dists[2,3]
+ 
 Subject To
- num_xfc_constraint: is_xfc[1] + is_xfc[3] + is_xfc[4] + is_xfc[2] = 1
- xfc_dist_constraint_4_2: is_xfc[2] = 1 -> xfc_dists[4,2] = 1e-08
- non_xfc_dist_constraint_4_2: is_xfc[2] = 0 -> xfc_dists[4,2] = 1e+100
- xfc_dist_constraint_2_3: is_xfc[3] = 1 -> xfc_dists[2,3] = 10.00000001
- non_xfc_dist_constraint_2_3: is_xfc[3] = 0 -> xfc_dists[2,3] = 1e+100
+ dist_constraint_Node(1)_Node(4): dist_Node(1)_Node(4) = 10.00000001
+ xfc_constraint_Node(1)_Node(4): - 10.00000002 is_xfc[4]
+   - dist_Node(1)_Node(4) + xfc_Node(1)_Node(4) = 0
 Bounds
+ dist_Node(1)_Node(4) free
 Binaries
- is_xfc[1] is_xfc[3] is_xfc[4] is_xfc[2]
+ is_xfc[4] xfc_Node(1)_Node(4)
 End
