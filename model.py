@@ -394,6 +394,11 @@ class Problem:
             n_nodes = max(n_nodes, 1)
         else:
             n_nodes = int(n)
+        
+        # temporal
+        if method == 'full_greedy':
+            n_nodes = min(n_nodes, 10)
+        
         if method in ['degree', 'betweenness', 'eigenvector', 'closeness', 'weighted_betweenness', 'adjusted_degree', 'adjusted_betweenness']:
             self.xfc_set = self.graph.determine_xfc(n_nodes, method)
         elif method == 'demand_in_out':
@@ -423,23 +428,45 @@ class Problem:
             self.xfc_set = sorted_nodes[:n_nodes]
             self.graph.assign_xfc([node.id for node in self.xfc_set])
         elif method == 'greedy':
-            sorted_nodes = self.xfc_init_greedy(n_nodes)
+            sorted_nodes = self.xfc_init_greedy(n_nodes, mode='partial')
             self.xfc_set = sorted_nodes
+            self.graph.assign_xfc([node.id for node in self.xfc_set])
+        elif method == 'full_greedy':
+            self.xfc_set = self.xfc_init_greedy(n_nodes, mode='full')
             self.graph.assign_xfc([node.id for node in self.xfc_set])
         else:
             print(f'undefined xfc initializing strategy \'{method}\'')
             
-    def xfc_init_greedy(self, n_nodes):
-        node_cost = {node: 0.0 for node in self.graph.nodes}
-        for node in self.graph.nodes:
-            self.xfc_set = [node]
-            node.XFC = True
-            cost = self.run(xfc = -1)['total_cost']
-            node_cost[node] = cost
-            node.XFC = False
-            
-        sorted_nodes = sorted(self.graph.nodes, key=lambda x: node_cost[x], reverse=True)
-        return sorted_nodes[:n_nodes]
+    def xfc_init_greedy(self, n_nodes, mode = 'partial') -> list[Node]:
+        if mode == 'partial':
+            node_cost = {node: 0.0 for node in self.graph.nodes}
+            for node in self.graph.nodes:
+                self.xfc_set = [node]
+                node.XFC = True
+                cost = self.run(xfc = -1)['total_cost']
+                node_cost[node] = cost
+                node.XFC = False
+            sorted_nodes = sorted(self.graph.nodes, key=lambda x: node_cost[x], reverse=True)
+            return sorted_nodes[:n_nodes]
+        elif mode == 'full':
+            selected_nodes = []
+            for i in range(n_nodes):
+                node_cost = {node: 0.0 for node in self.graph.nodes}
+                for node in self.graph.nodes:
+                    if node in selected_nodes:
+                        continue
+                    self.xfc_set = selected_nodes + [node]
+                    node.XFC = True
+                    cost = self.run(xfc = -1)['total_cost']
+                    node_cost[node] = cost
+                    node.XFC = False
+                
+                min_node = min(self.graph.nodes, key=lambda x: node_cost[x])
+                min_node.XFC = True
+                selected_nodes.append(min_node)
+            return selected_nodes
+        else:
+            return []
         
         
     
@@ -618,7 +645,7 @@ class Problem:
 
                 
     def greedy_optimal(self, alpha=0.1) -> bool:
-        min_xfc = self.xfc_set[0]
+        min_xfc = self.xfc_set[-1]
         
         staged_changes = {}
         
@@ -714,6 +741,8 @@ class Problem:
                 return {'converge': False, 'iteration': iteration_number, 'alpha': alpha, 'time_per_iteration': sum(iteration_times)/len(iteration_times), 'total_cost': INFINITY, 'xfc_longest_distance': INFINITY }
             time_before = time_after
             time_after = self.get_total_time()
+            if time_after == 0.0:
+                return {'converge': False, 'iteration': iteration_number, 'alpha': alpha, 'time_per_iteration': sum(iteration_times)/len(iteration_times), 'total_cost': INFINITY, 'xfc_longest_distance': INFINITY }
             gap = (time_before/time_after) - 1
             if verbose:
                 print(f'{time_after=}, {time_before=}, {gap=}')

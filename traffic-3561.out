@@ -1,0 +1,1209 @@
+416 nodes, 914 links, 
+1406 OD pairs
+416 914
+selected 41 nodes as xfc using method='degree'
+Experiment(self.input_path='.//inputs/Anaheim/'
+self.output_path='.//outputs/Anaheim/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+416 nodes, 914 links, 
+1406 OD pairs
+416 914
+selected 41 nodes as xfc using method='betweenness'
+Experiment(self.input_path='.//inputs/Anaheim/'
+self.output_path='.//outputs/Anaheim/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+416 nodes, 914 links, 
+1406 OD pairs
+416 914
+selected 41 nodes as xfc using method='eigenvector'
+Experiment(self.input_path='.//inputs/Anaheim/'
+self.output_path='.//outputs/Anaheim/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+416 nodes, 914 links, 
+1406 OD pairs
+416 914
+selected 41 nodes as xfc using method='closeness'
+Experiment(self.input_path='.//inputs/Anaheim/'
+self.output_path='.//outputs/Anaheim/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+416 nodes, 914 links, 
+1406 OD pairs
+416 914
+selected 41 nodes as xfc using method='weighted_betweenness'
+Experiment(self.input_path='.//inputs/Anaheim/'
+self.output_path='.//outputs/Anaheim/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+416 nodes, 914 links, 
+1406 OD pairs
+416 914
+selected 41 nodes as xfc using method='adjusted_degree'
+Experiment(self.input_path='.//inputs/Anaheim/'
+self.output_path='.//outputs/Anaheim/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+416 nodes, 914 links, 
+1406 OD pairs
+416 914
+0 / 41
+1 / 41
+2 / 41
+3 / 41
+4 / 41
+5 / 41
+6 / 41
+7 / 41
+8 / 41
+9 / 41
+10 / 41
+11 / 41
+12 / 41
+13 / 41
+14 / 41
+15 / 41
+16 / 41
+17 / 41
+18 / 41
+19 / 41
+20 / 41
+21 / 41
+22 / 41
+23 / 41
+24 / 41
+25 / 41
+26 / 41
+27 / 41
+28 / 41
+29 / 41
+30 / 41
+31 / 41
+32 / 41
+33 / 41
+34 / 41
+35 / 41
+36 / 41
+37 / 41
+38 / 41
+39 / 41
+40 / 41
+selected 41 nodes as xfc using method='adjusted_betweenness'
+Experiment(self.input_path='.//inputs/Anaheim/'
+self.output_path='.//outputs/Anaheim/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+416 nodes, 914 links, 
+1406 OD pairs
+Experiment(self.input_path='.//inputs/Anaheim/'
+self.output_path='.//outputs/Anaheim/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+416 nodes, 914 links, 
+1406 OD pairs
+Experiment(self.input_path='.//inputs/Anaheim/'
+self.output_path='.//outputs/Anaheim/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+416 nodes, 914 links, 
+1406 OD pairs
+Experiment(self.input_path='.//inputs/Anaheim/'
+self.output_path='.//outputs/Anaheim/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+930 nodes, 2522 links, 
+7922 OD pairs
+930 2522
+selected 93 nodes as xfc using method='degree'
+Experiment(self.input_path='.//inputs/Barcelona/'
+self.output_path='.//outputs/Barcelona/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+930 nodes, 2522 links, 
+7922 OD pairs
+930 2522
+selected 93 nodes as xfc using method='betweenness'
+Experiment(self.input_path='.//inputs/Barcelona/'
+self.output_path='.//outputs/Barcelona/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+930 nodes, 2522 links, 
+7922 OD pairs
+930 2522
+selected 93 nodes as xfc using method='eigenvector'
+Experiment(self.input_path='.//inputs/Barcelona/'
+self.output_path='.//outputs/Barcelona/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+930 nodes, 2522 links, 
+7922 OD pairs
+930 2522
+selected 93 nodes as xfc using method='closeness'
+Experiment(self.input_path='.//inputs/Barcelona/'
+self.output_path='.//outputs/Barcelona/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+930 nodes, 2522 links, 
+7922 OD pairs
+930 2522
+selected 93 nodes as xfc using method='weighted_betweenness'
+Experiment(self.input_path='.//inputs/Barcelona/'
+self.output_path='.//outputs/Barcelona/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+930 nodes, 2522 links, 
+7922 OD pairs
+930 2522
+selected 93 nodes as xfc using method='adjusted_degree'
+Experiment(self.input_path='.//inputs/Barcelona/'
+self.output_path='.//outputs/Barcelona/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+930 nodes, 2522 links, 
+7922 OD pairs
+930 2522
+0 / 93
+1 / 93
+2 / 93
+3 / 93
+4 / 93
+5 / 93
+6 / 93
+7 / 93
+8 / 93
+9 / 93
+10 / 93
+11 / 93
+12 / 93
+13 / 93
+14 / 93
+15 / 93
+16 / 93
+17 / 93
+18 / 93
+19 / 93
+20 / 93
+21 / 93
+22 / 93
+23 / 93
+24 / 93
+25 / 93
+26 / 93
+27 / 93
+28 / 93
+29 / 93
+30 / 93
+31 / 93
+32 / 93
+33 / 93
+34 / 93
+35 / 93
+36 / 93
+37 / 93
+38 / 93
+39 / 93
+40 / 93
+41 / 93
+42 / 93
+43 / 93
+44 / 93
+45 / 93
+46 / 93
+47 / 93
+48 / 93
+49 / 93
+50 / 93
+51 / 93
+52 / 93
+53 / 93
+54 / 93
+55 / 93
+56 / 93
+57 / 93
+58 / 93
+59 / 93
+60 / 93
+61 / 93
+62 / 93
+63 / 93
+64 / 93
+65 / 93
+66 / 93
+67 / 93
+68 / 93
+69 / 93
+70 / 93
+71 / 93
+72 / 93
+73 / 93
+74 / 93
+75 / 93
+76 / 93
+77 / 93
+78 / 93
+79 / 93
+80 / 93
+81 / 93
+82 / 93
+83 / 93
+84 / 93
+85 / 93
+86 / 93
+87 / 93
+88 / 93
+89 / 93
+90 / 93
+91 / 93
+92 / 93
+selected 93 nodes as xfc using method='adjusted_betweenness'
+Experiment(self.input_path='.//inputs/Barcelona/'
+self.output_path='.//outputs/Barcelona/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+930 nodes, 2522 links, 
+7922 OD pairs
+Experiment(self.input_path='.//inputs/Barcelona/'
+self.output_path='.//outputs/Barcelona/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+930 nodes, 2522 links, 
+7922 OD pairs
+Experiment(self.input_path='.//inputs/Barcelona/'
+self.output_path='.//outputs/Barcelona/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+930 nodes, 2522 links, 
+7922 OD pairs
+Experiment(self.input_path='.//inputs/Barcelona/'
+self.output_path='.//outputs/Barcelona/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+4 nodes, 5 links, 
+1 OD pairs
+4 5
+selected 1 nodes as xfc using method='degree'
+Experiment(self.input_path='.//inputs/Braess/'
+self.output_path='.//outputs/Braess/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+4 nodes, 5 links, 
+1 OD pairs
+4 5
+selected 1 nodes as xfc using method='betweenness'
+Experiment(self.input_path='.//inputs/Braess/'
+self.output_path='.//outputs/Braess/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+4 nodes, 5 links, 
+1 OD pairs
+4 5
+selected 1 nodes as xfc using method='eigenvector'
+Experiment(self.input_path='.//inputs/Braess/'
+self.output_path='.//outputs/Braess/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+4 nodes, 5 links, 
+1 OD pairs
+4 5
+selected 1 nodes as xfc using method='closeness'
+Experiment(self.input_path='.//inputs/Braess/'
+self.output_path='.//outputs/Braess/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+4 nodes, 5 links, 
+1 OD pairs
+4 5
+selected 1 nodes as xfc using method='weighted_betweenness'
+Experiment(self.input_path='.//inputs/Braess/'
+self.output_path='.//outputs/Braess/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+4 nodes, 5 links, 
+1 OD pairs
+4 5
+selected 1 nodes as xfc using method='adjusted_degree'
+Experiment(self.input_path='.//inputs/Braess/'
+self.output_path='.//outputs/Braess/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+4 nodes, 5 links, 
+1 OD pairs
+4 5
+0 / 1
+selected 1 nodes as xfc using method='adjusted_betweenness'
+Experiment(self.input_path='.//inputs/Braess/'
+self.output_path='.//outputs/Braess/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+4 nodes, 5 links, 
+1 OD pairs
+Experiment(self.input_path='.//inputs/Braess/'
+self.output_path='.//outputs/Braess/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+4 nodes, 5 links, 
+1 OD pairs
+Experiment(self.input_path='.//inputs/Braess/'
+self.output_path='.//outputs/Braess/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+4 nodes, 5 links, 
+1 OD pairs
+Experiment(self.input_path='.//inputs/Braess/'
+self.output_path='.//outputs/Braess/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+933 nodes, 2950 links, 
+142890 OD pairs
+933 2950
+selected 93 nodes as xfc using method='degree'
+Experiment(self.input_path='.//inputs/ChicagoSketch/'
+self.output_path='.//outputs/ChicagoSketch/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+933 nodes, 2950 links, 
+142890 OD pairs
+933 2950
+selected 93 nodes as xfc using method='betweenness'
+Experiment(self.input_path='.//inputs/ChicagoSketch/'
+self.output_path='.//outputs/ChicagoSketch/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+933 nodes, 2950 links, 
+142890 OD pairs
+933 2950
+selected 93 nodes as xfc using method='eigenvector'
+Experiment(self.input_path='.//inputs/ChicagoSketch/'
+self.output_path='.//outputs/ChicagoSketch/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+933 nodes, 2950 links, 
+142890 OD pairs
+933 2950
+selected 93 nodes as xfc using method='closeness'
+Experiment(self.input_path='.//inputs/ChicagoSketch/'
+self.output_path='.//outputs/ChicagoSketch/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+933 nodes, 2950 links, 
+142890 OD pairs
+933 2950
+selected 93 nodes as xfc using method='weighted_betweenness'
+Experiment(self.input_path='.//inputs/ChicagoSketch/'
+self.output_path='.//outputs/ChicagoSketch/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+933 nodes, 2950 links, 
+142890 OD pairs
+933 2950
+selected 93 nodes as xfc using method='adjusted_degree'
+Experiment(self.input_path='.//inputs/ChicagoSketch/'
+self.output_path='.//outputs/ChicagoSketch/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+933 nodes, 2950 links, 
+142890 OD pairs
+933 2950
+0 / 93
+1 / 93
+2 / 93
+3 / 93
+4 / 93
+5 / 93
+6 / 93
+7 / 93
+8 / 93
+9 / 93
+10 / 93
+11 / 93
+12 / 93
+13 / 93
+14 / 93
+15 / 93
+16 / 93
+17 / 93
+18 / 93
+19 / 93
+20 / 93
+21 / 93
+22 / 93
+23 / 93
+24 / 93
+25 / 93
+26 / 93
+27 / 93
+28 / 93
+29 / 93
+30 / 93
+31 / 93
+32 / 93
+33 / 93
+34 / 93
+35 / 93
+36 / 93
+37 / 93
+38 / 93
+39 / 93
+40 / 93
+41 / 93
+42 / 93
+43 / 93
+44 / 93
+45 / 93
+46 / 93
+47 / 93
+48 / 93
+49 / 93
+50 / 93
+51 / 93
+52 / 93
+53 / 93
+54 / 93
+55 / 93
+56 / 93
+57 / 93
+58 / 93
+59 / 93
+60 / 93
+61 / 93
+62 / 93
+63 / 93
+64 / 93
+65 / 93
+66 / 93
+67 / 93
+68 / 93
+69 / 93
+70 / 93
+71 / 93
+72 / 93
+73 / 93
+74 / 93
+75 / 93
+76 / 93
+77 / 93
+78 / 93
+79 / 93
+80 / 93
+81 / 93
+82 / 93
+83 / 93
+84 / 93
+85 / 93
+86 / 93
+87 / 93
+88 / 93
+89 / 93
+90 / 93
+91 / 93
+92 / 93
+selected 93 nodes as xfc using method='adjusted_betweenness'
+Experiment(self.input_path='.//inputs/ChicagoSketch/'
+self.output_path='.//outputs/ChicagoSketch/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+933 nodes, 2950 links, 
+142890 OD pairs
+Experiment(self.input_path='.//inputs/ChicagoSketch/'
+self.output_path='.//outputs/ChicagoSketch/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+933 nodes, 2950 links, 
+142890 OD pairs
+Experiment(self.input_path='.//inputs/ChicagoSketch/'
+self.output_path='.//outputs/ChicagoSketch/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+933 nodes, 2950 links, 
+142890 OD pairs
+Experiment(self.input_path='.//inputs/ChicagoSketch/'
+self.output_path='.//outputs/ChicagoSketch/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+74 nodes, 258 links, 
+5476 OD pairs
+74 258
+selected 7 nodes as xfc using method='degree'
+Experiment(self.input_path='.//inputs/EMA/'
+self.output_path='.//outputs/EMA/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+74 nodes, 258 links, 
+5476 OD pairs
+74 258
+selected 7 nodes as xfc using method='betweenness'
+Experiment(self.input_path='.//inputs/EMA/'
+self.output_path='.//outputs/EMA/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+74 nodes, 258 links, 
+5476 OD pairs
+74 258
+selected 7 nodes as xfc using method='eigenvector'
+Experiment(self.input_path='.//inputs/EMA/'
+self.output_path='.//outputs/EMA/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+74 nodes, 258 links, 
+5476 OD pairs
+74 258
+selected 7 nodes as xfc using method='closeness'
+Experiment(self.input_path='.//inputs/EMA/'
+self.output_path='.//outputs/EMA/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+74 nodes, 258 links, 
+5476 OD pairs
+74 258
+selected 7 nodes as xfc using method='weighted_betweenness'
+Experiment(self.input_path='.//inputs/EMA/'
+self.output_path='.//outputs/EMA/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+74 nodes, 258 links, 
+5476 OD pairs
+74 258
+selected 7 nodes as xfc using method='adjusted_degree'
+Experiment(self.input_path='.//inputs/EMA/'
+self.output_path='.//outputs/EMA/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+74 nodes, 258 links, 
+5476 OD pairs
+74 258
+0 / 7
+1 / 7
+2 / 7
+3 / 7
+4 / 7
+5 / 7
+6 / 7
+selected 7 nodes as xfc using method='adjusted_betweenness'
+Experiment(self.input_path='.//inputs/EMA/'
+self.output_path='.//outputs/EMA/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+74 nodes, 258 links, 
+5476 OD pairs
+Experiment(self.input_path='.//inputs/EMA/'
+self.output_path='.//outputs/EMA/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+74 nodes, 258 links, 
+5476 OD pairs
+Experiment(self.input_path='.//inputs/EMA/'
+self.output_path='.//outputs/EMA/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+74 nodes, 258 links, 
+5476 OD pairs
+Experiment(self.input_path='.//inputs/EMA/'
+self.output_path='.//outputs/EMA/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+24 nodes, 76 links, 
+576 OD pairs
+24 76
+selected 2 nodes as xfc using method='degree'
+Experiment(self.input_path='.//inputs/SiouxFalls/'
+self.output_path='.//outputs/SiouxFalls/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+24 nodes, 76 links, 
+576 OD pairs
+24 76
+selected 2 nodes as xfc using method='betweenness'
+Experiment(self.input_path='.//inputs/SiouxFalls/'
+self.output_path='.//outputs/SiouxFalls/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+24 nodes, 76 links, 
+576 OD pairs
+24 76
+selected 2 nodes as xfc using method='eigenvector'
+Experiment(self.input_path='.//inputs/SiouxFalls/'
+self.output_path='.//outputs/SiouxFalls/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+24 nodes, 76 links, 
+576 OD pairs
+24 76
+selected 2 nodes as xfc using method='closeness'
+Experiment(self.input_path='.//inputs/SiouxFalls/'
+self.output_path='.//outputs/SiouxFalls/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+24 nodes, 76 links, 
+576 OD pairs
+24 76
+selected 2 nodes as xfc using method='weighted_betweenness'
+Experiment(self.input_path='.//inputs/SiouxFalls/'
+self.output_path='.//outputs/SiouxFalls/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+24 nodes, 76 links, 
+576 OD pairs
+24 76
+selected 2 nodes as xfc using method='adjusted_degree'
+Experiment(self.input_path='.//inputs/SiouxFalls/'
+self.output_path='.//outputs/SiouxFalls/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+24 nodes, 76 links, 
+576 OD pairs
+24 76
+0 / 2
+1 / 2
+selected 2 nodes as xfc using method='adjusted_betweenness'
+Experiment(self.input_path='.//inputs/SiouxFalls/'
+self.output_path='.//outputs/SiouxFalls/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+24 nodes, 76 links, 
+576 OD pairs
+Experiment(self.input_path='.//inputs/SiouxFalls/'
+self.output_path='.//outputs/SiouxFalls/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+24 nodes, 76 links, 
+576 OD pairs
+Experiment(self.input_path='.//inputs/SiouxFalls/'
+self.output_path='.//outputs/SiouxFalls/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+24 nodes, 76 links, 
+576 OD pairs
+Experiment(self.input_path='.//inputs/SiouxFalls/'
+self.output_path='.//outputs/SiouxFalls/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+1040 nodes, 2836 links, 
+4345 OD pairs
+1040 2836
+selected 104 nodes as xfc using method='degree'
+Experiment(self.input_path='.//inputs/Winnipeg/'
+self.output_path='.//outputs/Winnipeg/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+1040 nodes, 2836 links, 
+4345 OD pairs
+1040 2836
+selected 104 nodes as xfc using method='betweenness'
+Experiment(self.input_path='.//inputs/Winnipeg/'
+self.output_path='.//outputs/Winnipeg/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+1040 nodes, 2836 links, 
+4345 OD pairs
+1040 2836
+selected 104 nodes as xfc using method='eigenvector'
+Experiment(self.input_path='.//inputs/Winnipeg/'
+self.output_path='.//outputs/Winnipeg/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+1040 nodes, 2836 links, 
+4345 OD pairs
+1040 2836
+selected 104 nodes as xfc using method='closeness'
+Experiment(self.input_path='.//inputs/Winnipeg/'
+self.output_path='.//outputs/Winnipeg/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+1040 nodes, 2836 links, 
+4345 OD pairs
+1040 2836
+selected 104 nodes as xfc using method='weighted_betweenness'
+Experiment(self.input_path='.//inputs/Winnipeg/'
+self.output_path='.//outputs/Winnipeg/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+1040 nodes, 2836 links, 
+4345 OD pairs
+1040 2836
+selected 104 nodes as xfc using method='adjusted_degree'
+Experiment(self.input_path='.//inputs/Winnipeg/'
+self.output_path='.//outputs/Winnipeg/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+1040 nodes, 2836 links, 
+4345 OD pairs
+1040 2836
+0 / 104
+1 / 104
+2 / 104
+3 / 104
+4 / 104
+5 / 104
+6 / 104
+7 / 104
+8 / 104
+9 / 104
+10 / 104
+11 / 104
+12 / 104
+13 / 104
+14 / 104
+15 / 104
+16 / 104
+17 / 104
+18 / 104
+19 / 104
+20 / 104
+21 / 104
+22 / 104
+23 / 104
+24 / 104
+25 / 104
+26 / 104
+27 / 104
+28 / 104
+29 / 104
+30 / 104
+31 / 104
+32 / 104
+33 / 104
+34 / 104
+35 / 104
+36 / 104
+37 / 104
+38 / 104
+39 / 104
+40 / 104
+41 / 104
+42 / 104
+43 / 104
+44 / 104
+45 / 104
+46 / 104
+47 / 104
+48 / 104
+49 / 104
+50 / 104
+51 / 104
+52 / 104
+53 / 104
+54 / 104
+55 / 104
+56 / 104
+57 / 104
+58 / 104
+59 / 104
+60 / 104
+61 / 104
+62 / 104
+63 / 104
+64 / 104
+65 / 104
+66 / 104
+67 / 104
+68 / 104
+69 / 104
+70 / 104
+71 / 104
+72 / 104
+73 / 104
+74 / 104
+75 / 104
+76 / 104
+77 / 104
+78 / 104
+79 / 104
+80 / 104
+81 / 104
+82 / 104
+83 / 104
+84 / 104
+85 / 104
+86 / 104
+87 / 104
+88 / 104
+89 / 104
+90 / 104
+91 / 104
+92 / 104
+93 / 104
+94 / 104
+95 / 104
+96 / 104
+97 / 104
+98 / 104
+99 / 104
+100 / 104
+101 / 104
+102 / 104
+103 / 104
+selected 104 nodes as xfc using method='adjusted_betweenness'
+Experiment(self.input_path='.//inputs/Winnipeg/'
+self.output_path='.//outputs/Winnipeg/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+1040 nodes, 2836 links, 
+4345 OD pairs
+Experiment(self.input_path='.//inputs/Winnipeg/'
+self.output_path='.//outputs/Winnipeg/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+1040 nodes, 2836 links, 
+4345 OD pairs
+Experiment(self.input_path='.//inputs/Winnipeg/'
+self.output_path='.//outputs/Winnipeg/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+1040 nodes, 2836 links, 
+4345 OD pairs
+Experiment(self.input_path='.//inputs/Winnipeg/'
+self.output_path='.//outputs/Winnipeg/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
