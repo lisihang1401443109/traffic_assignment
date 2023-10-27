@@ -11,5 +11,5 @@
 #SBATCH --mail-user=sli13@scu.edu
 
 module load Anaconda3
-conda activate traffic
+conda activate traf
 python /WAVE/users/unix/sli13/workspace/traffic_assignment/test.py > log

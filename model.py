@@ -396,7 +396,7 @@ class Problem:
             n_nodes = int(n)
         
         # temporal
-        if method == 'full_greedy':
+        if True or method == 'full_greedy':
             n_nodes = min(n_nodes, 10)
         
         if method in ['degree', 'betweenness', 'eigenvector', 'closeness', 'weighted_betweenness', 'adjusted_degree', 'adjusted_betweenness']:
@@ -447,6 +447,7 @@ class Problem:
                 node_cost[node] = cost
                 node.XFC = False
             sorted_nodes = sorted(self.graph.nodes, key=lambda x: node_cost[x], reverse=True)
+            print(sorted_nodes[:n_nodes])
             return sorted_nodes[:n_nodes]
         elif mode == 'full':
             selected_nodes = []
@@ -464,6 +465,7 @@ class Problem:
                 min_node = min(self.graph.nodes, key=lambda x: node_cost[x])
                 min_node.XFC = True
                 selected_nodes.append(min_node)
+                print(selected_nodes)
             return selected_nodes
         else:
             return []
