@@ -5,6 +5,7 @@ import pandas as pd
 from heapq import heappop, heappush, heapify
 from typing import TypedDict
 import random
+import os
 # import gurobipy as grb   #type: ignore
 # from gurobipy import GRB #type: ignore
 import networkx as nx
@@ -13,6 +14,8 @@ import time
 
 INFINITY = np.inf
 NAN = np.nan
+
+GUROBI_ERR = -12
 
 # creates an numpy array with shape as input initialized to infinity
 def infinities(shape) -> ndarray:
@@ -380,11 +383,12 @@ class Demands:
 
 class Problem:
 
-    def __init__(self, graph: Graph,  demands : Demands, xfc_set : list[int] | bool = []) -> None:
+    def __init__(self, graph: Graph,  demands : Demands, xfc_set : list[int] | bool = [], network_name : str = '') -> None:
         self.graph = graph
         self.demands = demands
         self.graph.assign_xfc(xfc_set) # type: ignore
         self.xfc_set = self.graph.xfc_list
+        self.network_name = network_name
 
     
     def determine_xfc(self, n : int | float, method='degree') -> None:
@@ -397,7 +401,7 @@ class Problem:
         
         # temporal
         if True or method == 'full_greedy':
-            n_nodes = min(n_nodes, 10)
+            n_nodes = min(n_nodes, 5)
         
         if method in ['degree', 'betweenness', 'eigenvector', 'closeness', 'weighted_betweenness', 'adjusted_degree', 'adjusted_betweenness']:
             self.xfc_set = self.graph.determine_xfc(n_nodes, method)
@@ -433,6 +437,27 @@ class Problem:
             self.graph.assign_xfc([node.id for node in self.xfc_set])
         elif method == 'full_greedy':
             self.xfc_set = self.xfc_init_greedy(n_nodes, mode='full')
+            self.graph.assign_xfc([node.id for node in self.xfc_set])
+        elif method == 'gurobi':
+            sol_file = f'/WAVE/users/unix/sli13/workspace/traffic_assignment/gurobi_sol/{self.network_name}_gurobi.sol'
+            gp_xfc_list = []
+            if not os.path.exists(sol_file):
+                self.xfc_set = GUROBI_ERR
+                print(self.xfc_set)
+                return
+                # self.graph.assign_xfc(GUROBI_ERR)
+            with open(sol_file, 'r') as f:
+                for line in f.readlines():
+                    if line.startswith('is_xfc'):
+                        node_id = int(line.split(']')[0].split('[')[-1])
+                        node = self.graph.node_dict[node_id]
+                        is_xfc = int(line.split(']')[-1])
+                        print(f'node: {node}, is_xfc: {is_xfc}')
+                        if is_xfc:
+                            gp_xfc_list.append(node)
+                    else:
+                        continue
+            self.xfc_set = gp_xfc_list
             self.graph.assign_xfc([node.id for node in self.xfc_set])
         else:
             print(f'undefined xfc initializing strategy \'{method}\'')
@@ -711,6 +736,10 @@ class Problem:
     def run(self, algorithm='dijkstra', alpha=0.1, threshold=0.001, maxIter = 100, method='automatic', xfc = [], verbose = False, proning = 0) -> dict[str, bool | int | float]:
         iteration_times = []
         iteration_number = 1
+        print(self.xfc_set)
+        if self.xfc_set == GUROBI_ERR:
+            print(f'Gurobi Error: {self.network_name}')
+            return {'converge': False, 'iteration': 0, 'alpha': 1.0, 'time_per_iteration': 0, 'total_cost':INFINITY, 'xfc_longest_distance': INFINITY }
 
         def optimal_func(alpha, proning = proning) -> float:
             time_start = time.time()

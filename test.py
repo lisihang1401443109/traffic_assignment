@@ -7,4 +7,4 @@ if __name__ == '__main__':
     # exp.p.determine_xfc(0.05)
     # exp.run()
     
-    runner.compare_xfc_result_vary_centralities('./', xfc_ratio = 0.05, proning = 0, out_alias = 'xfc_centralities_total_cost.json', centralities = ['degree', 'betweenness', 'eigenvector', 'closeness', 'weighted_betweenness', 'adjusted_degree', 'adjusted_betweenness', 'greedy', 'full_greedy', 'demand_in_out', 'demand_in_out_adj'], evaluation = 'total_cost')
+    runner.compare_xfc_result_vary_centralities('./', xfc_ratio = 0.05, proning = 0, out_alias = 'xfc_centralities_total_cost.json', centralities = ['gurobi'], evaluation = 'total_cost')

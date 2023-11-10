@@ -1,7 +1,7 @@
 416 nodes, 914 links, 
 1406 OD pairs
 416 914
-selected 20 nodes as xfc using method='degree'
+selected 5 nodes as xfc using method='degree'
 Experiment(self.input_path='.//inputs/Anaheim/'
 self.output_path='.//outputs/Anaheim/'
 self.algorithm='dijkstra'
@@ -14,7 +14,7 @@ self.xfc=True
 416 nodes, 914 links, 
 1406 OD pairs
 416 914
-selected 20 nodes as xfc using method='betweenness'
+selected 5 nodes as xfc using method='betweenness'
 Experiment(self.input_path='.//inputs/Anaheim/'
 self.output_path='.//outputs/Anaheim/'
 self.algorithm='dijkstra'
@@ -27,7 +27,7 @@ self.xfc=True
 416 nodes, 914 links, 
 1406 OD pairs
 416 914
-selected 20 nodes as xfc using method='eigenvector'
+selected 5 nodes as xfc using method='eigenvector'
 Experiment(self.input_path='.//inputs/Anaheim/'
 self.output_path='.//outputs/Anaheim/'
 self.algorithm='dijkstra'
@@ -40,7 +40,7 @@ self.xfc=True
 416 nodes, 914 links, 
 1406 OD pairs
 416 914
-selected 20 nodes as xfc using method='closeness'
+selected 5 nodes as xfc using method='closeness'
 Experiment(self.input_path='.//inputs/Anaheim/'
 self.output_path='.//outputs/Anaheim/'
 self.algorithm='dijkstra'
@@ -53,7 +53,7 @@ self.xfc=True
 416 nodes, 914 links, 
 1406 OD pairs
 416 914
-selected 20 nodes as xfc using method='weighted_betweenness'
+selected 5 nodes as xfc using method='weighted_betweenness'
 Experiment(self.input_path='.//inputs/Anaheim/'
 self.output_path='.//outputs/Anaheim/'
 self.algorithm='dijkstra'
@@ -66,7 +66,7 @@ self.xfc=True
 416 nodes, 914 links, 
 1406 OD pairs
 416 914
-selected 20 nodes as xfc using method='adjusted_degree'
+selected 5 nodes as xfc using method='adjusted_degree'
 Experiment(self.input_path='.//inputs/Anaheim/'
 self.output_path='.//outputs/Anaheim/'
 self.algorithm='dijkstra'
@@ -79,27 +79,12 @@ self.xfc=True
 416 nodes, 914 links, 
 1406 OD pairs
 416 914
-0 / 20
-1 / 20
-2 / 20
-3 / 20
-4 / 20
-5 / 20
-6 / 20
-7 / 20
-8 / 20
-9 / 20
-10 / 20
-11 / 20
-12 / 20
-13 / 20
-14 / 20
-15 / 20
-16 / 20
-17 / 20
-18 / 20
-19 / 20
-selected 20 nodes as xfc using method='adjusted_betweenness'
+0 / 5
+1 / 5
+2 / 5
+3 / 5
+4 / 5
+selected 5 nodes as xfc using method='adjusted_betweenness'
 Experiment(self.input_path='.//inputs/Anaheim/'
 self.output_path='.//outputs/Anaheim/'
 self.algorithm='dijkstra'
@@ -133,6 +118,7 @@ self.xfc=True
 )
 416 nodes, 914 links, 
 1406 OD pairs
+[Node(1), Node(117), Node(2), Node(87), Node(3)]
 Experiment(self.input_path='.//inputs/Anaheim/'
 self.output_path='.//outputs/Anaheim/'
 self.algorithm='dijkstra'
@@ -144,6 +130,11 @@ self.xfc=True
 )
 416 nodes, 914 links, 
 1406 OD pairs
+[Node(1)]
+[Node(1), Node(1)]
+[Node(1), Node(1), Node(1)]
+[Node(1), Node(1), Node(1), Node(1)]
+[Node(1), Node(1), Node(1), Node(1), Node(1)]
 Experiment(self.input_path='.//inputs/Anaheim/'
 self.output_path='.//outputs/Anaheim/'
 self.algorithm='dijkstra'
@@ -156,7 +147,7 @@ self.xfc=True
 930 nodes, 2522 links, 
 7922 OD pairs
 930 2522
-selected 46 nodes as xfc using method='degree'
+selected 5 nodes as xfc using method='degree'
 Experiment(self.input_path='.//inputs/Barcelona/'
 self.output_path='.//outputs/Barcelona/'
 self.algorithm='dijkstra'
@@ -169,7 +160,7 @@ self.xfc=True
 930 nodes, 2522 links, 
 7922 OD pairs
 930 2522
-selected 46 nodes as xfc using method='betweenness'
+selected 5 nodes as xfc using method='betweenness'
 Experiment(self.input_path='.//inputs/Barcelona/'
 self.output_path='.//outputs/Barcelona/'
 self.algorithm='dijkstra'
@@ -182,7 +173,7 @@ self.xfc=True
 930 nodes, 2522 links, 
 7922 OD pairs
 930 2522
-selected 46 nodes as xfc using method='eigenvector'
+selected 5 nodes as xfc using method='eigenvector'
 Experiment(self.input_path='.//inputs/Barcelona/'
 self.output_path='.//outputs/Barcelona/'
 self.algorithm='dijkstra'
@@ -195,7 +186,7 @@ self.xfc=True
 930 nodes, 2522 links, 
 7922 OD pairs
 930 2522
-selected 46 nodes as xfc using method='closeness'
+selected 5 nodes as xfc using method='closeness'
 Experiment(self.input_path='.//inputs/Barcelona/'
 self.output_path='.//outputs/Barcelona/'
 self.algorithm='dijkstra'
@@ -208,7 +199,7 @@ self.xfc=True
 930 nodes, 2522 links, 
 7922 OD pairs
 930 2522
-selected 46 nodes as xfc using method='weighted_betweenness'
+selected 5 nodes as xfc using method='weighted_betweenness'
 Experiment(self.input_path='.//inputs/Barcelona/'
 self.output_path='.//outputs/Barcelona/'
 self.algorithm='dijkstra'
@@ -221,7 +212,7 @@ self.xfc=True
 930 nodes, 2522 links, 
 7922 OD pairs
 930 2522
-selected 46 nodes as xfc using method='adjusted_degree'
+selected 5 nodes as xfc using method='adjusted_degree'
 Experiment(self.input_path='.//inputs/Barcelona/'
 self.output_path='.//outputs/Barcelona/'
 self.algorithm='dijkstra'
@@ -234,53 +225,12 @@ self.xfc=True
 930 nodes, 2522 links, 
 7922 OD pairs
 930 2522
-0 / 46
-1 / 46
-2 / 46
-3 / 46
-4 / 46
-5 / 46
-6 / 46
-7 / 46
-8 / 46
-9 / 46
-10 / 46
-11 / 46
-12 / 46
-13 / 46
-14 / 46
-15 / 46
-16 / 46
-17 / 46
-18 / 46
-19 / 46
-20 / 46
-21 / 46
-22 / 46
-23 / 46
-24 / 46
-25 / 46
-26 / 46
-27 / 46
-28 / 46
-29 / 46
-30 / 46
-31 / 46
-32 / 46
-33 / 46
-34 / 46
-35 / 46
-36 / 46
-37 / 46
-38 / 46
-39 / 46
-40 / 46
-41 / 46
-42 / 46
-43 / 46
-44 / 46
-45 / 46
-selected 46 nodes as xfc using method='adjusted_betweenness'
+0 / 5
+1 / 5
+2 / 5
+3 / 5
+4 / 5
+selected 5 nodes as xfc using method='adjusted_betweenness'
 Experiment(self.input_path='.//inputs/Barcelona/'
 self.output_path='.//outputs/Barcelona/'
 self.algorithm='dijkstra'
@@ -314,6 +264,7 @@ self.xfc=True
 )
 930 nodes, 2522 links, 
 7922 OD pairs
+[Node(1), Node(290), Node(307), Node(316), Node(2)]
 Experiment(self.input_path='.//inputs/Barcelona/'
 self.output_path='.//outputs/Barcelona/'
 self.algorithm='dijkstra'
@@ -325,6 +276,11 @@ self.xfc=True
 )
 930 nodes, 2522 links, 
 7922 OD pairs
+[Node(1)]
+[Node(1), Node(1)]
+[Node(1), Node(1), Node(1)]
+[Node(1), Node(1), Node(1), Node(1)]
+[Node(1), Node(1), Node(1), Node(1), Node(1)]
 Experiment(self.input_path='.//inputs/Barcelona/'
 self.output_path='.//outputs/Barcelona/'
 self.algorithm='dijkstra'
@@ -450,6 +406,7 @@ self.xfc=True
 )
 4 nodes, 5 links, 
 1 OD pairs
+[Node(1)]
 Experiment(self.input_path='.//inputs/Braess/'
 self.output_path='.//outputs/Braess/'
 self.algorithm='dijkstra'
@@ -461,6 +418,7 @@ self.xfc=True
 )
 4 nodes, 5 links, 
 1 OD pairs
+[Node(1)]
 Experiment(self.input_path='.//inputs/Braess/'
 self.output_path='.//outputs/Braess/'
 self.algorithm='dijkstra'
@@ -473,7 +431,7 @@ self.xfc=True
 933 nodes, 2950 links, 
 142890 OD pairs
 933 2950
-selected 46 nodes as xfc using method='degree'
+selected 5 nodes as xfc using method='degree'
 Experiment(self.input_path='.//inputs/ChicagoSketch/'
 self.output_path='.//outputs/ChicagoSketch/'
 self.algorithm='dijkstra'
@@ -486,7 +444,7 @@ self.xfc=True
 933 nodes, 2950 links, 
 142890 OD pairs
 933 2950
-selected 46 nodes as xfc using method='betweenness'
+selected 5 nodes as xfc using method='betweenness'
 Experiment(self.input_path='.//inputs/ChicagoSketch/'
 self.output_path='.//outputs/ChicagoSketch/'
 self.algorithm='dijkstra'
@@ -499,7 +457,7 @@ self.xfc=True
 933 nodes, 2950 links, 
 142890 OD pairs
 933 2950
-selected 46 nodes as xfc using method='eigenvector'
+selected 5 nodes as xfc using method='eigenvector'
 Experiment(self.input_path='.//inputs/ChicagoSketch/'
 self.output_path='.//outputs/ChicagoSketch/'
 self.algorithm='dijkstra'
@@ -512,7 +470,7 @@ self.xfc=True
 933 nodes, 2950 links, 
 142890 OD pairs
 933 2950
-selected 46 nodes as xfc using method='closeness'
+selected 5 nodes as xfc using method='closeness'
 Experiment(self.input_path='.//inputs/ChicagoSketch/'
 self.output_path='.//outputs/ChicagoSketch/'
 self.algorithm='dijkstra'
@@ -525,7 +483,7 @@ self.xfc=True
 933 nodes, 2950 links, 
 142890 OD pairs
 933 2950
-selected 46 nodes as xfc using method='weighted_betweenness'
+selected 5 nodes as xfc using method='weighted_betweenness'
 Experiment(self.input_path='.//inputs/ChicagoSketch/'
 self.output_path='.//outputs/ChicagoSketch/'
 self.algorithm='dijkstra'
@@ -538,7 +496,7 @@ self.xfc=True
 933 nodes, 2950 links, 
 142890 OD pairs
 933 2950
-selected 46 nodes as xfc using method='adjusted_degree'
+selected 5 nodes as xfc using method='adjusted_degree'
 Experiment(self.input_path='.//inputs/ChicagoSketch/'
 self.output_path='.//outputs/ChicagoSketch/'
 self.algorithm='dijkstra'
@@ -551,53 +509,12 @@ self.xfc=True
 933 nodes, 2950 links, 
 142890 OD pairs
 933 2950
-0 / 46
-1 / 46
-2 / 46
-3 / 46
-4 / 46
-5 / 46
-6 / 46
-7 / 46
-8 / 46
-9 / 46
-10 / 46
-11 / 46
-12 / 46
-13 / 46
-14 / 46
-15 / 46
-16 / 46
-17 / 46
-18 / 46
-19 / 46
-20 / 46
-21 / 46
-22 / 46
-23 / 46
-24 / 46
-25 / 46
-26 / 46
-27 / 46
-28 / 46
-29 / 46
-30 / 46
-31 / 46
-32 / 46
-33 / 46
-34 / 46
-35 / 46
-36 / 46
-37 / 46
-38 / 46
-39 / 46
-40 / 46
-41 / 46
-42 / 46
-43 / 46
-44 / 46
-45 / 46
-selected 46 nodes as xfc using method='adjusted_betweenness'
+0 / 5
+1 / 5
+2 / 5
+3 / 5
+4 / 5
+selected 5 nodes as xfc using method='adjusted_betweenness'
 Experiment(self.input_path='.//inputs/ChicagoSketch/'
 self.output_path='.//outputs/ChicagoSketch/'
 self.algorithm='dijkstra'
@@ -631,6 +548,7 @@ self.xfc=True
 )
 933 nodes, 2950 links, 
 142890 OD pairs
+[Node(1), Node(547), Node(2), Node(548), Node(3)]
 Experiment(self.input_path='.//inputs/ChicagoSketch/'
 self.output_path='.//outputs/ChicagoSketch/'
 self.algorithm='dijkstra'
@@ -642,6 +560,11 @@ self.xfc=True
 )
 933 nodes, 2950 links, 
 142890 OD pairs
+[Node(1)]
+[Node(1), Node(1)]
+[Node(1), Node(1), Node(1)]
+[Node(1), Node(1), Node(1), Node(1)]
+[Node(1), Node(1), Node(1), Node(1), Node(1)]
 Experiment(self.input_path='.//inputs/ChicagoSketch/'
 self.output_path='.//outputs/ChicagoSketch/'
 self.algorithm='dijkstra'
@@ -769,6 +692,7 @@ self.xfc=True
 )
 74 nodes, 258 links, 
 5476 OD pairs
+[Node(1), Node(3), Node(7)]
 Experiment(self.input_path='.//inputs/EMA/'
 self.output_path='.//outputs/EMA/'
 self.algorithm='dijkstra'
@@ -780,6 +704,9 @@ self.xfc=True
 )
 74 nodes, 258 links, 
 5476 OD pairs
+[Node(1)]
+[Node(1), Node(1)]
+[Node(1), Node(1), Node(1)]
 Experiment(self.input_path='.//inputs/EMA/'
 self.output_path='.//outputs/EMA/'
 self.algorithm='dijkstra'
@@ -905,6 +832,7 @@ self.xfc=True
 )
 24 nodes, 76 links, 
 576 OD pairs
+[Node(1)]
 Experiment(self.input_path='.//inputs/SiouxFalls/'
 self.output_path='.//outputs/SiouxFalls/'
 self.algorithm='dijkstra'
@@ -916,6 +844,7 @@ self.xfc=True
 )
 24 nodes, 76 links, 
 576 OD pairs
+[Node(1)]
 Experiment(self.input_path='.//inputs/SiouxFalls/'
 self.output_path='.//outputs/SiouxFalls/'
 self.algorithm='dijkstra'
@@ -928,7 +857,7 @@ self.xfc=True
 1040 nodes, 2836 links, 
 4345 OD pairs
 1040 2836
-selected 52 nodes as xfc using method='degree'
+selected 5 nodes as xfc using method='degree'
 Experiment(self.input_path='.//inputs/Winnipeg/'
 self.output_path='.//outputs/Winnipeg/'
 self.algorithm='dijkstra'
@@ -941,7 +870,7 @@ self.xfc=True
 1040 nodes, 2836 links, 
 4345 OD pairs
 1040 2836
-selected 52 nodes as xfc using method='betweenness'
+selected 5 nodes as xfc using method='betweenness'
 Experiment(self.input_path='.//inputs/Winnipeg/'
 self.output_path='.//outputs/Winnipeg/'
 self.algorithm='dijkstra'
@@ -954,7 +883,7 @@ self.xfc=True
 1040 nodes, 2836 links, 
 4345 OD pairs
 1040 2836
-selected 52 nodes as xfc using method='eigenvector'
+selected 5 nodes as xfc using method='eigenvector'
 Experiment(self.input_path='.//inputs/Winnipeg/'
 self.output_path='.//outputs/Winnipeg/'
 self.algorithm='dijkstra'
@@ -967,7 +896,7 @@ self.xfc=True
 1040 nodes, 2836 links, 
 4345 OD pairs
 1040 2836
-selected 52 nodes as xfc using method='closeness'
+selected 5 nodes as xfc using method='closeness'
 Experiment(self.input_path='.//inputs/Winnipeg/'
 self.output_path='.//outputs/Winnipeg/'
 self.algorithm='dijkstra'
@@ -980,7 +909,7 @@ self.xfc=True
 1040 nodes, 2836 links, 
 4345 OD pairs
 1040 2836
-selected 52 nodes as xfc using method='weighted_betweenness'
+selected 5 nodes as xfc using method='weighted_betweenness'
 Experiment(self.input_path='.//inputs/Winnipeg/'
 self.output_path='.//outputs/Winnipeg/'
 self.algorithm='dijkstra'
@@ -993,7 +922,7 @@ self.xfc=True
 1040 nodes, 2836 links, 
 4345 OD pairs
 1040 2836
-selected 52 nodes as xfc using method='adjusted_degree'
+selected 5 nodes as xfc using method='adjusted_degree'
 Experiment(self.input_path='.//inputs/Winnipeg/'
 self.output_path='.//outputs/Winnipeg/'
 self.algorithm='dijkstra'
@@ -1006,59 +935,12 @@ self.xfc=True
 1040 nodes, 2836 links, 
 4345 OD pairs
 1040 2836
-0 / 52
-1 / 52
-2 / 52
-3 / 52
-4 / 52
-5 / 52
-6 / 52
-7 / 52
-8 / 52
-9 / 52
-10 / 52
-11 / 52
-12 / 52
-13 / 52
-14 / 52
-15 / 52
-16 / 52
-17 / 52
-18 / 52
-19 / 52
-20 / 52
-21 / 52
-22 / 52
-23 / 52
-24 / 52
-25 / 52
-26 / 52
-27 / 52
-28 / 52
-29 / 52
-30 / 52
-31 / 52
-32 / 52
-33 / 52
-34 / 52
-35 / 52
-36 / 52
-37 / 52
-38 / 52
-39 / 52
-40 / 52
-41 / 52
-42 / 52
-43 / 52
-44 / 52
-45 / 52
-46 / 52
-47 / 52
-48 / 52
-49 / 52
-50 / 52
-51 / 52
-selected 52 nodes as xfc using method='adjusted_betweenness'
+0 / 5
+1 / 5
+2 / 5
+3 / 5
+4 / 5
+selected 5 nodes as xfc using method='adjusted_betweenness'
 Experiment(self.input_path='.//inputs/Winnipeg/'
 self.output_path='.//outputs/Winnipeg/'
 self.algorithm='dijkstra'
@@ -1092,6 +974,7 @@ self.xfc=True
 )
 1040 nodes, 2836 links, 
 4345 OD pairs
+[Node(1), Node(854), Node(870), Node(2), Node(893)]
 Experiment(self.input_path='.//inputs/Winnipeg/'
 self.output_path='.//outputs/Winnipeg/'
 self.algorithm='dijkstra'
@@ -1103,6 +986,11 @@ self.xfc=True
 )
 1040 nodes, 2836 links, 
 4345 OD pairs
+[Node(1)]
+[Node(1), Node(1)]
+[Node(1), Node(1), Node(1)]
+[Node(1), Node(1), Node(1), Node(1)]
+[Node(1), Node(1), Node(1), Node(1), Node(1)]
 Experiment(self.input_path='.//inputs/Winnipeg/'
 self.output_path='.//outputs/Winnipeg/'
 self.algorithm='dijkstra'

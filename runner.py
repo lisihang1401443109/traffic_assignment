@@ -10,11 +10,11 @@ MAXITER = 100
 class Experiment:
     p : Problem
 
-    def __init__(self, input_path: str, output_path: str, algorithm = 'dijkstra', method = 'automatic', xfc = [], alpha=0.15, threshold=0.05, maxIter = 20, verbose = True, proning = 0) -> None:
+    def __init__(self, input_path: str, output_path: str, algorithm = 'dijkstra', method = 'automatic', xfc = [], alpha=0.15, threshold=0.05, maxIter = 20, verbose = True, proning = 0, network_name = '') -> None:
         G, D = create_graph_and_demands_from_inputs(*list(load_from_folder(input_path)))
         self.input_path = input_path
         self.output_path = output_path
-        self.p = Problem(G, D, xfc)
+        self.p = Problem(G, D, xfc, network_name)
         self.algorithm = algorithm
         self.method = method
         self.alpha = alpha
@@ -23,6 +23,7 @@ class Experiment:
         self.xfc = xfc
         self.verbose = verbose
         self.proning = proning
+        self.network_name = network_name
 
     def __str__(self) -> str:
         return f'Experiment({self.input_path=}\n{self.output_path=}\n{self.algorithm=}\n{self.method=}\n{self.alpha=}\n{self.threashold=}\n{self.maxIter=}\n{self.xfc=}\n)'
@@ -187,7 +188,7 @@ def compare_xfc_result_vary_centralities(root_folder = os.getcwd(), xfc_ratio = 
         in_path = root_folder + '/inputs/' + path + '/'
         out_path = root_folder + '/outputs/' + path + '/'
         for centrality in centralities:
-            experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', method = 'automatic', alpha=ALPHA, threshold=THRESHOLD, maxIter = MAXITER, xfc=True, verbose=False, proning = proning)
+            experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', method = 'automatic', alpha=ALPHA, threshold=THRESHOLD, maxIter = MAXITER, xfc=True, verbose=False, proning = proning, network_name = path)
             experiment.p.determine_xfc(xfc_ratio, method=centrality)
             results[centrality] = experiment.run()[evaluation]
             
@@ -229,7 +230,7 @@ def get_degrees_stats(root_folder = os.getcwd()):
     for path in os.listdir(root_folder + '/inputs'):
         in_path = root_folder + '/inputs/' + path + '/'
         out_path = root_folder + '/outputs/' + path + '/'
-    
+        print(path)
         experiment = Experiment(input_path = in_path, output_path = out_path, algorithm = 'dijkstra', method = 'automatic', alpha=ALPHA, threshold=THRESHOLD, maxIter = MAXITER, xfc=True, verbose=False)
         nx_graph = experiment.p.graph.get_networkx_graph()
         degrees = nx_graph.degree

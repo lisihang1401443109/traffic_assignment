@@ -89,6 +89,7 @@ def graph_exe_results_vary_centralities(file_name = 'xfc_centralities_1.json'):
             for xfc, value in data.items():
                 # data[xfc] = value/one
                 data[xfc] = one/value
+                print(xfc, one, value, data[xfc])
             # sorted_keys = sorted(data.keys(), key=lambda x : float(x))
             plt.plot(data.keys(), [data[key] for key in data.keys()], label = network)
         except:
