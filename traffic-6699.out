@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "/WAVE/users/unix/sli13/workspace/traffic_assignment/test.py", line 11, in <module>
+    runner.run_all_networks()
+  File "/WAVE/users/unix/sli13/workspace/traffic_assignment/runner.py", line 54, in run_all_networks
+    experiment.run()
+  File "/WAVE/users/unix/sli13/workspace/traffic_assignment/runner.py", line 36, in run
+    log = self.p.run(algorithm=self.algorithm, alpha=self.alpha, threshold= self.threashold, maxIter = self.maxIter, method = self.method, xfc=self.xfc, verbose = self.verbose, proning = self.proning)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/WAVE/users/unix/sli13/workspace/traffic_assignment/model.py", line 761, in run
+    iteration_times.append(optimal_func(alpha = 1.0))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/WAVE/users/unix/sli13/workspace/traffic_assignment/model.py", line 746, in optimal_func
+    if xfc > 0:
+       ^^^^^^^
+TypeError: '>' not supported between instances of 'list' and 'int'

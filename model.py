@@ -400,8 +400,8 @@ class Problem:
             n_nodes = int(n)
         
         # temporal
-        if True or method == 'full_greedy':
-            n_nodes = min(n_nodes, 5)
+        # if True or method == 'full_greedy':
+        #     n_nodes = min(n_nodes, 5)
         
         if method in ['degree', 'betweenness', 'eigenvector', 'closeness', 'weighted_betweenness', 'adjusted_degree', 'adjusted_betweenness']:
             self.xfc_set = self.graph.determine_xfc(n_nodes, method)
@@ -542,6 +542,7 @@ class Problem:
             if proning:
                 if proning >= 1:
                     n_xfc = min(proning, len(self.xfc_set))
+                    print(f'have {len(self.xfc_set)} xfc, proning to {n_xfc}')
                 else:
                     n_xfc = max(1, int((len(self.xfc_set)+1) * proning))
 
@@ -733,7 +734,7 @@ class Problem:
         
         
 
-    def run(self, algorithm='dijkstra', alpha=0.1, threshold=0.001, maxIter = 100, method='automatic', xfc = [], verbose = False, proning = 0) -> dict[str, bool | int | float]:
+    def run(self, algorithm='dijkstra', alpha=0.1, threshold=0.001, maxIter = 100, method='automatic', xfc = 0, verbose = False, proning = 0) -> dict[str, bool | int | float]:
         iteration_times = []
         iteration_number = 1
         print(self.xfc_set)
@@ -760,7 +761,7 @@ class Problem:
 
         iteration_times.append(optimal_func(alpha = 1.0))
         if iteration_times[-1] < 0:
-            return {'converge': False, 'iteration': 0, 'alpha': 1.0, 'time_per_iteration': 0, 'total_cost':INFINITY, 'xfc_longest_distance': INFINITY }
+            return {'converge': False, 'iteration': 0, 'alpha': 1.0, 'time_per_iteration': 0, 'total_cost':INFINITY, 'xfc_longest_distance': INFINITY, 'num_xfc': 0 }
         time_before = 0
         time_after = self.get_total_time()
         gap = 1
@@ -769,22 +770,22 @@ class Problem:
                 print(f'{iteration_number=}')
             iteration_times.append(optimal_func(alpha = (1/iteration_number) if method == 'automatic' else alpha))
             if iteration_times[-1] < 0:
-                return {'converge': False, 'iteration': iteration_number, 'alpha': alpha, 'time_per_iteration': sum(iteration_times)/len(iteration_times), 'total_cost': INFINITY, 'xfc_longest_distance': INFINITY }
+                return {'converge': False, 'iteration': iteration_number, 'alpha': alpha, 'time_per_iteration': sum(iteration_times)/len(iteration_times), 'total_cost': INFINITY, 'xfc_longest_distance': INFINITY, 'num_xfc': 0 }
             time_before = time_after
             time_after = self.get_total_time()
             if time_after == 0.0:
-                return {'converge': False, 'iteration': iteration_number, 'alpha': alpha, 'time_per_iteration': sum(iteration_times)/len(iteration_times), 'total_cost': INFINITY, 'xfc_longest_distance': INFINITY }
+                return {'converge': False, 'iteration': iteration_number, 'alpha': alpha, 'time_per_iteration': sum(iteration_times)/len(iteration_times), 'total_cost': INFINITY, 'xfc_longest_distance': INFINITY, 'num_xfc': 0 }
             gap = (time_before/time_after) - 1
             if verbose:
                 print(f'{time_after=}, {time_before=}, {gap=}')
         if iteration_number >= maxIter:
             if verbose:
                 print('max iter reached without convergence')
-            return {'converge': False, 'iteration': iteration_number, 'alpha': alpha, 'time_per_iteration': sum(iteration_times)/len(iteration_times), 'total_cost': self.get_total_time(), 'xfc_longest_distance': self.longest_xfc_distance() }
+            return {'converge': False, 'iteration': iteration_number, 'alpha': alpha, 'time_per_iteration': sum(iteration_times)/len(iteration_times), 'total_cost': self.get_total_time(), 'xfc_longest_distance': 0 if xfc == 0 else self.longest_xfc_distance(), 'num_xfc': 0 if xfc == 0 else len(self.xfc_set) }
         else:
             if verbose:
                 print(f'converged in {iteration_number} iterations')
-            return {'converge': True, 'iteration': iteration_number, 'alpha': alpha, 'time_per_iteration': sum(iteration_times)/len(iteration_times), 'total_cost': self.get_total_time(), 'xfc_longest_distance': self.longest_xfc_distance() }
+            return {'converge': True, 'iteration': iteration_number, 'alpha': alpha, 'time_per_iteration': sum(iteration_times)/len(iteration_times), 'total_cost': self.get_total_time(), 'xfc_longest_distance': 0 if xfc == 0 else self.longest_xfc_distance(), 'num_xfc': 0 if xfc == 0 else len(self.xfc_set) }
 
 
     # def get_gp_model(self, num_xfc):

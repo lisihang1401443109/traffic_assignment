@@ -1,0 +1,42 @@
+{
+    "0": {
+        "converge": true,
+        "iteration": 75,
+        "alpha": 0.15,
+        "time_per_iteration": 7.517685519682394,
+        "total_cost": 12680639329.001514,
+        "xfc_longest_distance": 3886.3471570225706
+    },
+    "20": {
+        "converge": false,
+        "iteration": 100,
+        "alpha": 0.15,
+        "time_per_iteration": 7.295037837943646,
+        "total_cost": 11424492252.446476,
+        "xfc_longest_distance": 4187.201591972332
+    },
+    "10": {
+        "converge": false,
+        "iteration": 100,
+        "alpha": 0.15,
+        "time_per_iteration": 7.293136933837274,
+        "total_cost": 11424492252.446476,
+        "xfc_longest_distance": 4187.201591972332
+    },
+    "5": {
+        "converge": false,
+        "iteration": 100,
+        "alpha": 0.15,
+        "time_per_iteration": 7.237581200069851,
+        "total_cost": 11424492252.446476,
+        "xfc_longest_distance": 4187.201591972332
+    },
+    "1": {
+        "converge": true,
+        "iteration": 83,
+        "alpha": 0.15,
+        "time_per_iteration": 7.572754505203991,
+        "total_cost": 13864334538.27502,
+        "xfc_longest_distance": 4413.716094490583
+    }
+}

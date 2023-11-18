@@ -1,0 +1,575 @@
+running all xfc with alpha = 0.15, threshold = 0.001, maxIter = 100, xfc_ratio = [0.1, 0.2, 0.3, 0.4, 0.5]
+416 nodes, 914 links, 
+1406 OD pairs
+416 914
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/Anaheim/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/Anaheim/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(303), Node(337), Node(330), Node(266), Node(333)]
+416 nodes, 914 links, 
+1406 OD pairs
+416 914
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/Anaheim/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/Anaheim/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(303), Node(337), Node(330), Node(266), Node(333)]
+416 nodes, 914 links, 
+1406 OD pairs
+416 914
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/Anaheim/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/Anaheim/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(303), Node(337), Node(330), Node(266), Node(333)]
+416 nodes, 914 links, 
+1406 OD pairs
+416 914
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/Anaheim/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/Anaheim/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(303), Node(337), Node(330), Node(266), Node(333)]
+416 nodes, 914 links, 
+1406 OD pairs
+416 914
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/Anaheim/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/Anaheim/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(303), Node(337), Node(330), Node(266), Node(333)]
+416 nodes, 914 links, 
+1406 OD pairs
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/Anaheim/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/Anaheim/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=False
+)
+[]
+930 nodes, 2522 links, 
+7922 OD pairs
+930 2522
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/Barcelona/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/Barcelona/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(849), Node(322), Node(313), Node(304), Node(1005)]
+930 nodes, 2522 links, 
+7922 OD pairs
+930 2522
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/Barcelona/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/Barcelona/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(849), Node(322), Node(313), Node(304), Node(1005)]
+930 nodes, 2522 links, 
+7922 OD pairs
+930 2522
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/Barcelona/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/Barcelona/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(849), Node(322), Node(313), Node(304), Node(1005)]
+930 nodes, 2522 links, 
+7922 OD pairs
+930 2522
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/Barcelona/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/Barcelona/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(849), Node(322), Node(313), Node(304), Node(1005)]
+930 nodes, 2522 links, 
+7922 OD pairs
+930 2522
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/Barcelona/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/Barcelona/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(849), Node(322), Node(313), Node(304), Node(1005)]
+930 nodes, 2522 links, 
+7922 OD pairs
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/Barcelona/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/Barcelona/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=False
+)
+[]
+4 nodes, 5 links, 
+1 OD pairs
+4 5
+selected 1 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/Braess/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/Braess/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(3)]
+4 nodes, 5 links, 
+1 OD pairs
+4 5
+selected 1 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/Braess/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/Braess/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(3)]
+4 nodes, 5 links, 
+1 OD pairs
+4 5
+selected 1 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/Braess/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/Braess/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(3)]
+4 nodes, 5 links, 
+1 OD pairs
+4 5
+selected 1 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/Braess/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/Braess/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(3)]
+4 nodes, 5 links, 
+1 OD pairs
+4 5
+selected 2 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/Braess/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/Braess/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(3), Node(4)]
+4 nodes, 5 links, 
+1 OD pairs
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/Braess/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/Braess/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=False
+)
+[]
+933 nodes, 2950 links, 
+142890 OD pairs
+933 2950
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/ChicagoSketch/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/ChicagoSketch/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(584), Node(578), Node(743), Node(569), Node(622)]
+933 nodes, 2950 links, 
+142890 OD pairs
+933 2950
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/ChicagoSketch/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/ChicagoSketch/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(584), Node(578), Node(743), Node(569), Node(622)]
+933 nodes, 2950 links, 
+142890 OD pairs
+933 2950
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/ChicagoSketch/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/ChicagoSketch/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(584), Node(578), Node(743), Node(569), Node(622)]
+933 nodes, 2950 links, 
+142890 OD pairs
+933 2950
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/ChicagoSketch/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/ChicagoSketch/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(584), Node(578), Node(743), Node(569), Node(622)]
+933 nodes, 2950 links, 
+142890 OD pairs
+933 2950
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/ChicagoSketch/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/ChicagoSketch/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(584), Node(578), Node(743), Node(569), Node(622)]
+933 nodes, 2950 links, 
+142890 OD pairs
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/ChicagoSketch/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/ChicagoSketch/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=False
+)
+[]
+74 nodes, 258 links, 
+5476 OD pairs
+74 258
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/EMA/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/EMA/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(60), Node(22), Node(48), Node(49), Node(13)]
+74 nodes, 258 links, 
+5476 OD pairs
+74 258
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/EMA/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/EMA/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(60), Node(22), Node(48), Node(49), Node(13)]
+74 nodes, 258 links, 
+5476 OD pairs
+74 258
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/EMA/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/EMA/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(60), Node(22), Node(48), Node(49), Node(13)]
+74 nodes, 258 links, 
+5476 OD pairs
+74 258
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/EMA/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/EMA/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(60), Node(22), Node(48), Node(49), Node(13)]
+74 nodes, 258 links, 
+5476 OD pairs
+74 258
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/EMA/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/EMA/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(60), Node(22), Node(48), Node(49), Node(13)]
+74 nodes, 258 links, 
+5476 OD pairs
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/EMA/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/EMA/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=False
+)
+[]
+24 nodes, 76 links, 
+576 OD pairs
+24 76
+selected 2 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/SiouxFalls/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/SiouxFalls/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(10), Node(20)]
+24 nodes, 76 links, 
+576 OD pairs
+24 76
+selected 4 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/SiouxFalls/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/SiouxFalls/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(10), Node(20), Node(16), Node(22)]
+24 nodes, 76 links, 
+576 OD pairs
+24 76
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/SiouxFalls/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/SiouxFalls/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(10), Node(20), Node(16), Node(22), Node(8)]
+24 nodes, 76 links, 
+576 OD pairs
+24 76
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/SiouxFalls/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/SiouxFalls/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(10), Node(20), Node(16), Node(22), Node(8)]
+24 nodes, 76 links, 
+576 OD pairs
+24 76
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/SiouxFalls/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/SiouxFalls/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(10), Node(20), Node(16), Node(22), Node(8)]
+24 nodes, 76 links, 
+576 OD pairs
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/SiouxFalls/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/SiouxFalls/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=False
+)
+[]
+1040 nodes, 2836 links, 
+4345 OD pairs
+1040 2836
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/Winnipeg/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/Winnipeg/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(111), Node(370), Node(367), Node(368), Node(371)]
+1040 nodes, 2836 links, 
+4345 OD pairs
+1040 2836
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/Winnipeg/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/Winnipeg/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(111), Node(370), Node(367), Node(368), Node(371)]
+1040 nodes, 2836 links, 
+4345 OD pairs
+1040 2836
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/Winnipeg/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/Winnipeg/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(111), Node(370), Node(367), Node(368), Node(371)]
+1040 nodes, 2836 links, 
+4345 OD pairs
+1040 2836
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/Winnipeg/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/Winnipeg/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(111), Node(370), Node(367), Node(368), Node(371)]
+1040 nodes, 2836 links, 
+4345 OD pairs
+1040 2836
+selected 5 nodes as xfc using method='degree'
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/Winnipeg/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/Winnipeg/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=True
+)
+[Node(111), Node(370), Node(367), Node(368), Node(371)]
+1040 nodes, 2836 links, 
+4345 OD pairs
+Experiment(self.input_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/inputs/Winnipeg/'
+self.output_path='/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/Winnipeg/'
+self.algorithm='dijkstra'
+self.method='automatic'
+self.alpha=0.15
+self.threashold=0.001
+self.maxIter=100
+self.xfc=False
+)
+[]

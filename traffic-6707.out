@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/WAVE/users/unix/sli13/workspace/traffic_assignment/test.py", line 21, in <module>
+    runner.compare_xfc_result_vary_proning()
+  File "/WAVE/users/unix/sli13/workspace/traffic_assignment/runner.py", line 197, in compare_xfc_result_vary_proning
+    with open(out_path + 'xfc_locations_vary_centralities_%s_%s.json' % (xfc_ratio, centrality), 'r') as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/WAVE/users/unix/sli13/workspace/traffic_assignment/outputs/Anaheim/xfc_locations_vary_centralities_0.05_degree.json'

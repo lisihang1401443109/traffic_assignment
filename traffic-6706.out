@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "/WAVE/users/unix/sli13/workspace/traffic_assignment/test.py", line 11, in <module>
+    runner.run_all_networks()
+  File "/WAVE/users/unix/sli13/workspace/traffic_assignment/runner.py", line 54, in run_all_networks
+    experiment.run()
+  File "/WAVE/users/unix/sli13/workspace/traffic_assignment/runner.py", line 36, in run
+    log = self.p.run(algorithm=self.algorithm, alpha=self.alpha, threshold= self.threashold, maxIter = self.maxIter, method = self.method, xfc=self.xfc, verbose = self.verbose, proning = self.proning)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/WAVE/users/unix/sli13/workspace/traffic_assignment/model.py", line 787, in run
+    return {'converge': True, 'iteration': iteration_number, 'alpha': alpha, 'time_per_iteration': sum(iteration_times)/len(iteration_times), 'total_cost': self.get_total_time(), 'xfc_longest_distance': self.longest_xfc_distance() }
+                                                                                                                                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/WAVE/users/unix/sli13/workspace/traffic_assignment/model.py", line 642, in longest_xfc_distance
+    get_closest_xfc(origin=origin) for origin in self.graph.nodes
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/WAVE/users/unix/sli13/workspace/traffic_assignment/model.py", line 639, in get_closest_xfc
+    return min(dist_list)
+           ^^^^^^^^^^^^^^
+ValueError: min() iterable argument is empty
